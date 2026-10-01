@@ -340,6 +340,7 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
                 {"name": "🎯 Key Levels", "value": f"Sup: {support} | Res: {resistance}", "inline": True},
                 {"name": "📰 Layman Catalyst & What Happened", "value": catalyst_desc[:1000], "inline": False},
                 {"name": "⚠️ Risk & Dilution Note", "value": risk_desc[:1000], "inline": False},
+                {"name": "🌐 Interactive Web Dashboard", "value": "[👉 Open Full Dashboard with Live Charts](https://crazynutp.github.io/Trial1/)", "inline": False},
             ],
             "footer": {"text": "Antigravity Pre-Market Momentum Engine • TradingView & yfinance"},
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -352,7 +353,7 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
         embeds.append(embed)
 
     payload = {
-        "content": "☀️ **Pre-Market Momentum Digest**",
+        "content": "☀️ **Pre-Market Momentum Digest**\n🌐 **Interactive Web Dashboard:** https://crazynutp.github.io/Trial1/",
         "embeds": embeds,
     }
 
@@ -733,6 +734,15 @@ def run_scanner():
     with open(dashboard_output_file, "w", encoding="utf-8") as f:
         f.write(dashboard_html)
     print(f"[+] Enhanced HTML Dashboard generated successfully at: {dashboard_output_file}")
+
+    # Also deploy to index.html for live GitHub Pages hosting
+    index_file = project_root / "index.html"
+    with open(index_file, "w", encoding="utf-8") as f:
+        f.write(dashboard_html)
+    nojekyll_file = project_root / ".nojekyll"
+    if not nojekyll_file.exists():
+        nojekyll_file.touch()
+    print(f"[+] Synchronized index.html for GitHub Pages at: {index_file}")
 
     # Sync to brain directory for artifact viewing
     brain_dir = Path(r"C:\Users\jagat\.gemini\antigravity\brain\ab5aab7e-cf1f-479d-824d-3c479f2e3d66")
