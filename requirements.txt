@@ -1,0 +1,9 @@
+tradingview-screener>=3.2.0
+pandas>=2.0.0
+yfinance>=0.2.40
+plotly>=5.20.0
+mplfinance>=0.12.10
+matplotlib>=3.8.0
+pillow>=10.0.0
+requests>=2.31.0
+streamlit>=1.30.0

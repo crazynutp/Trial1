@@ -1,0 +1,36 @@
+{
+  "name": "Premarket Small-Cap Momentum Gappers Scanner & Visual Dashboard",
+  "description": "Daily automated pre-market scanner (8:30 AM EST, Monday - Friday) for low-float small-cap equities exhibiting strong momentum, relative volume surge, and high pre-market gap percentages. Generates interactive candlestick + volume charts and HTML dashboard.",
+  "cron": "30 8 * * 1-5",
+  "timezone": "America/New_York",
+  "enabled": true,
+  "steps": [
+    {
+      "step": 1,
+      "name": "Run Momentum Screener & Extended-Hours Chart Generator",
+      "command": "python3 scripts/small_cap_gappers.py",
+      "outputs": [
+        "./reports/gappers.json",
+        "./reports/dashboard.html"
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Parse Scanner Output",
+      "source": "./reports/gappers.json",
+      "fields": ["ticker", "name", "description", "close", "float_shares_outstanding", "premarket_change", "premarket_volume", "relative_volume_10d_calc"]
+    },
+    {
+      "step": 3,
+      "name": "Catalyst & News Intelligence",
+      "action": "Web search recent catalyst news (FDA approvals, earnings surprises, clinical trial results, contracts/partnerships, capital raises/offerings) for detected tickers and update ./reports/catalysts.json."
+    },
+    {
+      "step": 4,
+      "name": "Render Visual Dashboard Artifact",
+      "primary_artifact": "./reports/dashboard.html",
+      "markdown_summary": "./reports/premarket_summary.md",
+      "format": "Interactive HTML Dashboard + Plotly Extended Hours Candlesticks"
+    }
+  ]
+}

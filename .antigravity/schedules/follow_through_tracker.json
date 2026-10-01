@@ -1,0 +1,38 @@
+{
+  "name": "Market Close Small-Cap Follow-Through Performance Tracker",
+  "description": "Daily post-market tracker (16:10 EST, Monday - Friday) that downloads 1-minute intraday regular hours data, evaluates execution follow-through (+2% breakout vs critical dump), and logs multi-day metrics to ./data/gappers_history.csv.",
+  "cron": "10 16 * * 1-5",
+  "timezone": "America/New_York",
+  "enabled": true,
+  "steps": [
+    {
+      "step": 1,
+      "name": "Read Morning Gappers",
+      "source": "./reports/gappers.json"
+    },
+    {
+      "step": 2,
+      "name": "Download 1-Minute Intraday Data",
+      "engine": "yfinance",
+      "interval": "1m",
+      "window": "09:30 to 16:00 EST"
+    },
+    {
+      "step": 3,
+      "name": "Compute Execution Metrics",
+      "metrics": [
+        "open_price (09:30 regular session open)",
+        "first_30m_change_pct (09:30 open to 10:00 close %)",
+        "hit_plus_2pct (day high >= open + 2%)",
+        "minutes_to_day_high (minutes from open to peak high)",
+        "dump_warning (CRITICAL DUMP if peak <= open + 0.2%)"
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Log to Historical Database",
+      "destination": "./data/gappers_history.csv",
+      "mode": "append_without_overwriting"
+    }
+  ]
+}

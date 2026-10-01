@@ -1,0 +1,34 @@
+# Python artifacts & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Environment and sensitive keys
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Temporary and local IDE files
+.vscode/
+.idea/
+*.swp
+
+# Generated ephemeral reports (regenerated automatically on each scan)
+reports/*.html
+reports/*.png
+reports/gappers.json
+
+# Scratch & temporary test images
+test_*.png
+*.log
+
+# Keep historical tracking dataset
+!data/
+!data/gappers_history.csv

@@ -1,0 +1,4 @@
+date,ticker,company,premarket_gap_pct,premarket_volume,float_shares,open_price,day_high,day_low,close_price,first_30m_change_pct,hit_plus_2pct,minutes_to_day_high,dump_warning
+2026-10-01,NXL,"Nexalin Technology, Inc.",104.91,14092562,652226,8.8,10.9745,6.8,7.5299,12.5,Yes,36,Held/Pushed
+2026-10-01,VEEA,Veea Inc.,36.87,24840842,1594437,2.98,4.08,2.92,3.48,9.23,Yes,356,Held/Pushed
+2026-10-01,MEDS,"DataMeds AI, Inc.",22.71,18666771,1535288,3.92,4.35,3.63,4.04,4.78,Yes,20,Held/Pushed
