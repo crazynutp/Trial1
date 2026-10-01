@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
-Small-Cap Momentum Gappers Pre-Market Scanner, Interactive Dashboard & Discord Digest
+Enhanced Small-Cap Momentum Gappers Scanner, Interactive Dual-Tab Dashboard & Discord Digest
 - Queries TradingView screener for small-cap momentum gappers
 - Pulls extended-hours intraday price/volume data via yfinance
-- Generates dual-panel Plotly charts with session shading for ./reports/dashboard.html
-- Generates high-resolution multi-session candlestick chart image (reports/chart.png)
-- Dispatches rich Discord notification digest with embedded chart via multipart upload
+- Generates dual-panel Plotly charts with session shading
+- Compiles Dual-Tab interactive HTML dashboard:
+    * Tab 1: Pre-Market Radar (Live Plotly charts, catalysts, countdown)
+    * Tab 2: Follow-Through History (Streamlit-style interactive data grid with filters & bright-red dump warnings)
+- Deploys to ./reports/dashboard.html and ./index.html for live GitHub Pages hosting
+- Generates high-res chart image (reports/chart.png) and dispatches Discord digest with live link
 """
 
 import json
@@ -21,7 +24,7 @@ import pandas as pd
 import requests
 import yfinance as yf
 import matplotlib
-matplotlib.use("Agg")  # Non-interactive backend
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 import plotly.graph_objects as go
@@ -29,7 +32,6 @@ from plotly.subplots import make_subplots
 import plotly.offline
 from tradingview_screener import Query, col
 
-# Default Discord Webhook URL (can be overridden via DISCORD_WEBHOOK_URL env var)
 DEFAULT_DISCORD_WEBHOOK_URL = (
     "https://discord.com/api/webhooks/1555320088775626822/j-BYtUyCo535BXEg5hjxZjH7U_yePC9sxv249KR8vTxgKa52sqdKz7ywN93BHYcLB_qE"
 )
@@ -52,7 +54,6 @@ def format_number(val, is_currency=False):
         return str(val)
 
 def fetch_fallback_headlines(ticker):
-    """Fetches recent news headlines via Google News RSS as an automated fallback."""
     try:
         url = f"https://news.google.com/rss/search?q={ticker}+stock+when:3d"
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -67,11 +68,6 @@ def fetch_fallback_headlines(ticker):
     return "Significant volume surge detected in early pre-market trading session."
 
 def build_candlestick_chart(ticker, hist_df):
-    """
-    Constructs an interactive Plotly chart for the HTML dashboard:
-    - Top panel: Candlesticks, 20 SMA, Pre-Market visual session shading
-    - Bottom panel: Volume bars colored green/red matching candle direction
-    """
     if hist_df is None or hist_df.empty:
         return "<div class='text-slate-400 p-8 text-center italic'>No intraday chart data available for this ticker.</div>"
 
@@ -220,10 +216,6 @@ def build_candlestick_chart(ticker, hist_df):
     return fig.to_html(full_html=False, include_plotlyjs=False)
 
 def generate_static_chart_image(ticker, company, hist_df, output_path):
-    """
-    Renders a high-resolution dark-theme candlestick + volume PNG chart
-    with 20 SMA and pre-market session visual shading for Discord attachment.
-    """
     if hist_df is None or hist_df.empty:
         return False
 
@@ -233,7 +225,6 @@ def generate_static_chart_image(ticker, company, hist_df, output_path):
     else:
         df.index = df.index.tz_convert("America/New_York")
 
-    # Retain the last 85 bars for crisp mobile & desktop readability
     if len(df) > 85:
         df = df.iloc[-85:]
 
@@ -267,7 +258,6 @@ def generate_static_chart_image(ticker, company, hist_df, output_path):
         panel_ratios=(3.2, 1),
     )
 
-    # Add pre-market session shading
     for i in range(len(df)):
         t = df.index[i]
         if t.hour < 9 or (t.hour == 9 and t.minute < 30):
@@ -280,32 +270,23 @@ def generate_static_chart_image(ticker, company, hist_df, output_path):
     return True
 
 def send_discord_digest(records, known_catalysts, chart_image_path):
-    """
-    Dispatches the pre-market momentum digest to the configured Discord webhook:
-    - Content header: ☀️ **Pre-Market Momentum Digest**
-    - Embeds for top detected gappers (up to 3)
-    - Full multi-session candlestick + volume chart attached via multipart upload
-    """
     webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", DEFAULT_DISCORD_WEBHOOK_URL)
     if not webhook_url:
         print("[!] No Discord webhook configured. Skipping notification.")
         return False
 
-    print(f"\n[*] Preparing Discord webhook notification to: {webhook_url[:55]}...")
+    print(f"\n[*] Preparing Discord webhook notification...")
 
     if not records:
         payload = {
             "content": "☀️ **Pre-Market Momentum Digest**\n*No securities currently meet the momentum gapper criteria.*",
         }
         r = requests.post(webhook_url, json=payload, timeout=10)
-        print(f"[+] Discord ping sent (status {r.status_code})")
         return True
 
-    # Color palette for ranks: #1 Emerald, #2 Sky Blue, #3 Amber
     embed_colors = [1096065, 3447003, 16101131]
     embeds = []
 
-    # Process up to 3 gappers
     top_records = records[:3]
     for idx, item in enumerate(top_records):
         ticker = item.get("name") or item.get("ticker", "").split(":")[-1]
@@ -346,7 +327,6 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
-        # Attach chart image to the #1 leader embed
         if idx == 0 and chart_image_path and Path(chart_image_path).exists():
             embed["image"] = {"url": "attachment://chart.png"}
 
@@ -384,17 +364,23 @@ def run_scanner():
     script_dir = Path(__file__).resolve().parent
     project_root = script_dir.parent
     reports_dir = project_root / "reports"
+    data_dir = project_root / "data"
     reports_dir.mkdir(parents=True, exist_ok=True)
+    data_dir.mkdir(parents=True, exist_ok=True)
+
     json_output_file = reports_dir / "gappers.json"
     dashboard_output_file = reports_dir / "dashboard.html"
+    index_file = project_root / "index.html"
+    nojekyll_file = project_root / ".nojekyll"
     catalyst_file = reports_dir / "catalysts.json"
     chart_image_file = reports_dir / "chart.png"
+    history_csv_file = data_dir / "gappers_history.csv"
 
     print("=" * 65)
     print("Executing TradingView Small-Cap Momentum Gappers Query...")
     print("=" * 65)
 
-    # 1. Execute Screener Query
+    # 1. Screener Query
     query = (
         Query()
         .set_markets("america")
@@ -448,7 +434,16 @@ def run_scanner():
         except Exception:
             pass
 
-    # 2. Process each ticker, fetch yfinance intraday, build charts & intel
+    # Load historical follow-through data for Tab 2
+    history_records = []
+    if history_csv_file.exists():
+        try:
+            h_df = pd.read_csv(history_csv_file)
+            history_records = h_df.where(pd.notnull(h_df), None).to_dict(orient="records")
+        except Exception as e:
+            print(f"[!] Warning reading history CSV: {e}")
+
+    # 2. Build Tab 1: Pre-market Stock Cards with Plotly charts
     scan_timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
     stock_cards_html = []
     top_hist_df = None
@@ -479,10 +474,8 @@ def run_scanner():
             top_ticker = ticker
             top_company = company
 
-        # Build Plotly Chart for dashboard
         chart_html = build_candlestick_chart(ticker, hist_df)
 
-        # Get or generate Catalyst Intelligence
         intel = known_catalysts.get(ticker)
         if not intel:
             fallback_news = fetch_fallback_headlines(ticker)
@@ -495,10 +488,8 @@ def run_scanner():
                 "resistance_level": f"${price * 1.15:.2f}",
             }
 
-        # Build Stock Card HTML
         card_html = f"""
         <div class="bg-slate-900/90 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur transition-all duration-200">
-          <!-- Card Header -->
           <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800/80">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 flex items-center justify-center font-bold text-lg text-emerald-400">
@@ -524,7 +515,6 @@ def run_scanner():
             </div>
           </div>
 
-          <!-- Key Stats Grid -->
           <div class="grid grid-cols-2 md:grid-cols-4 gap-3 my-5">
             <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3">
               <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Pre-Market Vol</span>
@@ -544,7 +534,6 @@ def run_scanner():
             </div>
           </div>
 
-          <!-- Candlestick + Volume Chart -->
           <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2 my-5 overflow-hidden">
             <div class="px-3 pt-2 pb-1 flex items-center justify-between text-xs text-slate-400 border-b border-slate-800/60">
               <span class="font-semibold text-slate-300">5-Minute Intraday & Extended Hours (Plotly)</span>
@@ -556,7 +545,6 @@ def run_scanner():
             {chart_html}
           </div>
 
-          <!-- Layman Trading Intelligence Box -->
           <div class="bg-slate-950/90 border border-slate-800/90 rounded-xl p-5 space-y-4">
             <div class="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-wider border-b border-slate-800/80 pb-2">
               <span class="text-emerald-400">⚡</span> Catalyst & Layman Trading Intelligence
@@ -592,7 +580,6 @@ def run_scanner():
         """
         stock_cards_html.append(card_html)
 
-    # 3. Assemble Complete Dashboard HTML
     cards_section = "\n".join(stock_cards_html) if stock_cards_html else """
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center text-slate-400">
       <p class="text-lg font-semibold text-slate-300">No small-cap securities meet the momentum gapper criteria at this scan time.</p>
@@ -601,13 +588,15 @@ def run_scanner():
     """
 
     plotly_js_bundle = plotly.offline.get_plotlyjs()
+    history_json_str = json.dumps(history_records)
 
+    # 3. Complete Dual-Tab Dashboard HTML
     dashboard_html = f"""<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pre-Market Momentum Gappers Radar</title>
+  <title>Pre-Market Momentum & Follow-Through Tracker</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <script>
   {plotly_js_bundle}
@@ -618,70 +607,387 @@ def run_scanner():
       color: #f8fafc;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }}
+    .dump-critical {{
+      background-color: rgba(255, 23, 68, 0.22);
+      color: #ff1744;
+      font-weight: 800;
+      border: 1px solid #ff1744;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: inline-block;
+      letter-spacing: 0.03em;
+    }}
+    .dump-held {{
+      background-color: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      display: inline-block;
+    }}
+    .breakout-yes {{
+      color: #10b981;
+      font-weight: 700;
+    }}
+    .breakout-no {{
+      color: #f59e0b;
+      font-weight: 600;
+    }}
   </style>
 </head>
 <body class="p-4 md:p-8 antialiased min-h-screen">
   <div class="max-w-7xl mx-auto space-y-6">
 
-    <!-- Header Summary Banner -->
-    <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
-      <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
+    <!-- Top Navigation Bar & Brand -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-sky-500 flex items-center justify-center text-xl shadow-lg">
+          🚀
+        </div>
         <div>
-          <div class="flex items-center gap-2 mb-2">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse">
-              ● LIVE RADAR
-            </span>
-            <span class="text-xs text-slate-400 font-medium">TradingView US Equities Screener</span>
+          <h1 class="text-xl font-extrabold text-white tracking-tight">Small-Cap Momentum Hub</h1>
+          <p class="text-xs text-slate-400">Pre-Market Gappers & Regular Hours Follow-Through Tracker</p>
+        </div>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="flex items-center gap-1.5 p-1.5 bg-slate-900 border border-slate-800 rounded-xl shadow-inner">
+        <button id="tab-btn-radar" onclick="switchTab('radar')" class="px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2">
+          <span>⚡</span> Pre-Market Radar
+        </button>
+        <button id="tab-btn-history" onclick="switchTab('history')" class="px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2">
+          <span>📈</span> Follow-Through History
+        </button>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TAB 1: PRE-MARKET MOMENTUM RADAR                           -->
+    <!-- ========================================================== -->
+    <div id="tab-content-radar" class="space-y-6">
+      <!-- Header Summary Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 relative z-10">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 animate-pulse">
+                ● LIVE RADAR
+              </span>
+              <span class="text-xs text-slate-400 font-medium">TradingView US Equities Screener</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Today's Momentum Gappers</h2>
+            <p class="text-sm text-slate-400 mt-1 max-w-2xl">
+              Tracking low-float (&le; 20M), micro/small-cap (&le; $500M) stocks with heavy relative volume surges (&gt;5.0x) and gap-up momentum.
+            </p>
+            
+            <div class="flex flex-wrap gap-2 mt-4 text-[11px] font-medium text-slate-300">
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">Price: $2.00 - $20.00</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">Market Cap: &le; $500M</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">Float: &le; 20M</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">RelVol: &gt; 5.0x</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">PM Vol: &gt; 500k</span>
+              <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">PM Gap: &gt; 4.0%</span>
+            </div>
           </div>
-          <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Small-Cap Momentum Gappers</h1>
-          <p class="text-sm text-slate-400 mt-1 max-w-2xl">
-            Pre-market screener tracking low-float (&le; 20M), micro/small-cap (&le; $500M) stocks with heavy relative volume surges (&gt;5.0x) and gap-up momentum.
-          </p>
-          
-          <!-- Filter Criteria Chips -->
-          <div class="flex flex-wrap gap-2 mt-4 text-[11px] font-medium text-slate-300">
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">Price: $2.00 - $20.00</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">Market Cap: &le; $500M</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">Float: &le; 20M</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">RelVol: &gt; 5.0x</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">PM Vol: &gt; 500k</span>
-            <span class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/60">PM Gap: &gt; 4.0%</span>
+
+          <div class="flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[280px]">
+            <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 shadow-inner text-center">
+              <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">US Market Open (9:30 AM EST)</div>
+              <div id="market-countdown" class="text-2xl font-black text-sky-400 mt-1 font-mono">--:--:--</div>
+              <div id="market-status" class="text-[11px] text-slate-500 mt-0.5 font-medium">Calculating market session...</div>
+            </div>
+
+            <div class="bg-slate-950/60 border border-slate-800/70 rounded-xl p-3 flex items-center justify-between text-xs">
+              <span class="text-slate-400">Gappers Found:</span>
+              <span class="font-extrabold text-white text-sm bg-slate-800 px-2 py-0.5 rounded border border-slate-700">{len(records)} Leaders</span>
+            </div>
+            <div class="text-[11px] text-slate-500 text-right px-1">
+              Last Scan: {scan_timestamp}
+            </div>
           </div>
         </div>
+      </div>
 
-        <!-- Scan Meta & Market Countdown -->
-        <div class="flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[280px]">
-          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4 shadow-inner text-center">
-            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">US Market Open (9:30 AM EST)</div>
-            <div id="market-countdown" class="text-2xl font-black text-sky-400 mt-1 font-mono">--:--:--</div>
-            <div id="market-status" class="text-[11px] text-slate-500 mt-0.5 font-medium">Calculating market session...</div>
+      <!-- Stock Cards Grid -->
+      <div class="space-y-6">
+        {cards_section}
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- TAB 2: FOLLOW-THROUGH HISTORICAL DATA GRID (STREAMLIT-LIKE) -->
+    <!-- ========================================================== -->
+    <div id="tab-content-history" class="space-y-6 hidden">
+      <!-- Historical KPI Summary -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800 mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">Follow-Through Execution Analytics</h2>
+            <p class="text-xs text-slate-400 mt-0.5">End-of-day evaluation measuring morning breakout follow-through and dump frequency.</p>
+          </div>
+          <button onclick="exportFilteredCSV()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2 transition-all">
+            <span>📥</span> Download Filtered CSV
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Tracked Stocks</span>
+            <p id="kpi-total" class="text-2xl font-extrabold text-white mt-1">0</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">+2% Breakout Rate</span>
+            <p id="kpi-breakout" class="text-2xl font-extrabold text-emerald-400 mt-1">0%</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Critical Dump Rate</span>
+            <p id="kpi-dump" class="text-2xl font-extrabold text-rose-400 mt-1">0%</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg 30m Change</span>
+            <p id="kpi-30m" class="text-2xl font-extrabold text-sky-400 mt-1">0.00%</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Time to High</span>
+            <p id="kpi-time" class="text-2xl font-extrabold text-amber-400 mt-1">0m</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Controls (Streamlit-style) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <span>🔍</span> Interactive Filter Controls
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- +2% Breakout Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">+2% Breakout</label>
+            <select id="filter-breakout" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+              <option value="All">All Breakout States</option>
+              <option value="Yes">Hit >= +2% (Yes)</option>
+              <option value="No">Failed +2% (No)</option>
+            </select>
           </div>
 
-          <div class="bg-slate-950/60 border border-slate-800/70 rounded-xl p-3 flex items-center justify-between text-xs">
-            <span class="text-slate-400">Gappers Found:</span>
-            <span class="font-extrabold text-white text-sm bg-slate-800 px-2 py-0.5 rounded border border-slate-700">{len(records)} Leaders</span>
+          <!-- Dump Warning Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Dump Warning Status</label>
+            <select id="filter-dump" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+              <option value="All">All Dump Statuses</option>
+              <option value="CRITICAL DUMP">🚨 CRITICAL DUMP Only</option>
+              <option value="Held/Pushed">✅ Held / Pushed Only</option>
+            </select>
           </div>
-          <div class="text-[11px] text-slate-500 text-right px-1">
-            Last Scan: {scan_timestamp}
+
+          <!-- Search Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Search Ticker / Company</label>
+            <input id="filter-search" type="text" oninput="renderHistoryTable()" placeholder="e.g. NXL, VEEA..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
           </div>
+
+          <!-- Min Gap Slider -->
+          <div>
+            <div class="flex justify-between items-center mb-1.5">
+              <label class="text-xs font-semibold text-slate-300">Min Pre-Market Gap %</label>
+              <span id="gap-val" class="text-xs font-mono font-bold text-sky-400">0%</span>
+            </div>
+            <input id="filter-gap" type="range" min="0" max="150" value="0" step="5" oninput="document.getElementById('gap-val').innerText = this.value + '%'; renderHistoryTable()" class="w-full accent-sky-500">
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Grid Table -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-950/80 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+              <tr>
+                <th class="py-3 px-4 font-bold cursor-pointer" onclick="sortTable('date')">Date ↕</th>
+                <th class="py-3 px-4 font-bold cursor-pointer" onclick="sortTable('ticker')">Ticker ↕</th>
+                <th class="py-3 px-4 font-bold">Company</th>
+                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('premarket_gap_pct')">PM Gap ↕</th>
+                <th class="py-3 px-4 font-bold text-right">09:30 Open</th>
+                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('day_high')">Day High ↕</th>
+                <th class="py-3 px-4 font-bold text-right">16:00 Close</th>
+                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
+                <th class="py-3 px-4 font-bold text-center cursor-pointer" onclick="sortTable('hit_plus_2pct')">+2% Hit ↕</th>
+                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
+                <th class="py-3 px-4 font-bold text-center">Dump Warning</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body" class="divide-y divide-slate-800/60 font-mono">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- Stock Cards Grid -->
-    <div class="space-y-6">
-      {cards_section}
-    </div>
-
+    <!-- Footer Note -->
     <div class="text-center text-xs text-slate-500 pt-6 pb-8 border-t border-slate-800/60">
       Antigravity Automated Pre-Market Momentum Engine &bull; Generated from TradingView & yfinance APIs &bull; Educational & Research Purposes Only
     </div>
   </div>
 
+  <!-- Historical Data & Application Logic -->
   <script>
+    const RAW_HISTORY = {history_json_str};
+    let currentSortCol = 'date';
+    let sortAsc = false;
+
+    function switchTab(tab) {{
+      const radarBtn = document.getElementById("tab-btn-radar");
+      const historyBtn = document.getElementById("tab-btn-history");
+      const radarContent = document.getElementById("tab-content-radar");
+      const historyContent = document.getElementById("tab-content-history");
+
+      if (tab === 'radar') {{
+        radarBtn.className = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2";
+        historyBtn.className = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2";
+        radarContent.classList.remove("hidden");
+        historyContent.classList.add("hidden");
+      }} else {{
+        historyBtn.className = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2";
+        radarBtn.className = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2";
+        historyContent.classList.remove("hidden");
+        radarContent.classList.add("hidden");
+        renderHistoryTable();
+      }}
+    }}
+
+    function renderHistoryTable() {{
+      const breakoutFilter = document.getElementById("filter-breakout").value;
+      const dumpFilter = document.getElementById("filter-dump").value;
+      const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
+      const minGap = parseFloat(document.getElementById("filter-gap").value) || 0;
+
+      let filtered = RAW_HISTORY.filter(row => {{
+        if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
+        if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
+        if (minGap > 0 && (row.premarket_gap_pct || 0) < minGap) return false;
+        if (search) {{
+          const t = (row.ticker || "").toLowerCase();
+          const c = (row.company || "").toLowerCase();
+          if (!t.includes(search) && !c.includes(search)) return false;
+        }}
+        return true;
+      }});
+
+      // Sort
+      filtered.sort((a, b) => {{
+        let v1 = a[currentSortCol];
+        let v2 = b[currentSortCol];
+        if (v1 === null || v1 === undefined) v1 = 0;
+        if (v2 === null || v2 === undefined) v2 = 0;
+        if (v1 < v2) return sortAsc ? -1 : 1;
+        if (v1 > v2) return sortAsc ? 1 : -1;
+        return 0;
+      }});
+
+      // Update KPIs
+      const total = filtered.length;
+      const winCount = filtered.filter(r => r.hit_plus_2pct === "Yes").length;
+      const dumpCount = filtered.filter(r => r.dump_warning === "CRITICAL DUMP").length;
+      const winRate = total > 0 ? (winCount / total * 100).toFixed(1) : 0;
+      const dumpRate = total > 0 ? (dumpCount / total * 100).toFixed(1) : 0;
+      
+      const sum30m = filtered.reduce((acc, r) => acc + (parseFloat(r.first_30m_change_pct) || 0), 0);
+      const avg30m = total > 0 ? (sum30m / total).toFixed(2) : "0.00";
+
+      const sumTime = filtered.reduce((acc, r) => acc + (parseFloat(r.minutes_to_day_high) || 0), 0);
+      const avgTime = total > 0 ? Math.round(sumTime / total) : 0;
+
+      document.getElementById("kpi-total").innerText = total;
+      document.getElementById("kpi-breakout").innerText = winRate + "% (" + winCount + "/" + total + ")";
+      document.getElementById("kpi-dump").innerText = dumpRate + "% (" + dumpCount + ")";
+      document.getElementById("kpi-30m").innerText = (avg30m > 0 ? "+" : "") + avg30m + "%";
+      document.getElementById("kpi-time").innerText = avgTime + "m";
+
+      // Render Rows
+      const tbody = document.getElementById("history-table-body");
+      if (filtered.length === 0) {{
+        tbody.innerHTML = '<tr><td colspan="11" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected filters.</td></tr>';
+        return;
+      }}
+
+      tbody.innerHTML = filtered.map(r => {{
+        const isDump = r.dump_warning === "CRITICAL DUMP";
+        const dumpBadge = isDump 
+          ? '<span class="dump-critical">🚨 CRITICAL DUMP</span>'
+          : '<span class="dump-held">Held / Pushed</span>';
+
+        const hitBadge = r.hit_plus_2pct === "Yes"
+          ? '<span class="breakout-yes">Yes</span>'
+          : '<span class="breakout-no">No</span>';
+
+        const m30 = r.first_30m_change_pct !== null ? (r.first_30m_change_pct > 0 ? "+" : "") + r.first_30m_change_pct.toFixed(2) + "%" : "-";
+        const gap = r.premarket_gap_pct !== null ? "+" + r.premarket_gap_pct.toFixed(1) + "%" : "-";
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition-colors">
+            <td class="py-3 px-4 text-slate-400 font-sans">${{r.date || '-'}}</td>
+            <td class="py-3 px-4 font-bold text-white font-sans">${{r.ticker}}</td>
+            <td class="py-3 px-4 text-slate-300 font-sans truncate max-w-[180px]">${{r.company || '-'}}</td>
+            <td class="py-3 px-4 text-right font-bold text-emerald-400">${{gap}}</td>
+            <td class="py-3 px-4 text-right text-slate-200">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
+            <td class="py-3 px-4 text-right font-bold text-white">${{r.day_high ? '$' + r.day_high.toFixed(2) : '-'}}</td>
+            <td class="py-3 px-4 text-right text-slate-300">${{r.close_price ? '$' + r.close_price.toFixed(2) : '-'}}</td>
+            <td class="py-3 px-4 text-right font-semibold ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
+            <td class="py-3 px-4 text-center font-bold">${{hitBadge}}</td>
+            <td class="py-3 px-4 text-right text-slate-300">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
+            <td class="py-3 px-4 text-center">${{dumpBadge}}</td>
+          </tr>
+        `;
+      }}).join("");
+    }}
+
+    function sortTable(col) {{
+      if (currentSortCol === col) {{
+        sortAsc = !sortAsc;
+      }} else {{
+        currentSortCol = col;
+        sortAsc = false;
+      }}
+      renderHistoryTable();
+    }}
+
+    function exportFilteredCSV() {{
+      const breakoutFilter = document.getElementById("filter-breakout").value;
+      const dumpFilter = document.getElementById("filter-dump").value;
+      const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
+      const minGap = parseFloat(document.getElementById("filter-gap").value) || 0;
+
+      let filtered = RAW_HISTORY.filter(row => {{
+        if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
+        if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
+        if (minGap > 0 && (row.premarket_gap_pct || 0) < minGap) return false;
+        if (search) {{
+          const t = (row.ticker || "").toLowerCase();
+          const c = (row.company || "").toLowerCase();
+          if (!t.includes(search) && !c.includes(search)) return false;
+        }}
+        return true;
+      }});
+
+      if (filtered.length === 0) return;
+      const keys = Object.keys(filtered[0]);
+      let csv = keys.join(",") + "\\n";
+      filtered.forEach(row => {{
+        csv += keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "\\n";
+      }});
+
+      const blob = new Blob([csv], {{ type: 'text/csv' }});
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.setAttribute('href', url);
+      a.setAttribute('download', 'filtered_gappers_history.csv');
+      a.click();
+    }}
+
     function updateCountdown() {{
       const countdownEl = document.getElementById("market-countdown");
       const statusEl = document.getElementById("market-status");
@@ -735,16 +1041,14 @@ def run_scanner():
         f.write(dashboard_html)
     print(f"[+] Enhanced HTML Dashboard generated successfully at: {dashboard_output_file}")
 
-    # Also deploy to index.html for live GitHub Pages hosting
     index_file = project_root / "index.html"
     with open(index_file, "w", encoding="utf-8") as f:
         f.write(dashboard_html)
     nojekyll_file = project_root / ".nojekyll"
     if not nojekyll_file.exists():
         nojekyll_file.touch()
-    print(f"[+] Synchronized index.html for GitHub Pages at: {index_file}")
+    print(f"[+] Synchronized dual-tab index.html for GitHub Pages at: {index_file}")
 
-    # Sync to brain directory for artifact viewing
     brain_dir = Path(r"C:\Users\jagat\.gemini\antigravity\brain\ab5aab7e-cf1f-479d-824d-3c479f2e3d66")
     if brain_dir.exists():
         try:
@@ -752,13 +1056,11 @@ def run_scanner():
         except Exception:
             pass
 
-    # 4. Generate high-res chart image for the top gapper
     if top_hist_df is not None and top_ticker:
         print(f"\n[*] Generating multi-session chart image for top leader #{top_ticker}...")
         generate_static_chart_image(top_ticker, top_company, top_hist_df, chart_image_file)
         print(f"[+] Saved chart image to: {chart_image_file}")
 
-    # 5. Send Discord Webhook Digest with attached chart
     send_discord_digest(records, known_catalysts, chart_image_file)
 
     return records
