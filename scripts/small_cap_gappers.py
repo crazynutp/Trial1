@@ -32,9 +32,19 @@ from plotly.subplots import make_subplots
 import plotly.offline
 from tradingview_screener import Query, col
 
-DEFAULT_DISCORD_WEBHOOK_URL = (
-    "https://discord.com/api/webhooks/1555320088775626822/j-BYtUyCo535BXEg5hjxZjH7U_yePC9sxv249KR8vTxgKa52sqdKz7ywN93BHYcLB_qE"
-)
+def load_local_env():
+    env_file = Path(__file__).resolve().parent.parent / ".env"
+    if env_file.exists():
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+
+load_local_env()
+DEFAULT_DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "")
+
 
 def format_number(val, is_currency=False):
     if val is None or pd.isna(val):

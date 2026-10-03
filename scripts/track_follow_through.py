@@ -156,10 +156,16 @@ def track_follow_through():
     print(f"[+] Total historical records logged: {len(combined_df)}")
 
     # Send End-of-Day Follow-Through Summary to Discord
-    webhook_url = os.environ.get(
-        "DISCORD_WEBHOOK_URL",
-        "https://discord.com/api/webhooks/1555320088775626822/j-BYtUyCo535BXEg5hjxZjH7U_yePC9sxv249KR8vTxgKa52sqdKz7ywN93BHYcLB_qE",
-    )
+    env_file = project_root / ".env"
+    if env_file.exists():
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+
+    webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", "")
     if webhook_url:
         try:
             import requests

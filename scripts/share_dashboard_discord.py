@@ -11,9 +11,18 @@ import sys
 from pathlib import Path
 import requests
 
-WEBHOOK_URL = (
-    "https://discord.com/api/webhooks/1555320088775626822/j-BYtUyCo535BXEg5hjxZjH7U_yePC9sxv249KR8vTxgKa52sqdKz7ywN93BHYcLB_qE"
-)
+def load_local_env():
+    env_file = Path(__file__).resolve().parent.parent / ".env"
+    if env_file.exists():
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip("\"'"))
+
+load_local_env()
+WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "")
 
 def share_dashboard():
     project_root = Path(__file__).resolve().parent.parent
