@@ -1,4 +1,20 @@
 {
+  "AMOD": {
+    "catalyst_title": "$200M+ Bitcoin Treasury Strategy & PIPE Closing with Massive Micro-Float Squeeze",
+    "what_happened": "Alpha Modus Holdings announced the closing of a strategic PIPE transaction securing 3,170 Bitcoin (over $200M in digital assets) to anchor a major crypto-treasury corporate reserve pivot. The news sparked a retail and algorithmic frenzy, triggering an enormous low-float short squeeze.",
+    "chart_breakdown": "The stock exploded +197.4% in pre-market, soaring on a monumental 78M pre-market shares. Intraday momentum continued aggressively, holding massive volume shelves above $3.00.",
+    "float_rotation_risk": "Unprecedented Float Turnover (>14,300%): With a micro-float of just 542k shares, the float rotated over 140 times before market open! Extreme dilution risk looms as the PIPE deal included the issuance of 51M new common shares and 51M warrants, meaning catastrophic dilution is locked in once registration takes effect.",
+    "support_level": "$3.00 / $2.40",
+    "resistance_level": "$4.50 / $5.00"
+  },
+  "CYCU": {
+    "catalyst_title": "Regained Nasdaq Minimum Bid Compliance & Secured $800k Commercial Contracts",
+    "what_happened": "Cycurion announced it officially regained full Nasdaq minimum bid price compliance following a 1-for-8 reverse split. Concurrently, the company signed $800,000 in new commercial healthcare contracts and settled a longstanding naked short-selling lawsuit with a full retraction and apology from the defendant.",
+    "chart_breakdown": "CYCU gapped up +11.5% in pre-market, then rallied over +42% during the day on 49M shares (335x its 10-day average relative volume).",
+    "float_rotation_risk": "High Float Rotation (15.6x): Trading volume turned over the 3.14M float more than 15 times. Cycurion is under a 1-year Nasdaq discretionary panel monitor through October 2027, requiring strict compliance to prevent immediate delisting.",
+    "support_level": "$3.20 / $2.80",
+    "resistance_level": "$4.20 / $4.60"
+  },
   "NXL": {
     "catalyst_title": "10-Year Exclusive South American Distribution & Local Manufacturing Agreement",
     "what_happened": "Nexalin Technology entered into a landmark 10-year exclusive distribution and local manufacturing contract with Inovanexa Medical Technologies covering seven countries (Brazil, Argentina, Chile, Uruguay, Paraguay, Ecuador, and Venezuela). Inovanexa committed to an initial order of 10 Nexalin Sync devices and agreed to fund a local manufacturing plant in Brazil once 30 units are deployed—unlocking royalty streams for Nexalin with zero CapEx. Maxim Group subsequently updated their price target to $15.00.",
