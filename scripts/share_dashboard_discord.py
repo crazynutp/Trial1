@@ -45,8 +45,8 @@ def share_dashboard():
                 "color": 1096065,  # Emerald
                 "fields": [
                     {
-                        "name": "🌐 Streamlit Follow-Through App",
-                        "value": "[http://localhost:8501](http://localhost:8501)\n`streamlit run dashboard.py`",
+                        "name": "🌐 Live Web Dashboard",
+                        "value": "[👉 Open GitHub Pages](https://crazynutp.github.io/Trial1/)",
                         "inline": True,
                     },
                     {
