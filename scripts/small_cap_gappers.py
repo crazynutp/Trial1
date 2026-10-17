@@ -1086,7 +1086,8 @@ def run_scanner():
                 <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('close_price')">16:00 Close ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_return_pct')">Day Return ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('fade_from_high_pct')">Fade % ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('float_turnover_x')">Day Vol & Turnover ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_volume')">Day Volume ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('float_turnover_x')">Float Turnover ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
                 <th class="py-3 px-3 font-bold text-center cursor-pointer" onclick="sortTable('dump_warning')">Status ↕</th>
@@ -1197,7 +1198,7 @@ def run_scanner():
       // Render Rows
       const tbody = document.getElementById("history-table-body");
       if (filtered.length === 0) {{
-        tbody.innerHTML = '<tr><td colspan="14" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected filters.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="15" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected filters.</td></tr>';
         return;
       }}
 
@@ -1254,10 +1255,8 @@ def run_scanner():
             <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.close_price ? '$' + r.close_price.toFixed(2) : '-'}}</td>
             <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{dayRetClass}}">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</td>
             <td class="py-2.5 px-3 text-right whitespace-nowrap ${{fadeClass}}">${{fade.toFixed(1)}}%</td>
-            <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans">
-              <span class="text-white font-bold">${{dayVolStr}}</span>
-              <span class="text-[10px] ml-1 text-amber-400 font-mono font-semibold">(${{rotStr}})</span>
-            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans font-bold text-white">${{dayVolStr}}</td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-amber-400">${{rotStr}}</td>
             <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
             <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">${{dumpBadge}}</td>
