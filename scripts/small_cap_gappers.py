@@ -77,17 +77,11 @@ def fetch_fallback_headlines(ticker):
         pass
     return "Significant volume surge detected in early pre-market trading session."
 
-def build_candlestick_chart(ticker, hist_df):
-    if hist_df is None or hist_df.empty:
-        empty_html = f"""
-        <div class="bg-[#131722] border border-slate-800 rounded-2xl p-12 text-center text-slate-400 italic my-5">
-          <p class="text-sm font-semibold text-slate-300">No intraday chart data available for #{ticker}.</p>
-          <a href="https://www.tradingview.com/symbols/{ticker}/" target="_blank" class="inline-block mt-3 px-3 py-1 rounded bg-sky-500/20 text-sky-400 text-xs font-bold border border-sky-500/30">Open on TradingView ↗</a>
-        </div>
-        """
-        return empty_html, None
+def extract_chart_series(df):
+    if df is None or df.empty:
+        return {"candleData": [], "volumeData": [], "smaData": [], "openTime": None}
 
-    df = hist_df.copy()
+    df = df.copy()
     if df.index.tz is None:
         df.index = df.index.tz_localize("America/New_York")
     else:
@@ -124,15 +118,102 @@ def build_candlestick_chart(ticker, hist_df):
         if ts.hour == 9 and ts.minute == 30:
             open_time = unix_time
 
+    return {
+        "candleData": candle_data,
+        "volumeData": volume_data,
+        "smaData": sma_data,
+        "openTime": open_time
+    }
+
+def build_candlestick_chart(ticker, hist_dfs):
+    if isinstance(hist_dfs, dict):
+        df_1m = hist_dfs.get("1m")
+        df_5m = hist_dfs.get("5m")
+        df_10m = hist_dfs.get("10m")
+        df_15m = hist_dfs.get("15m")
+    else:
+        df_5m = hist_dfs
+        df_1m = None
+        df_10m = df_5m.resample("10min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna() if (df_5m is not None and not df_5m.empty) else None
+        df_15m = df_5m.resample("15min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna() if (df_5m is not None and not df_5m.empty) else None
+
+    intervals_data = {
+        "1m": extract_chart_series(df_1m),
+        "5m": extract_chart_series(df_5m),
+        "10m": extract_chart_series(df_10m),
+        "15m": extract_chart_series(df_15m)
+    }
+
+    # Choose active default: 5m preferred, fallback to 1m or 10m
+    active_int = "5m"
+    if not intervals_data["5m"]["candleData"]:
+        if intervals_data["1m"]["candleData"]:
+            active_int = "1m"
+        elif intervals_data["10m"]["candleData"]:
+            active_int = "10m"
+
+    active_series = intervals_data.get(active_int, {"candleData": [], "volumeData": [], "smaData": [], "openTime": None})
+
+    if not active_series["candleData"]:
+        empty_html = f"""
+        <div class="bg-[#131722] border border-slate-800 rounded-2xl p-12 text-center text-slate-400 italic my-5">
+          <p class="text-sm font-semibold text-slate-300">No intraday chart data available for #{ticker}.</p>
+          <a href="https://www.tradingview.com/symbols/{ticker}/" target="_blank" class="inline-block mt-3 px-3 py-1 rounded bg-sky-500/20 text-sky-400 text-xs font-bold border border-sky-500/30">Open on TradingView ↗</a>
+        </div>
+        """
+        return empty_html, None
+
     container_html = f"""
     <!-- TradingView-Powered Pro Candlestick Chart -->
     <div class="tv-chart-wrapper bg-[#131722] border border-slate-800 hover:border-slate-700/80 rounded-2xl overflow-hidden shadow-2xl my-5 transition-all" data-ticker="{ticker}">
       <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-[#171b26] border-b border-slate-800 text-xs select-none">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2.5">
           <div class="flex items-center gap-1.5">
             <span class="px-2 py-0.5 rounded font-black text-xs bg-sky-500/20 text-sky-400 border border-sky-500/30 font-mono tracking-wide">{ticker}</span>
-            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">5m</span>
           </div>
+
+          <!-- TradingView-Style Timeframe Dropdown -->
+          <div class="relative inline-block text-left" id="tv-dropdown-wrapper-{ticker}">
+            <button type="button" onclick="toggleTvTimeframeDropdown('{ticker}')" id="tv-tf-btn-{ticker}" class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs border border-slate-700/80 transition-all shadow-sm">
+              <span id="tv-tf-active-label-{ticker}">{active_int}</span>
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+
+            <!-- Dropdown Menu identical to TradingView UI -->
+            <div id="tv-tf-menu-{ticker}" class="hidden absolute left-0 mt-1.5 w-48 rounded-xl bg-[#1e222d] border border-[#2a2e39] shadow-2xl z-50 py-1.5 backdrop-blur-md ring-1 ring-black/50">
+              <div class="px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-[#2a2e39]/80 mb-1 flex items-center justify-between">
+                <span>MINUTES</span>
+                <span class="text-[9px] text-slate-500 font-mono">Candlestick</span>
+              </div>
+              <div class="space-y-0.5 px-1 font-mono">
+                <button type="button" onclick="setTvChartInterval('{ticker}', '1m')" class="tv-tf-opt-{ticker} w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors hover:bg-[#2a2e39] {'bg-white text-slate-900 shadow-sm font-bold' if active_int=='1m' else 'text-slate-300'}" data-interval="1m">
+                  <span class="font-sans">1 minute</span>
+                  <span class="text-[10px]">1m</span>
+                </button>
+                <button type="button" onclick="setTvChartInterval('{ticker}', '5m')" class="tv-tf-opt-{ticker} w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors hover:bg-[#2a2e39] {'bg-white text-slate-900 shadow-sm font-bold' if active_int=='5m' else 'text-slate-300'}" data-interval="5m">
+                  <span class="font-sans">5 minutes</span>
+                  <span class="text-[10px]">5m</span>
+                </button>
+                <button type="button" onclick="setTvChartInterval('{ticker}', '10m')" class="tv-tf-opt-{ticker} w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors hover:bg-[#2a2e39] {'bg-white text-slate-900 shadow-sm font-bold' if active_int=='10m' else 'text-slate-300'}" data-interval="10m">
+                  <span class="font-sans">10 minutes</span>
+                  <span class="text-[10px]">10m</span>
+                </button>
+                <button type="button" onclick="setTvChartInterval('{ticker}', '15m')" class="tv-tf-opt-{ticker} w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors hover:bg-[#2a2e39] {'bg-white text-slate-900 shadow-sm font-bold' if active_int=='15m' else 'text-slate-300'}" data-interval="15m">
+                  <span class="font-sans">15 minutes</span>
+                  <span class="text-[10px]">15m</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Interval Pills (1m, 5m, 10m, 15m) -->
+          <div class="flex items-center gap-1 bg-slate-900/90 p-0.5 rounded-lg border border-slate-800">
+            <button type="button" onclick="setTvChartInterval('{ticker}', '1m')" id="tv-quick-1m-{ticker}" class="tv-quick-btn-{ticker} px-2 py-0.5 rounded text-[11px] font-semibold {'bg-slate-700 text-white font-extrabold shadow-sm' if active_int=='1m' else 'text-slate-400 hover:text-white hover:bg-slate-800'} transition-colors">1m</button>
+            <button type="button" onclick="setTvChartInterval('{ticker}', '5m')" id="tv-quick-5m-{ticker}" class="tv-quick-btn-{ticker} px-2 py-0.5 rounded text-[11px] font-semibold {'bg-slate-700 text-white font-extrabold shadow-sm' if active_int=='5m' else 'text-slate-400 hover:text-white hover:bg-slate-800'} transition-colors">5m</button>
+            <button type="button" onclick="setTvChartInterval('{ticker}', '10m')" id="tv-quick-10m-{ticker}" class="tv-quick-btn-{ticker} px-2 py-0.5 rounded text-[11px] font-semibold {'bg-slate-700 text-white font-extrabold shadow-sm' if active_int=='10m' else 'text-slate-400 hover:text-white hover:bg-slate-800'} transition-colors">10m</button>
+            <button type="button" onclick="setTvChartInterval('{ticker}', '15m')" id="tv-quick-15m-{ticker}" class="tv-quick-btn-{ticker} px-2 py-0.5 rounded text-[11px] font-semibold {'bg-slate-700 text-white font-extrabold shadow-sm' if active_int=='15m' else 'text-slate-400 hover:text-white hover:bg-slate-800'} transition-colors">15m</button>
+          </div>
+
           <span class="text-slate-600 hidden sm:inline">|</span>
           <div class="hidden sm:flex items-center gap-3 text-slate-400 font-medium text-[11px]">
             <span class="flex items-center gap-1.5">
@@ -167,10 +248,12 @@ def build_candlestick_chart(ticker, hist_df):
     """
 
     chart_data = {
-        "candleData": candle_data,
-        "volumeData": volume_data,
-        "smaData": sma_data,
-        "openTime": open_time
+        "activeInterval": active_int,
+        "intervals": intervals_data,
+        "candleData": active_series["candleData"],
+        "volumeData": active_series["volumeData"],
+        "smaData": active_series["smaData"],
+        "openTime": active_series["openTime"]
     }
     return container_html, chart_data
 
@@ -1161,19 +1244,52 @@ def run_scanner():
         turnover_pct = (pm_vol / float_shares) * 100 if float_shares else 0
         rotation_multiple = pm_vol / float_shares if float_shares else 0
 
-        print(f"[*] Processing {ticker}: fetching 5m intraday extended hours data...")
+        print(f"[*] Processing {ticker}: fetching 1m intraday extended hours data...")
+        df_1m = None
         try:
-            hist_df = yf.Ticker(ticker).history(period="3d", interval="5m", prepost=True)
+            df_1m = yf.Ticker(ticker).history(period="3d", interval="1m", prepost=True)
         except Exception as e:
-            print(f"Warning: yfinance fetch failed for {ticker}: {e}")
-            hist_df = None
+            print(f"Warning: yfinance 1m fetch failed for {ticker}: {e}")
 
-        if idx == 0 and hist_df is not None and not hist_df.empty:
-            top_hist_df = hist_df
+        df_5m = None
+        if df_1m is not None and not df_1m.empty:
+            df_5m = df_1m.resample("5min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna()
+        else:
+            try:
+                print(f"[*] Fallback: fetching 5m data directly for {ticker}...")
+                df_5m = yf.Ticker(ticker).history(period="3d", interval="5m", prepost=True)
+            except Exception as e:
+                print(f"Warning: yfinance 5m fetch failed for {ticker}: {e}")
+
+        df_10m = None
+        if df_1m is not None and not df_1m.empty:
+            df_10m = df_1m.resample("10min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna()
+        elif df_5m is not None and not df_5m.empty:
+            df_10m = df_5m.resample("10min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna()
+
+        df_15m = None
+        if df_1m is not None and not df_1m.empty:
+            df_15m = df_1m.resample("15min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna()
+        elif df_5m is not None and not df_5m.empty:
+            df_15m = df_5m.resample("15min").agg({"Open": "first", "High": "max", "Low": "min", "Close": "last", "Volume": "sum"}).dropna()
+
+        hist_dfs = {
+            "1m": df_1m,
+            "5m": df_5m,
+            "10m": df_10m,
+            "15m": df_15m
+        }
+
+        if idx == 0 and df_5m is not None and not df_5m.empty:
+            top_hist_df = df_5m
+            top_ticker = ticker
+            top_company = company
+        elif idx == 0 and df_1m is not None and not df_1m.empty:
+            top_hist_df = df_1m
             top_ticker = ticker
             top_company = company
 
-        chart_html, chart_data = build_candlestick_chart(ticker, hist_df)
+        chart_html, chart_data = build_candlestick_chart(ticker, hist_dfs)
         if chart_data:
             tv_charts_data[ticker] = chart_data
 
@@ -3693,8 +3809,13 @@ def run_scanner():
           }}
 
           chart.subscribeCrosshairMove(param => {{
+            const inst = TV_INSTANCES[ticker];
+            const currTf = inst ? (inst.activeInterval || '5m') : '5m';
+            const activeCd = (cData.intervals && cData.intervals[currTf] && cData.intervals[currTf].candleData) ? cData.intervals[currTf].candleData : cData.candleData;
             if (!param || !param.time || !param.seriesData.has(candleSeries)) {{
-              updateOhlc(cData.candleData[cData.candleData.length - 1]);
+              if (activeCd && activeCd.length > 0) {{
+                updateOhlc(activeCd[activeCd.length - 1]);
+              }}
               return;
             }}
             const bar = param.seriesData.get(candleSeries);
@@ -3710,12 +3831,107 @@ def run_scanner():
           }});
           ro.observe(container);
 
-          TV_INSTANCES[ticker] = {{ chart, candleSeries, volumeSeries, smaSeries, cData }};
+          TV_INSTANCES[ticker] = {{ chart, candleSeries, volumeSeries, smaSeries, cData, activeInterval: cData.activeInterval || '5m' }};
         }} catch(err) {{
           console.error("Failed to initialize TradingView chart for " + ticker, err);
         }}
       }});
     }}
+
+    function setTvChartInterval(ticker, interval) {{
+      const inst = TV_INSTANCES[ticker];
+      if (!inst) return;
+      const cData = inst.cData;
+      if (!cData || !cData.intervals || !cData.intervals[interval]) return;
+
+      const targetData = cData.intervals[interval];
+      if (!targetData.candleData || targetData.candleData.length === 0) return;
+
+      inst.activeInterval = interval;
+
+      // 1. Update LightweightCharts series data
+      inst.candleSeries.setData(targetData.candleData);
+      inst.volumeSeries.setData(targetData.volumeData);
+      inst.smaSeries.setData(targetData.smaData);
+
+      // 2. Update 09:30 Open marker
+      if (targetData.openTime && typeof LightweightCharts.createSeriesMarkers === 'function') {{
+        LightweightCharts.createSeriesMarkers(inst.candleSeries, [{{
+          time: targetData.openTime,
+          position: 'aboveBar',
+          color: '#38bdf8',
+          shape: 'arrowDown',
+          text: '09:30 Open',
+          size: 1
+        }}]);
+      }} else if (typeof LightweightCharts.createSeriesMarkers === 'function') {{
+        LightweightCharts.createSeriesMarkers(inst.candleSeries, []);
+      }}
+
+      // 3. Reset timescale view
+      inst.chart.timeScale().fitContent();
+
+      // 4. Update OHLC bar
+      const ohlcEl = document.getElementById('tv-ohlc-' + ticker);
+      if (ohlcEl && targetData.candleData.length > 0) {{
+        const bar = targetData.candleData[targetData.candleData.length - 1];
+        const diff = bar.close - bar.open;
+        const diffPct = (diff / bar.open) * 100;
+        const color = diff >= 0 ? '#089981' : '#f23645';
+        ohlcEl.innerHTML = `
+          <span>O <strong style="color:${{color}}">$${{bar.open.toFixed(2)}}</strong></span>
+          <span>H <strong style="color:${{color}}">$${{bar.high.toFixed(2)}}</strong></span>
+          <span>L <strong style="color:${{color}}">$${{bar.low.toFixed(2)}}</strong></span>
+          <span>C <strong style="color:${{color}}">$${{bar.close.toFixed(2)}}</strong></span>
+          <span style="color:${{color}}; font-weight: bold;">${{diff >= 0 ? '+' : ''}}${{diff.toFixed(2)}} (${{diff >= 0 ? '+' : ''}}${{diffPct.toFixed(2)}}%)</span>
+        `;
+      }}
+
+      // 5. Update dropdown button label
+      const labelEl = document.getElementById('tv-tf-active-label-' + ticker);
+      if (labelEl) labelEl.innerText = interval;
+
+      // 6. Update quick button highlights
+      document.querySelectorAll('.tv-quick-btn-' + ticker).forEach(btn => {{
+        btn.className = 'tv-quick-btn-' + ticker + ' px-2 py-0.5 rounded text-[11px] font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-colors';
+      }});
+      const activeQuick = document.getElementById('tv-quick-' + interval + '-' + ticker);
+      if (activeQuick) {{
+        activeQuick.className = 'tv-quick-btn-' + ticker + ' px-2 py-0.5 rounded text-[11px] font-extrabold bg-slate-700 text-white shadow-sm transition-colors';
+      }}
+
+      // 7. Update dropdown option highlights
+      document.querySelectorAll('.tv-tf-opt-' + ticker).forEach(opt => {{
+        const optTf = opt.getAttribute('data-interval');
+        if (optTf === interval) {{
+          opt.className = 'tv-tf-opt-' + ticker + ' w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center justify-between transition-colors bg-white text-slate-900 shadow-sm';
+        }} else {{
+          opt.className = 'tv-tf-opt-' + ticker + ' w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between transition-colors hover:bg-[#2a2e39] text-slate-300';
+        }}
+      }});
+
+      closeAllTvTimeframeDropdowns();
+    }}
+
+    function toggleTvTimeframeDropdown(ticker) {{
+      const menu = document.getElementById('tv-tf-menu-' + ticker);
+      if (!menu) return;
+      const isHidden = menu.classList.contains('hidden');
+      closeAllTvTimeframeDropdowns();
+      if (isHidden) {{
+        menu.classList.remove('hidden');
+      }}
+    }}
+
+    function closeAllTvTimeframeDropdowns() {{
+      document.querySelectorAll('[id^="tv-tf-menu-"]').forEach(m => m.classList.add('hidden'));
+    }}
+
+    document.addEventListener('click', function(e) {{
+      if (!e.target.closest('[id^="tv-dropdown-wrapper-"]')) {{
+        closeAllTvTimeframeDropdowns();
+      }}
+    }});
 
     function zoomTvChart(ticker, mode) {{
       const inst = TV_INSTANCES[ticker];
@@ -3723,7 +3939,10 @@ def run_scanner():
       if (mode === 'all') {{
         inst.chart.timeScale().fitContent();
       }} else if (mode === 'today') {{
-        const cd = inst.cData.candleData;
+        const currTf = inst.activeInterval || '5m';
+        const cd = (inst.cData.intervals && inst.cData.intervals[currTf] && inst.cData.intervals[currTf].candleData)
+          ? inst.cData.intervals[currTf].candleData
+          : inst.cData.candleData;
         if (cd.length > 80) {{
           const fromTime = cd[cd.length - 80].time;
           const toTime = cd[cd.length - 1].time;
