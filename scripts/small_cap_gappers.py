@@ -951,18 +951,23 @@ def run_scanner():
     <!-- TAB 2: FOLLOW-THROUGH HISTORICAL DATA GRID (STREAMLIT-LIKE) -->
     <!-- ========================================================== -->
     <div id="tab-content-history" class="space-y-6 hidden">
-      <!-- Historical KPI Summary -->
+      <!-- Historical KPI Summary & Simulated Exit Strategy -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
         <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800 mb-6">
           <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight">Follow-Through Execution Analytics</h2>
-            <p class="text-xs text-slate-400 mt-0.5">End-of-day evaluation measuring morning breakout follow-through and dump frequency.</p>
+            <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+              <span>📊</span> Follow-Through Execution Analytics
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">End-of-day evaluation measuring morning breakout follow-through, exit simulations, and dump frequency.</p>
           </div>
-          <button onclick="exportFilteredCSV()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2 transition-all">
-            <span>📥</span> Download Filtered CSV
-          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="exportFilteredCSV()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-2 transition-all shadow">
+              <span>📥</span> Download Filtered CSV
+            </button>
+          </div>
         </div>
 
+        <!-- KPI Cards Grid (Top 6) -->
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
             <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Tracked Stocks</span>
@@ -981,12 +986,45 @@ def run_scanner():
             <p id="kpi-turnover" class="text-2xl font-extrabold text-amber-400 mt-1">0.0x</p>
           </div>
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
-            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Day Return</span>
+            <span id="kpi-dayreturn-title" class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Day Return</span>
             <p id="kpi-dayreturn" class="text-2xl font-extrabold text-sky-400 mt-1">0.0%</p>
+            <span id="kpi-dayreturn-sub" class="text-[10px] text-slate-500 font-sans block mt-0.5">Hold to 16:00 Close</span>
           </div>
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
             <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Critical Dump Rate</span>
             <p id="kpi-dump" class="text-2xl font-extrabold text-rose-400 mt-1">0%</p>
+          </div>
+        </div>
+
+        <!-- 2. Simulated Exit Strategy Switcher (Feature 2) -->
+        <div class="mt-6 pt-5 border-t border-slate-800">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black">⚡</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-white">Simulated Exit Strategy</span>
+                <span id="strategy-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">Actual Close</span>
+              </div>
+              <p id="strategy-desc" class="text-xs text-slate-400 mt-1">Evaluates performance holding open position directly to 16:00 regular market close.</p>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-950/90 border border-slate-800 rounded-xl" id="strategy-btn-group">
+              <button type="button" onclick="setExitStrategy('close')" id="strat-btn-close" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow">
+                Hold to 16:00 Close (Actual)
+              </button>
+              <button type="button" onclick="setExitStrategy('scalp2')" id="strat-btn-scalp2" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Take Profit @ +2% (Scalp)
+              </button>
+              <button type="button" onclick="setExitStrategy('m30')" id="strat-btn-m30" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Exit @ 30-Min Mark
+              </button>
+              <button type="button" onclick="setExitStrategy('tp25')" id="strat-btn-tp25" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Take Profit @ +25%
+              </button>
+              <button type="button" onclick="setExitStrategy('tp50')" id="strat-btn-tp50" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Take Profit @ +50%
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1010,11 +1048,18 @@ def run_scanner():
         </div>
       </div>
 
-      <!-- Filter Controls (Streamlit-style) -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
-        <div class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
-          <span>🔍</span> Interactive Filter Controls
+      <!-- 1. Interactive Filter Controls & Quick-Tier Range Explorer (Feature 1) -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+            <span>🔍</span> Interactive Filter Controls
+          </div>
+          <button type="button" onclick="resetAllFilters()" class="text-xs text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1.5 transition-colors">
+            <span>↺</span> Reset All Filters
+          </button>
         </div>
+
+        <!-- Row 1: Existing Categorical Filters -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <!-- +2% Breakout Filter -->
           <div>
@@ -1068,29 +1113,232 @@ def run_scanner():
             <input id="filter-search" type="text" oninput="renderHistoryTable()" placeholder="e.g. TCRT, XLAB, AI..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
           </div>
         </div>
+
+        <!-- Row 2: 4 Interactive Quick-Tier Range Filters -->
+        <div class="pt-3 border-t border-slate-800/80">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+            <span>⚙️</span> Parameter Explorer: Quick-Select Tiers & Custom Range Filters
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+            
+            <!-- 1. 09:30 Open Price ($) -->
+            <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>💵</span> 09:30 Open Price ($)</span>
+                <span class="text-[10px] text-slate-500 font-mono">Micro vs Mid</span>
+              </div>
+              <div class="flex flex-wrap gap-1" id="tier-open-btns">
+                <button type="button" onclick="setTierFilter('open', 'all')" id="btn-open-all" class="tier-btn-open px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">All</button>
+                <button type="button" onclick="setTierFilter('open', 'micro')" id="btn-open-micro" class="tier-btn-open px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&lt; $2 (Micro)</button>
+                <button type="button" onclick="setTierFilter('open', 'sweet')" id="btn-open-sweet" class="tier-btn-open px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">$2 - $5 (Sweet)</button>
+                <button type="button" onclick="setTierFilter('open', 'high')" id="btn-open-high" class="tier-btn-open px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">$5+ (Mid/High)</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <input id="input-open-min" type="number" step="0.1" placeholder="Min $" oninput="onCustomRangeInput('open')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <input id="input-open-max" type="number" step="0.1" placeholder="Max $" oninput="onCustomRangeInput('open')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+            <!-- 2. Pre-Market Gap % -->
+            <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>🚀</span> PM Gap %</span>
+                <span class="text-[10px] text-slate-500 font-mono">Moderate vs Extreme</span>
+              </div>
+              <div class="flex flex-wrap gap-1" id="tier-gap-btns">
+                <button type="button" onclick="setTierFilter('gap', 'all')" id="btn-gap-all" class="tier-btn-gap px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">All</button>
+                <button type="button" onclick="setTierFilter('gap', 'mod')" id="btn-gap-mod" class="tier-btn-gap px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">10% - 50%</button>
+                <button type="button" onclick="setTierFilter('gap', 'strong')" id="btn-gap-strong" class="tier-btn-gap px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">50% - 100%</button>
+                <button type="button" onclick="setTierFilter('gap', 'extreme')" id="btn-gap-extreme" class="tier-btn-gap px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&gt; 100%</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <input id="input-gap-min" type="number" step="1" placeholder="Min %" oninput="onCustomRangeInput('gap')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <input id="input-gap-max" type="number" step="1" placeholder="Max %" oninput="onCustomRangeInput('gap')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+            <!-- 3. Float Turnover (x) -->
+            <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>🔄</span> Float Turnover</span>
+                <span class="text-[10px] text-slate-500 font-mono">Velocity</span>
+              </div>
+              <div class="flex flex-wrap gap-1" id="tier-turn-btns">
+                <button type="button" onclick="setTierFilter('turn', 'all')" id="btn-turn-all" class="tier-btn-turn px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">All</button>
+                <button type="button" onclick="setTierFilter('turn', 'low')" id="btn-turn-low" class="tier-btn-turn px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&lt; 20x</button>
+                <button type="button" onclick="setTierFilter('turn', 'mid')" id="btn-turn-mid" class="tier-btn-turn px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">20x - 100x</button>
+                <button type="button" onclick="setTierFilter('turn', 'high')" id="btn-turn-high" class="tier-btn-turn px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&gt; 100x</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <input id="input-turn-min" type="number" step="1" placeholder="Min x" oninput="onCustomRangeInput('turn')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <input id="input-turn-max" type="number" step="1" placeholder="Max x" oninput="onCustomRangeInput('turn')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+            <!-- 4. Day Volume (M) -->
+            <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📈</span> Day Volume (M)</span>
+                <span class="text-[10px] text-slate-500 font-mono">Participation</span>
+              </div>
+              <div class="flex flex-wrap gap-1" id="tier-vol-btns">
+                <button type="button" onclick="setTierFilter('vol', 'all')" id="btn-vol-all" class="tier-btn-vol px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">All</button>
+                <button type="button" onclick="setTierFilter('vol', 'low')" id="btn-vol-low" class="tier-btn-vol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&lt; 25M</button>
+                <button type="button" onclick="setTierFilter('vol', 'mid')" id="btn-vol-mid" class="tier-btn-vol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">25M - 100M</button>
+                <button type="button" onclick="setTierFilter('vol', 'high')" id="btn-vol-high" class="tier-btn-vol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&gt; 100M</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <input id="input-vol-min" type="number" step="5" placeholder="Min M" oninput="onCustomRangeInput('vol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <input id="input-vol-max" type="number" step="5" placeholder="Max M" oninput="onCustomRangeInput('vol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
 
-      <!-- Data Grid Table -->
+      <!-- 3. Dynamic Multidimensional Pivot Table & 4. Interactive Scatter Explorer (Features 3 & 4) -->
+      <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+        
+        <!-- Left 7 Cols: Parameter Impact Pivot Table -->
+        <div class="xl:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
+              <div>
+                <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+                  <span>📊</span> Parameter Impact Pivot Table
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Statistical breakdown of breakout rates, turnover, runs, and simulated realized returns.</p>
+              </div>
+              <span id="pivot-total-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950 text-slate-300 border border-slate-800">29 Stocks</span>
+            </div>
+
+            <!-- Group By Dimension Selector -->
+            <div class="mt-3.5">
+              <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Group By Dimension:</label>
+              <div class="flex flex-wrap gap-1.5" id="pivot-dimension-btns">
+                <button type="button" onclick="setPivotDimension('price')" id="pdim-price" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  Share Price Tiers
+                </button>
+                <button type="button" onclick="setPivotDimension('gap')" id="pdim-gap" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Pre-Market Gap Tiers
+                </button>
+                <button type="button" onclick="setPivotDimension('turnover')" id="pdim-turnover" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Float Turnover Tiers
+                </button>
+                <button type="button" onclick="setPivotDimension('volume')" id="pdim-volume" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Day Volume Tiers
+                </button>
+                <button type="button" onclick="setPivotDimension('catalyst')" id="pdim-catalyst" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Catalyst Category
+                </button>
+                <button type="button" onclick="setPivotDimension('timing')" id="pdim-timing" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Peak Timing Window
+                </button>
+              </div>
+            </div>
+
+            <!-- Pivot Data Grid Table -->
+            <div class="overflow-x-auto mt-4 rounded-xl border border-slate-800/80">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-950/90 text-slate-400 text-[10px] font-bold uppercase tracking-wider border-b border-slate-800">
+                  <tr>
+                    <th class="py-2.5 px-3">Segment Bucket</th>
+                    <th class="py-2.5 px-2 text-center">Count</th>
+                    <th class="py-2.5 px-2 text-right">+2% Rate</th>
+                    <th class="py-2.5 px-2 text-right">Avg PM Gap</th>
+                    <th class="py-2.5 px-2 text-right">Avg Vol / Rot</th>
+                    <th class="py-2.5 px-2 text-right">Avg Max Run</th>
+                    <th class="py-2.5 px-2 text-right">Day Return</th>
+                    <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
+                    <th class="py-2.5 px-2 text-right">Avg Fade</th>
+                    <th class="py-2.5 px-2 text-center">Dump Rate</th>
+                    <th class="py-2.5 px-2 text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="pivot-table-body" class="divide-y divide-slate-800/60 font-mono text-slate-300 text-[11px]">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="text-[11px] text-slate-500 pt-2 flex items-center justify-between border-t border-slate-800/60">
+            <span>Click <strong>"🎯 Isolate"</strong> on any row to instantly filter the main stock table to that bucket.</span>
+            <span id="pivot-footer-strat" class="text-emerald-400 font-mono font-semibold">Strategy: Hold Close</span>
+          </div>
+        </div>
+
+        <!-- Right 5 Cols: Interactive Scatter Explorer -->
+        <div class="xl:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
+              <div>
+                <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+                  <span>📈</span> Interactive Scatter Explorer
+                </h3>
+                <p class="text-xs text-slate-400 mt-0.5">Explore multi-parameter relationships with reactive exit strategy simulations.</p>
+              </div>
+            </div>
+
+            <!-- Axis Selectors -->
+            <div class="grid grid-cols-2 gap-3 mt-3.5">
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">X-Axis Parameter:</label>
+                <select id="scatter-x" onchange="renderScatterChart()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500">
+                  <option value="open_price">09:30 Open Price ($)</option>
+                  <option value="premarket_gap_pct">PM Gap %</option>
+                  <option value="float_turnover_x">Float Turnover (x)</option>
+                  <option value="day_volume">Day Volume (M)</option>
+                  <option value="minutes_to_day_high">Peak Min</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Y-Axis Outcome:</label>
+                <select id="scatter-y" onchange="renderScatterChart()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                  <option value="max_gain_pct">Max Run %</option>
+                  <option value="day_return_pct">Actual Day Return %</option>
+                  <option value="sim_exit_return_pct">Simulated Exit Return %</option>
+                  <option value="first_30m_change_pct">30M %</option>
+                  <option value="fade_from_high_pct">Fade %</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Plotly Container -->
+            <div id="scatter-chart-container" class="w-full h-[320px] mt-2 rounded-xl overflow-hidden border border-slate-800/60 bg-slate-950/60">
+              <!-- Plotly Scatter Graph -->
+            </div>
+          </div>
+          <div class="text-[10px] text-slate-500 pt-1 flex items-center justify-between border-t border-slate-800/60">
+            <span>Points: <span class="text-emerald-400 font-bold">● Hit >= +2%</span> vs <span class="text-rose-400 font-bold">◆ Failed +2%</span></span>
+            <span class="text-slate-400">Hover dot for full metrics</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Main Data Grid Table -->
       <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl overflow-hidden">
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs text-slate-300">
             <thead class="bg-slate-950/80 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
               <tr>
-                <th class="py-3 px-3 font-bold cursor-pointer" onclick="sortTable('date')">Date ↕</th>
-                <th class="py-3 px-3 font-bold cursor-pointer" onclick="sortTable('ticker')">Ticker ↕</th>
-                <th class="py-3 px-3 font-bold cursor-pointer" onclick="sortTable('catalyst_category')">Company & Catalyst ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('premarket_gap_pct')">PM Gap ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('open_price')">09:30 Open ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_high')">Day High ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('max_gain_pct')">Max Run % ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('close_price')">16:00 Close ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_return_pct')">Day Return ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('fade_from_high_pct')">Fade % ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_volume')">Day Volume ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('float_turnover_x')">Float Turnover ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
-                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
-                <th class="py-3 px-3 font-bold text-center cursor-pointer" onclick="sortTable('dump_warning')">Status ↕</th>
+                <th class="py-3 px-3 font-bold cursor-pointer whitespace-nowrap" onclick="sortTable('date')">Date ↕</th>
+                <th class="py-3 px-3 font-bold cursor-pointer whitespace-nowrap" onclick="sortTable('ticker')">Ticker ↕</th>
+                <th class="py-3 px-3 font-bold cursor-pointer whitespace-nowrap" onclick="sortTable('catalyst_category')">Company & Catalyst ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('premarket_gap_pct')">PM Gap ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('open_price')">09:30 Open ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('day_high')">Day High ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('max_gain_pct')">Max Run % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('close_price')">16:00 Close ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('day_return_pct')">Day Return ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap text-emerald-400" onclick="sortTable('sim_exit_return_pct')">Sim Exit % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('fade_from_high_pct')">Fade % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('day_volume')">Day Volume ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('float_turnover_x')">Float Turnover ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
+                <th class="py-3 px-3 font-bold text-center cursor-pointer whitespace-nowrap" onclick="sortTable('dump_warning')">Status ↕</th>
               </tr>
             </thead>
             <tbody id="history-table-body" class="divide-y divide-slate-800/60 font-mono">
@@ -1112,6 +1360,16 @@ def run_scanner():
     const RAW_HISTORY = {history_json_str};
     let currentSortCol = 'date';
     let sortAsc = false;
+    let currentExitStrategy = 'close'; // 'close', 'scalp2', 'm30', 'tp25', 'tp50'
+    let currentPivotDim = 'price'; // 'price', 'gap', 'turnover', 'volume', 'catalyst', 'timing'
+    let timingFilterFn = null;
+
+    const tierFilters = {{
+      open: {{ min: null, max: null, preset: 'all' }},
+      gap: {{ min: null, max: null, preset: 'all' }},
+      turn: {{ min: null, max: null, preset: 'all' }},
+      vol: {{ min: null, max: null, preset: 'all' }}
+    }};
 
     function switchTab(tab) {{
       const radarBtn = document.getElementById("tab-btn-radar");
@@ -1130,23 +1388,206 @@ def run_scanner():
         historyContent.classList.remove("hidden");
         radarContent.classList.add("hidden");
         renderHistoryTable();
+        setTimeout(() => {{
+          if (typeof Plotly !== 'undefined') {{
+            Plotly.Plots.resize('scatter-chart-container');
+          }}
+        }}, 50);
       }}
     }}
 
-    function renderHistoryTable() {{
+    function getSimExitReturn(row, strategy) {{
+      const strat = strategy || currentExitStrategy;
+      const actualDayRet = (row.day_return_pct !== null && row.day_return_pct !== undefined) 
+        ? row.day_return_pct 
+        : ((row.close_price - row.open_price) / row.open_price * 100);
+      const mg = (row.max_gain_pct !== null && row.max_gain_pct !== undefined) 
+        ? row.max_gain_pct 
+        : ((row.day_high - row.open_price) / row.open_price * 100);
+
+      if (strat === 'scalp2') {{
+        return mg >= 2.0 ? 2.0 : actualDayRet;
+      }}
+      if (strat === 'm30') {{
+        return (row.first_30m_change_pct !== null && row.first_30m_change_pct !== undefined) 
+          ? row.first_30m_change_pct 
+          : actualDayRet;
+      }}
+      if (strat === 'tp25') {{
+        return mg >= 25.0 ? 25.0 : actualDayRet;
+      }}
+      if (strat === 'tp50') {{
+        return mg >= 50.0 ? 50.0 : actualDayRet;
+      }}
+      return actualDayRet; // 'close'
+    }}
+
+    function setExitStrategy(strat) {{
+      currentExitStrategy = strat;
+      
+      const badgeEl = document.getElementById("strategy-badge");
+      const descEl = document.getElementById("strategy-desc");
+      const btnGroup = document.querySelectorAll(".strat-btn");
+
+      btnGroup.forEach(btn => {{
+        btn.className = "strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent";
+      }});
+
+      const activeBtn = document.getElementById("strat-btn-" + strat);
+      if (activeBtn) {{
+        activeBtn.className = "strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      }}
+
+      if (strat === 'close') {{
+        if (badgeEl) badgeEl.innerText = "Actual Close";
+        if (descEl) descEl.innerText = "Evaluates performance holding open position directly to 16:00 regular market close.";
+      }} else if (strat === 'scalp2') {{
+        if (badgeEl) badgeEl.innerText = "+2% Scalp Target";
+        if (descEl) descEl.innerText = "Directly tests our 86.2% breakout rate: Realizes +2.0% if Max Run >= +2.0%, otherwise falls back to 16:00 close.";
+      }} else if (strat === 'm30') {{
+        if (badgeEl) badgeEl.innerText = "30-Min Exit";
+        if (descEl) descEl.innerText = "Realizes return at the 10:00 AM mark (30M % column), locking in the initial morning push.";
+      }} else if (strat === 'tp25') {{
+        if (badgeEl) badgeEl.innerText = "Take Profit @ +25%";
+        if (descEl) descEl.innerText = "Locks in +25.0% return on strong runners, otherwise falls back to 16:00 close.";
+      }} else if (strat === 'tp50') {{
+        if (badgeEl) badgeEl.innerText = "Take Profit @ +50%";
+        if (descEl) descEl.innerText = "Locks in +50.0% return on super-runners, otherwise falls back to 16:00 close.";
+      }}
+
+      renderHistoryTable();
+    }}
+
+    function setTierFilter(type, preset) {{
+      tierFilters[type].preset = preset;
+
+      if (type === 'open') {{
+        if (preset === 'all') {{ tierFilters.open.min = null; tierFilters.open.max = null; }}
+        else if (preset === 'micro') {{ tierFilters.open.min = null; tierFilters.open.max = 2.0; }}
+        else if (preset === 'sweet') {{ tierFilters.open.min = 2.0; tierFilters.open.max = 5.0; }}
+        else if (preset === 'high') {{ tierFilters.open.min = 5.0; tierFilters.open.max = null; }}
+        document.getElementById("input-open-min").value = tierFilters.open.min !== null ? tierFilters.open.min : "";
+        document.getElementById("input-open-max").value = tierFilters.open.max !== null ? tierFilters.open.max : "";
+      }} else if (type === 'gap') {{
+        if (preset === 'all') {{ tierFilters.gap.min = null; tierFilters.gap.max = null; }}
+        else if (preset === 'mod') {{ tierFilters.gap.min = 10.0; tierFilters.gap.max = 50.0; }}
+        else if (preset === 'strong') {{ tierFilters.gap.min = 50.0; tierFilters.gap.max = 100.0; }}
+        else if (preset === 'extreme') {{ tierFilters.gap.min = 100.0; tierFilters.gap.max = null; }}
+        document.getElementById("input-gap-min").value = tierFilters.gap.min !== null ? tierFilters.gap.min : "";
+        document.getElementById("input-gap-max").value = tierFilters.gap.max !== null ? tierFilters.gap.max : "";
+      }} else if (type === 'turn') {{
+        if (preset === 'all') {{ tierFilters.turn.min = null; tierFilters.turn.max = null; }}
+        else if (preset === 'low') {{ tierFilters.turn.min = null; tierFilters.turn.max = 20.0; }}
+        else if (preset === 'mid') {{ tierFilters.turn.min = 20.0; tierFilters.turn.max = 100.0; }}
+        else if (preset === 'high') {{ tierFilters.turn.min = 100.0; tierFilters.turn.max = null; }}
+        document.getElementById("input-turn-min").value = tierFilters.turn.min !== null ? tierFilters.turn.min : "";
+        document.getElementById("input-turn-max").value = tierFilters.turn.max !== null ? tierFilters.turn.max : "";
+      }} else if (type === 'vol') {{
+        if (preset === 'all') {{ tierFilters.vol.min = null; tierFilters.vol.max = null; }}
+        else if (preset === 'low') {{ tierFilters.vol.min = null; tierFilters.vol.max = 25.0; }}
+        else if (preset === 'mid') {{ tierFilters.vol.min = 25.0; tierFilters.vol.max = 100.0; }}
+        else if (preset === 'high') {{ tierFilters.vol.min = 100.0; tierFilters.vol.max = null; }}
+        document.getElementById("input-vol-min").value = tierFilters.vol.min !== null ? tierFilters.vol.min : "";
+        document.getElementById("input-vol-max").value = tierFilters.vol.max !== null ? tierFilters.vol.max : "";
+      }}
+
+      updateTierBtnsUI(type, preset);
+      renderHistoryTable();
+    }}
+
+    function onCustomRangeInput(type) {{
+      tierFilters[type].preset = 'custom';
+      const minVal = parseFloat(document.getElementById(`input-${{type}}-min`).value);
+      const maxVal = parseFloat(document.getElementById(`input-${{type}}-max`).value);
+
+      tierFilters[type].min = !isNaN(minVal) ? minVal : null;
+      tierFilters[type].max = !isNaN(maxVal) ? maxVal : null;
+
+      updateTierBtnsUI(type, null);
+      renderHistoryTable();
+    }}
+
+    function updateTierBtnsUI(type, activePreset) {{
+      const btns = document.querySelectorAll(`.tier-btn-${{type}}`);
+      btns.forEach(btn => {{
+        btn.className = `tier-btn-${{type}} px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white`;
+      }});
+
+      if (activePreset) {{
+        const activeBtn = document.getElementById(`btn-${{type}}-${{activePreset}}`);
+        if (activeBtn) {{
+          activeBtn.className = `tier-btn-${{type}} px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30`;
+        }}
+      }}
+    }}
+
+    function resetAllFilters() {{
+      document.getElementById("filter-breakout").value = "All";
+      document.getElementById("filter-dump").value = "All";
+      if (document.getElementById("filter-cat")) document.getElementById("filter-cat").value = "All";
+      if (document.getElementById("filter-min-run")) document.getElementById("filter-min-run").value = "0";
+      document.getElementById("filter-search").value = "";
+      timingFilterFn = null;
+
+      ['open', 'gap', 'turn', 'vol'].forEach(t => {{
+        tierFilters[t] = {{ min: null, max: null, preset: 'all' }};
+        const minEl = document.getElementById(`input-${{t}}-min`);
+        const maxEl = document.getElementById(`input-${{t}}-max`);
+        if (minEl) minEl.value = "";
+        if (maxEl) maxEl.value = "";
+        updateTierBtnsUI(t, 'all');
+      }});
+
+      renderHistoryTable();
+    }}
+
+    function setPivotDimension(dim) {{
+      currentPivotDim = dim;
+      const btns = document.querySelectorAll(".pdim-btn");
+      btns.forEach(b => {{
+        b.className = "pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950";
+      }});
+      const activeBtn = document.getElementById("pdim-" + dim);
+      if (activeBtn) {{
+        activeBtn.className = "pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+      }}
+      renderPivotTable(getFilteredRecords());
+    }}
+
+    function getFilteredRecords() {{
       const breakoutFilter = document.getElementById("filter-breakout").value;
       const dumpFilter = document.getElementById("filter-dump").value;
       const catFilter = document.getElementById("filter-cat") ? document.getElementById("filter-cat").value : "All";
       const minRunFilter = document.getElementById("filter-min-run") ? parseFloat(document.getElementById("filter-min-run").value) : 0;
       const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
 
-      let filtered = RAW_HISTORY.filter(row => {{
+      return RAW_HISTORY.filter(row => {{
         if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
         if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
         if (catFilter !== "All" && row.catalyst_category !== catFilter) return false;
         
         const mg = row.max_gain_pct !== null && row.max_gain_pct !== undefined ? row.max_gain_pct : ((row.day_high - row.open_price) / row.open_price * 100);
         if (minRunFilter > 0 && mg < minRunFilter) return false;
+
+        // Open Price
+        if (tierFilters.open.min !== null && (row.open_price === null || row.open_price < tierFilters.open.min)) return false;
+        if (tierFilters.open.max !== null && (row.open_price !== null && row.open_price > tierFilters.open.max)) return false;
+
+        // Gap %
+        if (tierFilters.gap.min !== null && (row.premarket_gap_pct === null || row.premarket_gap_pct < tierFilters.gap.min)) return false;
+        if (tierFilters.gap.max !== null && (row.premarket_gap_pct !== null && row.premarket_gap_pct > tierFilters.gap.max)) return false;
+
+        // Turnover
+        if (tierFilters.turn.min !== null && (row.float_turnover_x === null || row.float_turnover_x < tierFilters.turn.min)) return false;
+        if (tierFilters.turn.max !== null && (row.float_turnover_x !== null && row.float_turnover_x > tierFilters.turn.max)) return false;
+
+        // Volume
+        const volM = (row.day_volume || 0) / 1e6;
+        if (tierFilters.vol.min !== null && volM < tierFilters.vol.min) return false;
+        if (tierFilters.vol.max !== null && volM > tierFilters.vol.max) return false;
+
+        // Timing Filter if active
+        if (timingFilterFn && !timingFilterFn(row)) return false;
 
         if (search) {{
           const t = (row.ticker || "").toLowerCase();
@@ -1156,11 +1597,22 @@ def run_scanner():
         }}
         return true;
       }});
+    }}
+
+    function renderHistoryTable() {{
+      const filtered = getFilteredRecords();
 
       // Sort
       filtered.sort((a, b) => {{
-        let v1 = a[currentSortCol];
-        let v2 = b[currentSortCol];
+        let v1, v2;
+        if (currentSortCol === 'sim_exit_return_pct') {{
+          v1 = getSimExitReturn(a);
+          v2 = getSimExitReturn(b);
+        }} else {{
+          v1 = a[currentSortCol];
+          v2 = b[currentSortCol];
+        }}
+
         if (v1 === null || v1 === undefined) v1 = 0;
         if (v2 === null || v2 === undefined) v2 = 0;
         if (typeof v1 === 'string') {{
@@ -1171,12 +1623,12 @@ def run_scanner():
         return 0;
       }});
 
-      // Update KPIs
+      // Update Top KPIs
       const total = filtered.length;
       const winCount = filtered.filter(r => r.hit_plus_2pct === "Yes").length;
       const dumpCount = filtered.filter(r => r.dump_warning === "CRITICAL DUMP").length;
-      const winRate = total > 0 ? (winCount / total * 100).toFixed(1) : 0;
-      const dumpRate = total > 0 ? (dumpCount / total * 100).toFixed(1) : 0;
+      const winRate = total > 0 ? (winCount / total * 100).toFixed(1) : "0.0";
+      const dumpRate = total > 0 ? (dumpCount / total * 100).toFixed(1) : "0.0";
       
       const sumMaxRun = filtered.reduce((acc, r) => acc + (r.max_gain_pct !== null && r.max_gain_pct !== undefined ? r.max_gain_pct : ((r.day_high - r.open_price) / r.open_price * 100)), 0);
       const avgMaxRun = total > 0 ? (sumMaxRun / total).toFixed(1) : "0.0";
@@ -1185,84 +1637,130 @@ def run_scanner():
       const sumTurnover = turnoverRows.reduce((acc, r) => acc + r.float_turnover_x, 0);
       const avgTurnover = turnoverRows.length > 0 ? (sumTurnover / turnoverRows.length).toFixed(1) : "0.0";
 
-      const sumDayRet = filtered.reduce((acc, r) => acc + (r.day_return_pct !== null && r.day_return_pct !== undefined ? r.day_return_pct : ((r.close_price - r.open_price) / r.open_price * 100)), 0);
-      const avgDayRet = total > 0 ? (sumDayRet / total).toFixed(1) : "0.0";
+      const sumActualRet = filtered.reduce((acc, r) => acc + (r.day_return_pct !== null && r.day_return_pct !== undefined ? r.day_return_pct : ((r.close_price - r.open_price) / r.open_price * 100)), 0);
+      const avgActualRet = total > 0 ? (sumActualRet / total).toFixed(1) : "0.0";
+
+      const sumSimRet = filtered.reduce((acc, r) => acc + getSimExitReturn(r), 0);
+      const avgSimRet = total > 0 ? (sumSimRet / total).toFixed(1) : "0.0";
 
       document.getElementById("kpi-total").innerText = total;
       document.getElementById("kpi-breakout").innerText = winRate + "% (" + winCount + "/" + total + ")";
       if (document.getElementById("kpi-maxrun")) document.getElementById("kpi-maxrun").innerText = (avgMaxRun > 0 ? "+" : "") + avgMaxRun + "%";
       if (document.getElementById("kpi-turnover")) document.getElementById("kpi-turnover").innerText = avgTurnover + "x";
-      if (document.getElementById("kpi-dayreturn")) document.getElementById("kpi-dayreturn").innerText = (avgDayRet > 0 ? "+" : "") + avgDayRet + "%";
+
+      if (currentExitStrategy === 'close') {{
+        document.getElementById("kpi-dayreturn-title").innerText = "Avg Day Return";
+        document.getElementById("kpi-dayreturn").innerText = (avgActualRet > 0 ? "+" : "") + avgActualRet + "%";
+        document.getElementById("kpi-dayreturn-sub").innerText = "Hold to 16:00 Close";
+      }} else {{
+        const stratMap = {{ scalp2: "+2% Scalp", m30: "30-Min Exit", tp25: "+25% TP", tp50: "+50% TP" }};
+        document.getElementById("kpi-dayreturn-title").innerText = "Avg Sim Realized %";
+        document.getElementById("kpi-dayreturn").innerText = (avgSimRet > 0 ? "+" : "") + avgSimRet + "%";
+        document.getElementById("kpi-dayreturn-sub").innerText = "vs Close: " + (avgActualRet > 0 ? "+" : "") + avgActualRet + "% (" + stratMap[currentExitStrategy] + ")";
+      }}
       document.getElementById("kpi-dump").innerText = dumpRate + "% (" + dumpCount + ")";
 
       // Render Rows
       const tbody = document.getElementById("history-table-body");
       if (filtered.length === 0) {{
-        tbody.innerHTML = '<tr><td colspan="15" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected filters.</td></tr>';
-        return;
+        tbody.innerHTML = '<tr><td colspan="16" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
+      }} else {{
+        tbody.innerHTML = filtered.map(r => {{
+          const isDump = r.dump_warning === "CRITICAL DUMP";
+          const dumpBadge = isDump 
+            ? '<span class="dump-critical">🚨 DUMP</span>'
+            : '<span class="dump-held">Held</span>';
+
+          const mg = r.max_gain_pct !== null && r.max_gain_pct !== undefined ? r.max_gain_pct : ((r.day_high - r.open_price) / r.open_price * 100);
+          const dayRet = r.day_return_pct !== null && r.day_return_pct !== undefined ? r.day_return_pct : ((r.close_price - r.open_price) / r.open_price * 100);
+          const fade = r.fade_from_high_pct !== null && r.fade_from_high_pct !== undefined ? r.fade_from_high_pct : ((r.close_price - r.day_high) / r.day_high * 100);
+          
+          const m30 = r.first_30m_change_pct !== null ? (r.first_30m_change_pct > 0 ? "+" : "") + r.first_30m_change_pct.toFixed(1) + "%" : "-";
+          const gap = r.premarket_gap_pct !== null ? "+" + r.premarket_gap_pct.toFixed(1) + "%" : "-";
+
+          let dayVolStr = '-';
+          if (r.day_volume) {{
+            dayVolStr = r.day_volume >= 1e6 ? (r.day_volume / 1e6).toFixed(1) + 'M' : (r.day_volume / 1e3).toFixed(0) + 'k';
+          }}
+          const rotStr = r.float_turnover_x ? r.float_turnover_x + 'x' : '-';
+
+          // Catalyst badge styling
+          let catColor = 'bg-slate-800 text-slate-300 border-slate-700';
+          if (r.catalyst_category === 'Biotech / Pharma') catColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+          else if (r.catalyst_category === 'AI / Tech / Hardware') catColor = 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30';
+          else if (r.catalyst_category === 'Crypto / Treasury') catColor = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+          else if (r.catalyst_category === 'Compliance / Uplisting') catColor = 'bg-purple-500/15 text-purple-400 border-purple-500/30';
+          else if (r.catalyst_category === 'Contract / Momentum') catColor = 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+
+          const maxRunClass = mg >= 50 
+            ? 'text-emerald-300 font-black bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/40' 
+            : (mg >= 15 ? 'text-emerald-400 font-bold' : (mg >= 2 ? 'text-emerald-500' : 'text-slate-400'));
+
+          const dayRetClass = dayRet >= 0 ? 'text-emerald-400' : 'text-rose-400';
+          const fadeClass = fade <= -40 ? 'text-rose-400 font-bold' : (fade <= -20 ? 'text-amber-400' : 'text-slate-300');
+
+          // Simulated Exit Indicator
+          const simRet = getSimExitReturn(r);
+          let simBadge = '';
+          if (currentExitStrategy === 'scalp2') {{
+            if (mg >= 2.0) {{
+              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +2.0%</span>';
+            }} else {{
+              simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
+            }}
+          }} else if (currentExitStrategy === 'm30') {{
+            const m30Val = r.first_30m_change_pct !== null ? r.first_30m_change_pct : dayRet;
+            const m30Class = m30Val >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold';
+            simBadge = `<span class="${{m30Class}} text-[11px]">⏱️ ${{m30Val >= 0 ? '+' : ''}}${{m30Val.toFixed(1)}}%</span>`;
+          }} else if (currentExitStrategy === 'tp25') {{
+            if (mg >= 25.0) {{
+              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +25.0%</span>';
+            }} else {{
+              simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
+            }}
+          }} else if (currentExitStrategy === 'tp50') {{
+            if (mg >= 50.0) {{
+              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +50.0%</span>';
+            }} else {{
+              simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
+            }}
+          }} else {{
+            simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
+          }}
+
+          return `
+            <tr class="hover:bg-slate-800/40 transition-colors">
+              <td class="py-2.5 px-3 text-slate-400 font-sans whitespace-nowrap">${{r.date || '-'}}</td>
+              <td class="py-2.5 px-3 font-bold text-white font-sans">
+                <a href="https://www.tradingview.com/symbols/${{r.ticker}}/" target="_blank" class="hover:text-sky-400 underline decoration-slate-600 underline-offset-2">${{r.ticker}}</a>
+              </td>
+              <td class="py-2.5 px-3 font-sans truncate max-w-[200px]">
+                <div class="text-white truncate">${{r.company || '-'}}</div>
+                <span class="inline-block px-1.5 py-0.2 rounded text-[10px] font-semibold border ${{catColor}} mt-0.5">${{r.catalyst_category || 'Momentum'}}</span>
+              </td>
+              <td class="py-2.5 px-3 text-right font-bold text-emerald-400 whitespace-nowrap">${{gap}}</td>
+              <td class="py-2.5 px-3 text-right text-slate-200 whitespace-nowrap">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
+              <td class="py-2.5 px-3 text-right font-bold text-white whitespace-nowrap">${{r.day_high ? '$' + r.day_high.toFixed(2) : '-'}}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono">
+                <span class="${{maxRunClass}}">+${{mg.toFixed(1)}}%${{mg >= 50 ? ' 🔥' : ''}}</span>
+              </td>
+              <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.close_price ? '$' + r.close_price.toFixed(2) : '-'}}</td>
+              <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{dayRetClass}}">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</td>
+              <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap font-mono">${{simBadge}}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap ${{fadeClass}}">${{fade.toFixed(1)}}%</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans font-bold text-white">${{dayVolStr}}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-amber-400">${{rotStr}}</td>
+              <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
+              <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
+              <td class="py-2.5 px-3 text-center whitespace-nowrap">${{dumpBadge}}</td>
+            </tr>
+          `;
+        }}).join("");
       }}
 
-      tbody.innerHTML = filtered.map(r => {{
-        const isDump = r.dump_warning === "CRITICAL DUMP";
-        const dumpBadge = isDump 
-          ? '<span class="dump-critical">🚨 DUMP</span>'
-          : '<span class="dump-held">Held</span>';
-
-        const mg = r.max_gain_pct !== null && r.max_gain_pct !== undefined ? r.max_gain_pct : ((r.day_high - r.open_price) / r.open_price * 100);
-        const dayRet = r.day_return_pct !== null && r.day_return_pct !== undefined ? r.day_return_pct : ((r.close_price - r.open_price) / r.open_price * 100);
-        const fade = r.fade_from_high_pct !== null && r.fade_from_high_pct !== undefined ? r.fade_from_high_pct : ((r.close_price - r.day_high) / r.day_high * 100);
-        
-        const m30 = r.first_30m_change_pct !== null ? (r.first_30m_change_pct > 0 ? "+" : "") + r.first_30m_change_pct.toFixed(1) + "%" : "-";
-        const gap = r.premarket_gap_pct !== null ? "+" + r.premarket_gap_pct.toFixed(1) + "%" : "-";
-
-        let dayVolStr = '-';
-        if (r.day_volume) {{
-          dayVolStr = r.day_volume >= 1e6 ? (r.day_volume / 1e6).toFixed(1) + 'M' : (r.day_volume / 1e3).toFixed(0) + 'k';
-        }}
-        const rotStr = r.float_turnover_x ? r.float_turnover_x + 'x' : '-';
-
-        // Catalyst badge styling
-        let catColor = 'bg-slate-800 text-slate-300 border-slate-700';
-        if (r.catalyst_category === 'Biotech / Pharma') catColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
-        else if (r.catalyst_category === 'AI / Tech / Hardware') catColor = 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30';
-        else if (r.catalyst_category === 'Crypto / Treasury') catColor = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
-        else if (r.catalyst_category === 'Compliance / Uplisting') catColor = 'bg-purple-500/15 text-purple-400 border-purple-500/30';
-        else if (r.catalyst_category === 'Contract / Momentum') catColor = 'bg-blue-500/15 text-blue-400 border-blue-500/30';
-
-        const maxRunClass = mg >= 50 
-          ? 'text-emerald-300 font-black bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/40' 
-          : (mg >= 15 ? 'text-emerald-400 font-bold' : (mg >= 2 ? 'text-emerald-500' : 'text-slate-400'));
-
-        const dayRetClass = dayRet >= 0 ? 'text-emerald-400' : 'text-rose-400';
-        const fadeClass = fade <= -40 ? 'text-rose-400 font-bold' : (fade <= -20 ? 'text-amber-400' : 'text-slate-300');
-
-        return `
-          <tr class="hover:bg-slate-800/40 transition-colors">
-            <td class="py-2.5 px-3 text-slate-400 font-sans whitespace-nowrap">${{r.date || '-'}}</td>
-            <td class="py-2.5 px-3 font-bold text-white font-sans">
-              <a href="https://www.tradingview.com/symbols/${{r.ticker}}/" target="_blank" class="hover:text-sky-400 underline decoration-slate-600 underline-offset-2">${{r.ticker}}</a>
-            </td>
-            <td class="py-2.5 px-3 font-sans truncate max-w-[200px]">
-              <div class="text-white truncate">${{r.company || '-'}}</div>
-              <span class="inline-block px-1.5 py-0.2 rounded text-[10px] font-semibold border ${{catColor}} mt-0.5">${{r.catalyst_category || 'Momentum'}}</span>
-            </td>
-            <td class="py-2.5 px-3 text-right font-bold text-emerald-400 whitespace-nowrap">${{gap}}</td>
-            <td class="py-2.5 px-3 text-right text-slate-200 whitespace-nowrap">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
-            <td class="py-2.5 px-3 text-right font-bold text-white whitespace-nowrap">${{r.day_high ? '$' + r.day_high.toFixed(2) : '-'}}</td>
-            <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono">
-              <span class="${{maxRunClass}}">+${{mg.toFixed(1)}}%${{mg >= 50 ? ' 🔥' : ''}}</span>
-            </td>
-            <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.close_price ? '$' + r.close_price.toFixed(2) : '-'}}</td>
-            <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{dayRetClass}}">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</td>
-            <td class="py-2.5 px-3 text-right whitespace-nowrap ${{fadeClass}}">${{fade.toFixed(1)}}%</td>
-            <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans font-bold text-white">${{dayVolStr}}</td>
-            <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-amber-400">${{rotStr}}</td>
-            <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
-            <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
-            <td class="py-2.5 px-3 text-center whitespace-nowrap">${{dumpBadge}}</td>
-          </tr>
-        `;
-      }}).join("");
+      // Refresh Pivot Table & Scatter Explorer
+      renderPivotTable(filtered);
+      renderScatterChart(filtered);
     }}
 
     function sortTable(col) {{
@@ -1275,42 +1773,294 @@ def run_scanner():
       renderHistoryTable();
     }}
 
-    function exportFilteredCSV() {{
-      const breakoutFilter = document.getElementById("filter-breakout").value;
-      const dumpFilter = document.getElementById("filter-dump").value;
-      const catFilter = document.getElementById("filter-cat") ? document.getElementById("filter-cat").value : "All";
-      const minRunFilter = document.getElementById("filter-min-run") ? parseFloat(document.getElementById("filter-min-run").value) : 0;
-      const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
+    function renderPivotTable(filtered) {{
+      let buckets = [];
+      const total = filtered.length;
 
-      let filtered = RAW_HISTORY.filter(row => {{
-        if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
-        if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
-        if (catFilter !== "All" && row.catalyst_category !== catFilter) return false;
-        
-        const mg = row.max_gain_pct !== null && row.max_gain_pct !== undefined ? row.max_gain_pct : ((row.day_high - row.open_price) / row.open_price * 100);
-        if (minRunFilter > 0 && mg < minRunFilter) return false;
+      if (currentPivotDim === 'price') {{
+        buckets = [
+          {{ name: "< $2.00 (Micro)", key: 'micro', filterFn: r => r.open_price < 2.0 }},
+          {{ name: "$2.00 - $5.00 (Sweet Spot)", key: 'sweet', filterFn: r => r.open_price >= 2.0 && r.open_price <= 5.0 }},
+          {{ name: "> $5.00 (Mid/High)", key: 'high', filterFn: r => r.open_price > 5.0 }}
+        ];
+      }} else if (currentPivotDim === 'gap') {{
+        buckets = [
+          {{ name: "+10% to +50% (Moderate)", key: 'mod', filterFn: r => r.premarket_gap_pct >= 10.0 && r.premarket_gap_pct <= 50.0 }},
+          {{ name: "+50% to +100% (Strong)", key: 'strong', filterFn: r => r.premarket_gap_pct > 50.0 && r.premarket_gap_pct <= 100.0 }},
+          {{ name: "> +100% (Extreme)", key: 'extreme', filterFn: r => r.premarket_gap_pct > 100.0 }}
+        ];
+      }} else if (currentPivotDim === 'turnover') {{
+        buckets = [
+          {{ name: "< 20x", key: 'low', filterFn: r => r.float_turnover_x < 20.0 }},
+          {{ name: "20x - 50x", key: 't20_50', filterFn: r => r.float_turnover_x >= 20.0 && r.float_turnover_x <= 50.0 }},
+          {{ name: "50x - 100x", key: 't50_100', filterFn: r => r.float_turnover_x > 50.0 && r.float_turnover_x <= 100.0 }},
+          {{ name: "> 100x", key: 'high', filterFn: r => r.float_turnover_x > 100.0 }}
+        ];
+      }} else if (currentPivotDim === 'volume') {{
+        buckets = [
+          {{ name: "< 25M", key: 'low', filterFn: r => (r.day_volume / 1e6) < 25.0 }},
+          {{ name: "25M - 100M", key: 'mid', filterFn: r => (r.day_volume / 1e6) >= 25.0 && (r.day_volume / 1e6) <= 100.0 }},
+          {{ name: "> 100M", key: 'high', filterFn: r => (r.day_volume / 1e6) > 100.0 }}
+        ];
+      }} else if (currentPivotDim === 'catalyst') {{
+        const cats = ["Biotech / Pharma", "AI / Tech / Hardware", "Contract / Momentum", "Crypto / Treasury", "Compliance / Uplisting"];
+        buckets = cats.map(c => ({{
+          name: c,
+          key: c,
+          filterFn: r => (r.catalyst_category || "") === c
+        }}));
+      }} else if (currentPivotDim === 'timing') {{
+        buckets = [
+          {{ name: "0 - 15m (Opening Spike)", key: 'spike', filterFn: r => r.minutes_to_day_high !== null && r.minutes_to_day_high <= 15 }},
+          {{ name: "16 - 60m (Morning Session)", key: 'morning', filterFn: r => r.minutes_to_day_high > 15 && r.minutes_to_day_high <= 60 }},
+          {{ name: "> 60m (Mid-Day / Late)", key: 'late', filterFn: r => r.minutes_to_day_high > 60 }}
+        ];
+      }}
 
-        if (search) {{
-          const t = (row.ticker || "").toLowerCase();
-          const c = (row.company || "").toLowerCase();
-          const cat = (row.catalyst_category || "").toLowerCase();
-          if (!t.includes(search) && !c.includes(search) && !cat.includes(search)) return false;
+      const tbody = document.getElementById("pivot-table-body");
+      if (!tbody) return;
+
+      tbody.innerHTML = buckets.map(b => {{
+        const bRows = filtered.filter(b.filterFn);
+        const n = bRows.length;
+        if (n === 0) {{
+          return `
+            <tr class="hover:bg-slate-800/30 transition-colors opacity-40">
+              <td class="py-2.5 px-3 font-semibold text-slate-400 whitespace-nowrap">${{b.name}}</td>
+              <td class="py-2.5 px-2 text-center text-slate-500">0 (0.0%)</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-right text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-center text-slate-500">-</td>
+              <td class="py-2.5 px-2 text-center text-slate-600">-</td>
+            </tr>
+          `;
         }}
-        return true;
-      }});
 
+        const share = total > 0 ? (n / total * 100).toFixed(1) : "0.0";
+        const winCount = bRows.filter(r => r.hit_plus_2pct === "Yes").length;
+        const winRate = (winCount / n * 100).toFixed(1);
+        const dumpCount = bRows.filter(r => r.dump_warning === "CRITICAL DUMP").length;
+        const dumpRate = (dumpCount / n * 100).toFixed(1);
+
+        const avgGap = (bRows.reduce((acc, r) => acc + (r.premarket_gap_pct || 0), 0) / n).toFixed(1);
+        const avgVolM = (bRows.reduce((acc, r) => acc + ((r.day_volume || 0) / 1e6), 0) / n).toFixed(1);
+        const avgTurn = (bRows.reduce((acc, r) => acc + (r.float_turnover_x || 0), 0) / n).toFixed(1);
+        const avgRun = (bRows.reduce((acc, r) => acc + (r.max_gain_pct || 0), 0) / n).toFixed(1);
+        const avgRet = (bRows.reduce((acc, r) => acc + (r.day_return_pct || 0), 0) / n).toFixed(1);
+        const avgSim = (bRows.reduce((acc, r) => acc + getSimExitReturn(r), 0) / n).toFixed(1);
+        const avgFade = (bRows.reduce((acc, r) => acc + (r.fade_from_high_pct || 0), 0) / n).toFixed(1);
+
+        const winClass = winRate >= 80 ? "text-emerald-400 font-bold" : (winRate >= 50 ? "text-emerald-500" : "text-amber-400");
+        const retClass = avgRet >= 0 ? "text-emerald-400" : "text-rose-400";
+        const simClass = avgSim >= 0 ? "text-emerald-300 font-bold" : "text-rose-400 font-bold";
+        const dumpClass = dumpRate >= 30 ? "text-rose-400 font-bold" : (dumpRate > 0 ? "text-amber-400" : "text-emerald-400");
+
+        return `
+          <tr class="hover:bg-slate-800/40 transition-colors">
+            <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">${{b.name}}</td>
+            <td class="py-2.5 px-2 text-center text-slate-300">${{n}} <span class="text-[10px] text-slate-500">(${{share}}%)</span></td>
+            <td class="py-2.5 px-2 text-right ${{winClass}}">${{winRate}}%</td>
+            <td class="py-2.5 px-2 text-right text-emerald-400">+${{avgGap}}%</td>
+            <td class="py-2.5 px-2 text-right text-slate-300">${{avgVolM}}M / <span class="text-amber-400 font-bold">${{avgTurn}}x</span></td>
+            <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+${{avgRun}}%</td>
+            <td class="py-2.5 px-2 text-right ${{retClass}}">${{avgRet >= 0 ? '+' : ''}}${{avgRet}}%</td>
+            <td class="py-2.5 px-2 text-right ${{simClass}}">${{avgSim >= 0 ? '+' : ''}}${{avgSim}}%</td>
+            <td class="py-2.5 px-2 text-right text-slate-400">${{avgFade}}%</td>
+            <td class="py-2.5 px-2 text-center ${{dumpClass}}">${{dumpRate}}%</td>
+            <td class="py-2.5 px-2 text-center">
+              <button type="button" onclick="isolateBucket('${{currentPivotDim}}', '${{b.key}}')" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border border-slate-700 hover:border-emerald-500/30 transition-all">
+                🎯 Isolate
+              </button>
+            </td>
+          </tr>
+        `;
+      }}).join("");
+
+      document.getElementById("pivot-total-badge").innerText = total + " Stocks";
+      const stratLabels = {{ close: "Hold Close", scalp2: "+2% Scalp", m30: "30-Min Exit", tp25: "+25% TP", tp50: "+50% TP" }};
+      document.getElementById("pivot-footer-strat").innerText = "Strategy: " + stratLabels[currentExitStrategy];
+    }}
+
+    function isolateBucket(dim, key) {{
+      if (dim === 'price') {{
+        setTierFilter('open', key);
+      }} else if (dim === 'gap') {{
+        setTierFilter('gap', key);
+      }} else if (dim === 'turnover') {{
+        if (key === 't20_50') {{
+          tierFilters.turn = {{ min: 20.0, max: 50.0, preset: 'custom' }};
+          document.getElementById("input-turn-min").value = 20;
+          document.getElementById("input-turn-max").value = 50;
+          updateTierBtnsUI('turn', null);
+          renderHistoryTable();
+        }} else if (key === 't50_100') {{
+          tierFilters.turn = {{ min: 50.0, max: 100.0, preset: 'custom' }};
+          document.getElementById("input-turn-min").value = 50;
+          document.getElementById("input-turn-max").value = 100;
+          updateTierBtnsUI('turn', null);
+          renderHistoryTable();
+        }} else {{
+          setTierFilter('turn', key);
+        }}
+      }} else if (dim === 'volume') {{
+        setTierFilter('vol', key);
+      }} else if (dim === 'catalyst') {{
+        document.getElementById("filter-cat").value = key;
+        renderHistoryTable();
+      }} else if (dim === 'timing') {{
+        if (key === 'spike') {{
+          timingFilterFn = r => r.minutes_to_day_high !== null && r.minutes_to_day_high <= 15;
+        }} else if (key === 'morning') {{
+          timingFilterFn = r => r.minutes_to_day_high > 15 && r.minutes_to_day_high <= 60;
+        }} else if (key === 'late') {{
+          timingFilterFn = r => r.minutes_to_day_high > 60;
+        }}
+        renderHistoryTable();
+      }}
+
+      const tableEl = document.getElementById("history-table-body");
+      if (tableEl) {{
+        tableEl.scrollIntoView({{ behavior: 'smooth', block: 'center' }});
+      }}
+    }}
+
+    function renderScatterChart(filteredData) {{
+      const container = document.getElementById("scatter-chart-container");
+      if (!container || typeof Plotly === 'undefined') return;
+
+      const filtered = filteredData || getFilteredRecords();
+      const xKey = document.getElementById("scatter-x").value;
+      const yKey = document.getElementById("scatter-y").value;
+
+      const xLabels = {{
+        open_price: "09:30 Open Price ($)",
+        premarket_gap_pct: "Pre-Market Gap %",
+        float_turnover_x: "Float Turnover (x)",
+        day_volume: "Day Volume (Millions)",
+        minutes_to_day_high: "Peak Minute"
+      }};
+
+      const yLabels = {{
+        max_gain_pct: "Max Run %",
+        day_return_pct: "Actual Day Return %",
+        sim_exit_return_pct: "Simulated Exit Return %",
+        first_30m_change_pct: "30-Min Return %",
+        fade_from_high_pct: "Fade from High %"
+      }};
+
+      function getXVal(r) {{
+        if (xKey === 'day_volume') return (r.day_volume || 0) / 1e6;
+        return r[xKey] !== null && r[xKey] !== undefined ? r[xKey] : 0;
+      }}
+
+      function getYVal(r) {{
+        if (yKey === 'sim_exit_return_pct') return getSimExitReturn(r);
+        return r[yKey] !== null && r[yKey] !== undefined ? r[yKey] : 0;
+      }}
+
+      const winRows = filtered.filter(r => r.hit_plus_2pct === "Yes");
+      const loseRows = filtered.filter(r => r.hit_plus_2pct !== "Yes");
+
+      function makeHover(rows) {{
+        return rows.map(r => {{
+          const xVal = getXVal(r);
+          const yVal = getYVal(r);
+          const simRet = getSimExitReturn(r);
+          const xStr = typeof xVal === 'number' ? xVal.toFixed(2) : xVal;
+          const yStr = typeof yVal === 'number' ? yVal.toFixed(1) : yVal;
+          return `<b>${{r.ticker}}</b> (${{r.date}})<br>${{r.company || ''}}<br>Category: ${{r.catalyst_category || 'Momentum'}}<br>${{xLabels[xKey]}}: ${{xStr}}<br>${{yLabels[yKey]}}: ${{yStr}}%<br>Max Run: +${{(r.max_gain_pct||0).toFixed(1)}}% | Close Ret: ${{(r.day_return_pct||0).toFixed(1)}}%<br>Sim Realized (${{currentExitStrategy}}): ${{simRet >= 0 ? '+' : ''}}${{simRet.toFixed(1)}}%`;
+        }});
+      }}
+
+      const traces = [
+        {{
+          name: '+2% Breakout (Yes)',
+          x: winRows.map(getXVal),
+          y: winRows.map(getYVal),
+          text: makeHover(winRows),
+          mode: 'markers',
+          type: 'scatter',
+          hoverinfo: 'text',
+          marker: {{
+            color: '#10b981',
+            size: 9,
+            line: {{ color: '#059669', width: 1.5 }},
+            symbol: 'circle'
+          }}
+        }},
+        {{
+          name: 'Failed Breakout (No)',
+          x: loseRows.map(getXVal),
+          y: loseRows.map(getYVal),
+          text: makeHover(loseRows),
+          mode: 'markers',
+          type: 'scatter',
+          hoverinfo: 'text',
+          marker: {{
+            color: '#f43f5e',
+            size: 9,
+            line: {{ color: '#e11d48', width: 1.5 }},
+            symbol: 'diamond'
+          }}
+        }}
+      ];
+
+      const layout = {{
+        template: 'plotly_dark',
+        paper_bgcolor: 'rgba(15, 23, 42, 0)',
+        plot_bgcolor: 'rgba(15, 23, 42, 0.6)',
+        margin: {{ l: 45, r: 20, t: 25, b: 45 }},
+        xaxis: {{
+          title: {{ text: xLabels[xKey], font: {{ color: '#94a3b8', size: 10 }} }},
+          gridcolor: '#1e293b',
+          tickfont: {{ color: '#94a3b8', size: 9 }},
+          zerolinecolor: '#334155'
+        }},
+        yaxis: {{
+          title: {{ text: yLabels[yKey], font: {{ color: '#94a3b8', size: 10 }} }},
+          gridcolor: '#1e293b',
+          tickfont: {{ color: '#94a3b8', size: 9 }},
+          zerolinecolor: '#334155'
+        }},
+        legend: {{
+          orientation: 'h',
+          y: 1.15,
+          x: 0,
+          font: {{ color: '#cbd5e1', size: 10 }}
+        }},
+        hoverlabel: {{
+          bgcolor: '#0f172a',
+          bordercolor: '#334155',
+          font: {{ family: 'ui-sans-serif, system-ui', size: 11, color: '#f8fafc' }}
+        }}
+      }};
+
+      Plotly.react('scatter-chart-container', traces, layout, {{ responsive: true, displayModeBar: false }});
+    }}
+
+    function exportFilteredCSV() {{
+      const filtered = getFilteredRecords();
       if (filtered.length === 0) return;
+
       const keys = Object.keys(filtered[0]);
-      let csv = keys.join(",") + "\\n";
+      let csv = keys.join(",") + ",sim_exit_return_pct,exit_strategy_used\n";
       filtered.forEach(row => {{
-        csv += keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "\\n";
+        const simRet = getSimExitReturn(row);
+        let line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",");
+        line += `,${{simRet.toFixed(2)}},"${{currentExitStrategy}}"\n`;
+        csv += line;
       }});
 
       const blob = new Blob([csv], {{ type: 'text/csv' }});
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
-      a.setAttribute('download', 'filtered_gappers_history.csv');
+      a.setAttribute('download', `filtered_gappers_${{currentExitStrategy}}.csv`);
       a.click();
     }}
 
