@@ -79,7 +79,13 @@ def fetch_fallback_headlines(ticker):
 
 def build_candlestick_chart(ticker, hist_df):
     if hist_df is None or hist_df.empty:
-        return "<div class='text-slate-400 p-8 text-center italic'>No intraday chart data available for this ticker.</div>"
+        empty_html = f"""
+        <div class="bg-[#131722] border border-slate-800 rounded-2xl p-12 text-center text-slate-400 italic my-5">
+          <p class="text-sm font-semibold text-slate-300">No intraday chart data available for #{ticker}.</p>
+          <a href="https://www.tradingview.com/symbols/{ticker}/" target="_blank" class="inline-block mt-3 px-3 py-1 rounded bg-sky-500/20 text-sky-400 text-xs font-bold border border-sky-500/30">Open on TradingView ↗</a>
+        </div>
+        """
+        return empty_html, None
 
     df = hist_df.copy()
     if df.index.tz is None:
@@ -87,143 +93,86 @@ def build_candlestick_chart(ticker, hist_df):
     else:
         df.index = df.index.tz_convert("America/New_York")
 
-    if len(df) > 150:
-        df = df.iloc[-150:]
-
-    x_labels = df.index.strftime("%m/%d %H:%M").tolist()
     df["SMA20"] = df["Close"].rolling(window=20, min_periods=1).mean()
 
-    session_types = []
-    for t in df.index:
-        if t.hour < 9 or (t.hour == 9 and t.minute < 30):
-            session_types.append("Pre-Market")
-        elif t.hour < 16:
-            session_types.append("Regular")
-        else:
-            session_types.append("After-Hours")
-    df["Session"] = session_types
+    candle_data = []
+    volume_data = []
+    sma_data = []
+    open_time = None
 
-    vol_colors = ["#10b981" if c >= o else "#ef4444" for c, o in zip(df["Close"], df["Open"])]
+    last_time = 0
+    for ts, row in df.iterrows():
+        unix_time = int(ts.timestamp())
+        if unix_time <= last_time:
+            continue
+        last_time = unix_time
 
-    fig = make_subplots(
-        rows=2,
-        cols=1,
-        shared_xaxes=True,
-        row_heights=[0.72, 0.28],
-        vertical_spacing=0.03,
-    )
+        o = round(float(row["Open"]), 4)
+        h = round(float(row["High"]), 4)
+        l = round(float(row["Low"]), 4)
+        c = round(float(row["Close"]), 4)
+        v = float(row["Volume"]) if ("Volume" in row and pd.notnull(row["Volume"])) else 0.0
+        sma = round(float(row["SMA20"]), 4) if pd.notnull(row["SMA20"]) else c
 
-    fig.add_trace(
-        go.Candlestick(
-            x=x_labels,
-            open=df["Open"],
-            high=df["High"],
-            low=df["Low"],
-            close=df["Close"],
-            name="Price",
-            increasing_line_color="#10b981",
-            decreasing_line_color="#ef4444",
-            showlegend=False,
-        ),
-        row=1,
-        col=1,
-    )
+        is_up = c >= o
+        vol_color = "rgba(8, 153, 129, 0.45)" if is_up else "rgba(242, 54, 69, 0.45)"
 
-    fig.add_trace(
-        go.Scatter(
-            x=x_labels,
-            y=df["SMA20"],
-            mode="lines",
-            name="20-SMA",
-            line=dict(color="#f59e0b", width=1.5),
-            hoverinfo="y+name",
-        ),
-        row=1,
-        col=1,
-    )
+        candle_data.append({"time": unix_time, "open": o, "high": h, "low": l, "close": c})
+        volume_data.append({"time": unix_time, "value": v, "color": vol_color})
+        sma_data.append({"time": unix_time, "value": sma})
 
-    fig.add_trace(
-        go.Bar(
-            x=x_labels,
-            y=df["Volume"],
-            name="Volume",
-            marker_color=vol_colors,
-            showlegend=False,
-        ),
-        row=2,
-        col=1,
-    )
+        if ts.hour == 9 and ts.minute == 30:
+            open_time = unix_time
 
-    in_pm = False
-    pm_start_idx = None
-    for i, sess in enumerate(df["Session"]):
-        if sess == "Pre-Market" and not in_pm:
-            in_pm = True
-            pm_start_idx = i
-        elif sess != "Pre-Market" and in_pm:
-            in_pm = False
-            fig.add_vrect(
-                x0=x_labels[pm_start_idx],
-                x1=x_labels[i - 1],
-                fillcolor="rgba(14, 165, 233, 0.09)",
-                layer="below",
-                line_width=1,
-                line_dash="dot",
-                line_color="rgba(14, 165, 233, 0.35)",
-                annotation_text="PRE-MARKET",
-                annotation_position="top left",
-                annotation_font=dict(size=10, color="#38bdf8"),
-                row=1,
-                col=1,
-            )
-    if in_pm:
-        fig.add_vrect(
-            x0=x_labels[pm_start_idx],
-            x1=x_labels[-1],
-            fillcolor="rgba(14, 165, 233, 0.09)",
-            layer="below",
-            line_width=1,
-            line_dash="dot",
-            line_color="rgba(14, 165, 233, 0.35)",
-            annotation_text="PRE-MARKET",
-            annotation_position="top left",
-            annotation_font=dict(size=10, color="#38bdf8"),
-            row=1,
-            col=1,
-        )
+    container_html = f"""
+    <!-- TradingView-Powered Pro Candlestick Chart -->
+    <div class="tv-chart-wrapper bg-[#131722] border border-slate-800 hover:border-slate-700/80 rounded-2xl overflow-hidden shadow-2xl my-5 transition-all" data-ticker="{ticker}">
+      <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 bg-[#171b26] border-b border-slate-800 text-xs select-none">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded font-black text-xs bg-sky-500/20 text-sky-400 border border-sky-500/30 font-mono tracking-wide">{ticker}</span>
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-semibold text-[11px]">5m</span>
+          </div>
+          <span class="text-slate-600 hidden sm:inline">|</span>
+          <div class="hidden sm:flex items-center gap-3 text-slate-400 font-medium text-[11px]">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span> 20 SMA
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500/80"></span> Volume
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-sky-400"></span> 09:30 Open Marker
+            </span>
+          </div>
+        </div>
 
-    fig.update_layout(
-        template="plotly_dark",
-        paper_bgcolor="rgba(15, 23, 42, 0)",
-        plot_bgcolor="rgba(15, 23, 42, 0.6)",
-        margin=dict(l=35, r=35, t=15, b=15),
-        height=380,
-        hovermode="x unified",
-        xaxis_rangeslider_visible=False,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1,
-            font=dict(size=11, color="#94a3b8"),
-        ),
-    )
+        <!-- Live Crosshair OHLC Bar -->
+        <div id="tv-ohlc-{ticker}" class="flex items-center gap-2.5 font-mono text-[11px] text-slate-300">
+          <span class="text-slate-500">Hover candles for OHLC</span>
+        </div>
 
-    fig.update_xaxes(
-        showgrid=True,
-        gridcolor="rgba(51, 65, 85, 0.5)",
-        tickfont=dict(size=10, color="#64748b"),
-        showticklabels=True,
-    )
-    fig.update_yaxes(
-        showgrid=True,
-        gridcolor="rgba(51, 65, 85, 0.5)",
-        tickfont=dict(size=10, color="#64748b"),
-        side="right",
-    )
+        <!-- Quick View Range Controls & TradingView External Link -->
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="zoomTvChart('{ticker}', 'today')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-300 hover:text-white transition-colors">Today</button>
+          <button type="button" onclick="zoomTvChart('{ticker}', 'all')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-bold text-slate-300 hover:text-white transition-colors">3-Day All</button>
+          <a href="https://www.tradingview.com/symbols/{ticker}/" target="_blank" class="px-2.5 py-1 rounded bg-sky-500/15 hover:bg-sky-500/25 text-sky-400 hover:text-sky-300 text-[10px] font-black border border-sky-500/30 transition-colors ml-1 flex items-center gap-1">
+            <span>TradingView</span> ↗
+          </a>
+        </div>
+      </div>
 
-    return fig.to_html(full_html=False, include_plotlyjs=False)
+      <div id="tv-chart-{ticker}" class="w-full" style="height: 400px;"></div>
+    </div>
+    """
+
+    chart_data = {
+        "candleData": candle_data,
+        "volumeData": volume_data,
+        "smaData": sma_data,
+        "openTime": open_time
+    }
+    return container_html, chart_data
 
 def generate_static_chart_image(ticker, company, hist_df, output_path):
     if hist_df is None or hist_df.empty:
@@ -1029,6 +978,7 @@ def run_scanner():
     top_hist_df = None
     top_ticker = None
     top_company = None
+    tv_charts_data = {}
 
     for idx, item in enumerate(records):
         ticker = item.get("name") or item.get("ticker", "").split(":")[-1]
@@ -1054,7 +1004,9 @@ def run_scanner():
             top_ticker = ticker
             top_company = company
 
-        chart_html = build_candlestick_chart(ticker, hist_df)
+        chart_html, chart_data = build_candlestick_chart(ticker, hist_df)
+        if chart_data:
+            tv_charts_data[ticker] = chart_data
 
         intel = known_catalysts.get(ticker)
         if not intel:
@@ -1136,16 +1088,7 @@ def run_scanner():
             </div>
           </div>
 
-          <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-2 my-5 overflow-hidden">
-            <div class="px-3 pt-2 pb-1 flex items-center justify-between text-xs text-slate-400 border-b border-slate-800/60">
-              <span class="font-semibold text-slate-300">5-Minute Intraday & Extended Hours (Plotly)</span>
-              <span class="flex items-center gap-2">
-                <span class="inline-block w-2.5 h-2.5 rounded-sm bg-sky-500/30 border border-sky-400"></span> Pre-Market Shading
-                <span class="inline-block w-3 h-0.5 bg-amber-400 ml-2"></span> 20 SMA
-              </span>
-            </div>
-            {chart_html}
-          </div>
+          {chart_html}
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           {edge_panel_html}
@@ -1193,7 +1136,10 @@ def run_scanner():
     """
 
     plotly_js_bundle = plotly.offline.get_plotlyjs()
+    tv_js_path = script_dir / "lightweight-charts.js"
+    tv_js_bundle = tv_js_path.read_text(encoding="utf-8") if tv_js_path.exists() else ""
     history_json_str = json.dumps(history_records)
+    tv_charts_json_str = json.dumps(tv_charts_data)
     matrix_html = build_4d_category_matrix_html(records, history_records, cohort_stats)
 
     # 3. Complete Dual-Tab Dashboard HTML
@@ -1206,6 +1152,9 @@ def run_scanner():
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <script>
   {plotly_js_bundle}
+  </script>
+  <script>
+  {tv_js_bundle}
   </script>
   <style>
     body {{
@@ -2693,6 +2642,185 @@ def run_scanner():
       }}
     }});
 
+
+    // TradingView Lightweight Charts Initialization & Handlers
+    const TV_CHARTS_DATA = {tv_charts_json_str};
+    const TV_INSTANCES = {{}};
+
+    function initTradingViewCharts() {{
+      if (typeof LightweightCharts === 'undefined') return;
+
+      Object.keys(TV_CHARTS_DATA).forEach(ticker => {{
+        if (TV_INSTANCES[ticker]) return; // already initialized
+        const cData = TV_CHARTS_DATA[ticker];
+        const container = document.getElementById('tv-chart-' + ticker);
+        if (!container || !cData || !cData.candleData || cData.candleData.length === 0) return;
+
+        try {{
+          const chart = LightweightCharts.createChart(container, {{
+            width: container.clientWidth || 800,
+            height: 400,
+            layout: {{
+              background: {{ type: 'solid', color: '#131722' }},
+              textColor: '#787b86',
+              fontSize: 11,
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Trebuchet MS", Roboto, Ubuntu, sans-serif'
+            }},
+            grid: {{
+              vertLines: {{ color: 'rgba(42, 46, 57, 0.4)' }},
+              horzLines: {{ color: 'rgba(42, 46, 57, 0.4)' }},
+            }},
+            crosshair: {{
+              mode: LightweightCharts.CrosshairMode.Normal,
+              vertLine: {{
+                color: '#787b86',
+                width: 1,
+                style: LightweightCharts.LineStyle.Dashed,
+                labelBackgroundColor: '#2a2e39',
+              }},
+              horzLine: {{
+                color: '#787b86',
+                width: 1,
+                style: LightweightCharts.LineStyle.Dashed,
+                labelBackgroundColor: '#2a2e39',
+              }},
+            }},
+            rightPriceScale: {{
+              borderColor: '#2a2e39',
+              visible: true,
+              scaleMargins: {{
+                top: 0.08,
+                bottom: 0.22,
+              }},
+            }},
+            timeScale: {{
+              borderColor: '#2a2e39',
+              timeVisible: true,
+              secondsVisible: false,
+              fixLeftEdge: true,
+              fixRightEdge: true,
+            }},
+          }});
+
+          const candleSeries = chart.addSeries(LightweightCharts.CandlestickSeries, {{
+            upColor: '#089981',
+            downColor: '#f23645',
+            borderVisible: true,
+            borderUpColor: '#089981',
+            borderDownColor: '#f23645',
+            wickUpColor: '#089981',
+            wickDownColor: '#f23645',
+          }});
+
+          const volumeSeries = chart.addSeries(LightweightCharts.HistogramSeries, {{
+            color: '#26a69a',
+            priceFormat: {{
+              type: 'volume',
+            }},
+            priceScaleId: '',
+          }});
+          volumeSeries.priceScale().applyOptions({{
+            scaleMargins: {{
+              top: 0.82,
+              bottom: 0,
+            }},
+          }});
+
+          const smaSeries = chart.addSeries(LightweightCharts.LineSeries, {{
+            color: '#ff9800',
+            lineWidth: 1.5,
+            title: 'MA 20',
+            crosshairMarkerVisible: false,
+          }});
+
+          candleSeries.setData(cData.candleData);
+          volumeSeries.setData(cData.volumeData);
+          smaSeries.setData(cData.smaData);
+
+          if (cData.openTime && typeof LightweightCharts.createSeriesMarkers === 'function') {{
+            LightweightCharts.createSeriesMarkers(candleSeries, [{{
+              time: cData.openTime,
+              position: 'aboveBar',
+              color: '#38bdf8',
+              shape: 'arrowDown',
+              text: '09:30 Open',
+              size: 1
+            }}]);
+          }}
+
+          chart.timeScale().fitContent();
+
+          const ohlcEl = document.getElementById('tv-ohlc-' + ticker);
+          function updateOhlc(bar) {{
+            if (!bar || !ohlcEl) return;
+            const diff = bar.close - bar.open;
+            const diffPct = (diff / bar.open) * 100;
+            const color = diff >= 0 ? '#089981' : '#f23645';
+            ohlcEl.innerHTML = `
+              <span>O <strong style="color:${{color}}">$${{bar.open.toFixed(2)}}</strong></span>
+              <span>H <strong style="color:${{color}}">$${{bar.high.toFixed(2)}}</strong></span>
+              <span>L <strong style="color:${{color}}">$${{bar.low.toFixed(2)}}</strong></span>
+              <span>C <strong style="color:${{color}}">$${{bar.close.toFixed(2)}}</strong></span>
+              <span style="color:${{color}}; font-weight: bold;">${{diff >= 0 ? '+' : ''}}${{diff.toFixed(2)}} (${{diff >= 0 ? '+' : ''}}${{diffPct.toFixed(2)}}%)</span>
+            `;
+          }}
+
+          if (cData.candleData.length > 0) {{
+            updateOhlc(cData.candleData[cData.candleData.length - 1]);
+          }}
+
+          chart.subscribeCrosshairMove(param => {{
+            if (!param || !param.time || !param.seriesData.has(candleSeries)) {{
+              updateOhlc(cData.candleData[cData.candleData.length - 1]);
+              return;
+            }}
+            const bar = param.seriesData.get(candleSeries);
+            updateOhlc(bar);
+          }});
+
+          const ro = new ResizeObserver(entries => {{
+            for (let entry of entries) {{
+              if (entry.contentRect.width > 0) {{
+                chart.applyOptions({{ width: entry.contentRect.width }});
+              }}
+            }}
+          }});
+          ro.observe(container);
+
+          TV_INSTANCES[ticker] = {{ chart, candleSeries, volumeSeries, smaSeries, cData }};
+        }} catch(err) {{
+          console.error("Failed to initialize TradingView chart for " + ticker, err);
+        }}
+      }});
+    }}
+
+    function zoomTvChart(ticker, mode) {{
+      const inst = TV_INSTANCES[ticker];
+      if (!inst) return;
+      if (mode === 'all') {{
+        inst.chart.timeScale().fitContent();
+      }} else if (mode === 'today') {{
+        const cd = inst.cData.candleData;
+        if (cd.length > 80) {{
+          const fromTime = cd[cd.length - 80].time;
+          const toTime = cd[cd.length - 1].time;
+          inst.chart.timeScale().setVisibleRange({{ from: fromTime, to: toTime }});
+        }} else {{
+          inst.chart.timeScale().fitContent();
+        }}
+      }}
+    }}
+
+    function resizeTradingViewCharts() {{
+      Object.keys(TV_INSTANCES).forEach(ticker => {{
+        const inst = TV_INSTANCES[ticker];
+        const container = document.getElementById('tv-chart-' + ticker);
+        if (inst && container && container.clientWidth > 0) {{
+          inst.chart.applyOptions({{ width: container.clientWidth }});
+        }}
+      }});
+    }}
+
     function updateCountdown() {{
       const countdownEl = document.getElementById("market-countdown");
       const statusEl = document.getElementById("market-status");
@@ -2735,6 +2863,7 @@ def run_scanner():
         countdownEl.className = "text-2xl font-black text-slate-400 mt-1 font-mono";
       }}
     }}
+    initTradingViewCharts();
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
