@@ -158,6 +158,7 @@ def track_follow_through():
             "hit_plus_2pct": hit_plus_2pct,
             "minutes_to_day_high": minutes_to_day_high,
             "dump_warning": dump_warning,
+            "relative_volume_10d_calc": round(float(item.get("relative_volume_10d_calc", 1.0)), 1) if item.get("relative_volume_10d_calc") else None,
         }
         new_rows.append(row)
 

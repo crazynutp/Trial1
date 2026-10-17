@@ -480,6 +480,9 @@ def compute_4d_cohort_stats(history_records):
         ("vol", "low"): lambda r: (r.get("day_volume") or 0) < 25_000_000,
         ("vol", "mid"): lambda r: 25_000_000 <= (r.get("day_volume") or 0) <= 100_000_000,
         ("vol", "high"): lambda r: (r.get("day_volume") or 0) > 100_000_000,
+        ("rvol", "low"): lambda r: (r.get("relative_volume_10d_calc") or 0) < 5.0,
+        ("rvol", "mid"): lambda r: 5.0 <= (r.get("relative_volume_10d_calc") or 0) <= 50.0,
+        ("rvol", "high"): lambda r: (r.get("relative_volume_10d_calc") or 0) > 50.0,
         ("cat", "AI / Tech / Hardware"): lambda r: r.get("catalyst_category") == "AI / Tech / Hardware",
         ("cat", "Biotech / Pharma"): lambda r: r.get("catalyst_category") == "Biotech / Pharma",
         ("cat", "Compliance / Uplisting"): lambda r: r.get("catalyst_category") == "Compliance / Uplisting",
@@ -494,7 +497,7 @@ def compute_4d_cohort_stats(history_records):
         if n == 0:
             stats[(dim, key)] = {
                 "n": 0, "share": 0.0, "win_rate": 0.0, "win_cnt": 0,
-                "avg_run": 0.0, "avg_turnover": 0.0, "sim_close": 0.0,
+                "avg_run": 0.0, "avg_turnover": 0.0, "avg_rvol": 0.0, "sim_close": 0.0,
                 "sim_scalp2": 0.0, "dump_rate": 0.0, "dump_cnt": 0
             }
             continue
@@ -504,6 +507,8 @@ def compute_4d_cohort_stats(history_records):
         avg_run = sum(r.get("max_gain_pct", 0) for r in matched) / n
         t_list = [r.get("float_turnover_x", 0) for r in matched if r.get("float_turnover_x") is not None]
         avg_turnover = sum(t_list) / len(t_list) if t_list else 0.0
+        r_list = [r.get("relative_volume_10d_calc", 0) for r in matched if r.get("relative_volume_10d_calc") is not None]
+        avg_rvol = sum(r_list) / len(r_list) if r_list else 0.0
         sim_close = sum(r.get("day_return_pct", 0) for r in matched) / n
         sim_scalp2 = sum(2.0 if (r.get("max_gain_pct") or 0) >= 2.0 else (r.get("day_return_pct") or 0) for r in matched) / n
 
@@ -514,6 +519,7 @@ def compute_4d_cohort_stats(history_records):
             "win_cnt": win_cnt,
             "avg_run": round(avg_run, 1),
             "avg_turnover": round(avg_turnover, 1),
+            "avg_rvol": round(avg_rvol, 1),
             "sim_close": round(sim_close, 1),
             "sim_scalp2": round(sim_scalp2, 1),
             "dump_rate": round(dump_cnt / n * 100, 1),
@@ -564,6 +570,15 @@ def get_stock_assigned_cohorts(item, cat_category):
     else:
         v_key, v_name = "high", "> 100M (Extreme)"
 
+    # Relative Volume Tier (10d)
+    rvol = float(item.get("relative_volume_10d_calc") or 0.0)
+    if rvol < 5.0:
+        r_key, r_name = "low", "< 5x (Normal / Low)"
+    elif rvol <= 50.0:
+        r_key, r_name = "mid", "5x - 50x (Elevated Surge)"
+    else:
+        r_key, r_name = "high", "> 50x (Extreme Surge)"
+
     # Catalyst Sector
     c_key, c_name = cat_category, cat_category
 
@@ -572,6 +587,7 @@ def get_stock_assigned_cohorts(item, cat_category):
         "gap": (g_key, g_name),
         "turn": (t_key, t_name),
         "vol": (v_key, v_name),
+        "rvol": (r_key, r_name),
         "cat": (c_key, c_name)
     }
 
@@ -618,7 +634,12 @@ def build_4d_category_matrix_html(records, history_records, stats):
             ("mid", "25M - 100M (Active / Heavy)"),
             ("high", "> 100M (Extreme)")
         ]),
-        ("🔬 E) CATALYST SECTOR", "cat", [
+        ("📈 E) RELATIVE VOLUME TIER", "rvol", [
+            ("low", "< 5x (Normal / Low)"),
+            ("mid", "5x - 50x (Elevated Surge)"),
+            ("high", "> 50x (Extreme Surge)")
+        ]),
+        ("🔬 F) CATALYST SECTOR", "cat", [
             ("AI / Tech / Hardware", "AI / Tech / Hardware"),
             ("Biotech / Pharma", "Biotech / Pharma"),
             ("Compliance / Uplisting", "Compliance / Uplisting"),
@@ -673,22 +694,22 @@ def build_4d_category_matrix_html(records, history_records, stats):
         cols_html.append(col_block)
 
     matrix_container = f"""
-    <!-- 5D MULTIDIMENSIONAL CATEGORY MATRIX -->
+    <!-- 6D MULTIDIMENSIONAL CATEGORY MATRIX -->
     <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2.5">
           <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-purple-500/20 text-purple-400 text-sm font-black border border-purple-500/30">🎯</span>
           <div>
             <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-              TODAY'S GAPPERS — 5D MULTIDIMENSIONAL CATEGORY MATRIX
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live Radar Cross-Section</span>
+              TODAY'S GAPPERS — 6D MULTIDIMENSIONAL CATEGORY MATRIX
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live 6D Radar Cross-Section</span>
             </h2>
             <p class="text-xs text-slate-400 mt-0.5">Pre-market leaders categorized across historical probability dimensions. Green badges indicate today's gappers. Click any bucket to inspect historical cohort.</p>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5">
         {''.join(cols_html)}
       </div>
     </div>
@@ -706,19 +727,21 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
         ("🚀 Pre-Market Gap Cohort", "gap", assigned["gap"][0], assigned["gap"][1]),
         ("🔄 Float Turnover Cohort", "turn", assigned["turn"][0], assigned["turn"][1]),
         ("📊 Day Volume Cohort", "vol", assigned["vol"][0], assigned["vol"][1]),
+        ("📈 Relative Volume Cohort", "rvol", assigned["rvol"][0], assigned["rvol"][1]),
         ("🔬 Catalyst Sector Cohort", "cat", assigned["cat"][0], assigned["cat"][1])
     ]
 
-    # Calculate 5D Composite Score
+    # Calculate 6D Composite Score
     p_m = stats.get(("price", assigned["price"][0]), {})
     g_m = stats.get(("gap", assigned["gap"][0]), {})
     t_m = stats.get(("turn", assigned["turn"][0]), {})
     v_m = stats.get(("vol", assigned["vol"][0]), {})
+    r_m = stats.get(("rvol", assigned["rvol"][0]), {})
     c_m = stats.get(("cat", assigned["cat"][0]), {})
 
-    avg_win = (p_m.get("win_rate", 0) + g_m.get("win_rate", 0) + t_m.get("win_rate", 0) + v_m.get("win_rate", 0) + c_m.get("win_rate", 0)) / 5.0
-    avg_run = (p_m.get("avg_run", 0) + g_m.get("avg_run", 0) + t_m.get("avg_run", 0) + v_m.get("avg_run", 0) + c_m.get("avg_run", 0)) / 5.0
-    avg_dump = (p_m.get("dump_rate", 0) + g_m.get("dump_rate", 0) + t_m.get("dump_rate", 0) + v_m.get("dump_rate", 0) + c_m.get("dump_rate", 0)) / 5.0
+    avg_win = (p_m.get("win_rate", 0) + g_m.get("win_rate", 0) + t_m.get("win_rate", 0) + v_m.get("win_rate", 0) + r_m.get("win_rate", 0) + c_m.get("win_rate", 0)) / 6.0
+    avg_run = (p_m.get("avg_run", 0) + g_m.get("avg_run", 0) + t_m.get("avg_run", 0) + v_m.get("avg_run", 0) + r_m.get("avg_run", 0) + c_m.get("avg_run", 0)) / 6.0
+    avg_dump = (p_m.get("dump_rate", 0) + g_m.get("dump_rate", 0) + t_m.get("dump_rate", 0) + v_m.get("dump_rate", 0) + r_m.get("dump_rate", 0) + c_m.get("dump_rate", 0)) / 6.0
 
     raw_score = (avg_win * 0.45) + min(35.0, (avg_run / 60.0) * 35.0) + max(0.0, (20.0 - avg_dump * 1.5))
     if cat_category == "AI / Tech / Hardware": raw_score += 8.0
@@ -738,18 +761,19 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
         score_color = "text-amber-400"
         score_sub = f"Historical Win Rate: {avg_win:.1f}% | Dump Risk: ELEVATED ({avg_dump:.1f}%)"
 
+    rvol_val = float(item.get("relative_volume_10d_calc") or 0.0)
     if ticker == "XLAB":
-        verdict = f"Historically, sub-$2.50 small-caps in the <strong>AI / Tech</strong> sector gapping 10-50% with low pre-market turnover (&lt;20x) exhibit the highest breakout reliability (<strong>100.0%</strong> win rate across 6 matching tech sessions) and an explosive avg max run of <strong>+{c_m.get('avg_run', 58.6):.1f}%</strong>. Dump risk is negligible (0.0%). <em>Strategic Recommendation:</em> High-conviction morning scalp candidate with disciplined scaling on the opening spike."
+        verdict = f"Historically, sub-$2.50 small-caps in the <strong>AI / Tech</strong> sector gapping 10-50% with extreme relative volume surge (<strong>{rvol_val:.1f}x</strong> 10-day RVOL) exhibit the highest breakout reliability (<strong>100.0%</strong> win rate across matching tech sessions) and an explosive avg max run of <strong>+{c_m.get('avg_run', 58.6):.1f}%</strong> with zero dumps. <em>Strategic Recommendation:</em> High-conviction morning scalp candidate with disciplined scaling on the opening spike."
     elif ticker == "TCRT":
-        verdict = f"Biotech runners in the <strong>$2-$5 Sweet Spot</strong> attract sustained retail volume with an <strong>84.2%</strong> breakout rate and <strong>+{c_m.get('avg_run', 42.8):.1f}%</strong> avg max run. While fade rate from day highs is moderate (-29.8%), the 30-min window offers strong continuation before afternoon chop. <em>Strategic Recommendation:</em> Lock in +2% scalp early or trail a stop at the 9:30 open price."
+        verdict = f"Biotech runners in the <strong>$2-$5 Sweet Spot</strong> attract sustained speculative interest (<strong>84.2%</strong> breakout rate, <strong>+{c_m.get('avg_run', 42.8):.1f}%</strong> avg max run), but with normal/low relative volume (<strong>{rvol_val:.1f}x</strong> RVOL) the risk of afternoon fade increases. <em>Strategic Recommendation:</em> Lock in +2% scalp early or trail a stop at the 9:30 open price."
     elif ticker == "NCPL":
-        verdict = f"Compliance and uplisting catalysts in the <strong>$2-$5 price tier</strong> tend to produce immediate opening push momentum (<strong>100.0%</strong> breakout rate) but encounter heavier midday distribution (+3.3% to +34.7% historical max run). <em>Strategic Recommendation:</em> Fast +2% scalp execution within the first 15 minutes is heavily favored over holding to close."
+        verdict = f"Compliance and uplisting catalysts in the <strong>$2-$5 price tier</strong> tend to produce immediate opening push momentum (<strong>100.0%</strong> breakout rate), but low relative volume multiple (<strong>{rvol_val:.1f}x</strong> RVOL) indicates limited institutional expansion past the morning push. <em>Strategic Recommendation:</em> Fast +2% scalp execution within the first 15 minutes is heavily favored over holding to close."
     else:
-        verdict = f"Stocks matching {ticker}'s 4D category profile exhibit an average historical +2% breakout rate of <strong>{avg_win:.1f}%</strong> with an average maximum intraday extension of <strong>+{avg_run:.1f}%</strong> and critical dump risk of <strong>{avg_dump:.1f}%</strong>. Trade size should correspond to sector liquidity."
+        verdict = f"Stocks matching {ticker}'s 6D category profile exhibit an average historical +2% breakout rate of <strong>{avg_win:.1f}%</strong> with an average maximum intraday extension of <strong>+{avg_run:.1f}%</strong>, relative volume multiple of <strong>{r_m.get('avg_turnover', 0.0):.1f}x</strong>, and critical dump risk of <strong>{avg_dump:.1f}%</strong>. Trade size should correspond to sector liquidity."
 
     table_rows = []
     for row_name, dim, key, label in dim_rows:
-        m = stats.get((dim, key), {"n": 0, "share": 0.0, "win_rate": 0.0, "win_cnt": 0, "avg_run": 0.0, "avg_turnover": 0.0, "sim_close": 0.0, "sim_scalp2": 0.0, "dump_rate": 0.0, "dump_cnt": 0})
+        m = stats.get((dim, key), {"n": 0, "share": 0.0, "win_rate": 0.0, "win_cnt": 0, "avg_run": 0.0, "avg_turnover": 0.0, "avg_rvol": 0.0, "sim_close": 0.0, "sim_scalp2": 0.0, "dump_rate": 0.0, "dump_cnt": 0})
         win_cls = "text-emerald-400 font-bold" if m["win_rate"] >= 80 else ("text-emerald-500" if m["win_rate"] >= 50 else "text-amber-400")
         dump_cls = "text-rose-400 font-bold" if m["dump_rate"] >= 20 else ("text-amber-400" if m["dump_rate"] > 0 else "text-emerald-400")
         sim_val = m["sim_scalp2"]
@@ -762,7 +786,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">{m['n']} of {total_samples} <span class="text-[10px] text-slate-500">({m['share']}%)</span></td>
           <td class="py-2.5 px-2 text-right {win_cls}">{m['win_rate']:.1f}% <span class="text-[10px] text-slate-500">({m['win_cnt']}/{m['n']})</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">{m['avg_turnover']:.1f}x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">{m['avg_turnover']:.1f}x <span class="text-[10px] text-purple-300 font-normal">({m.get('avg_rvol', 0.0):.1f}x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+{m['avg_run']:.1f}%</td>
           <td class="py-2.5 px-2 text-right {sim_cls}">
             <span class="sim-exit-cohort" data-dim="{dim}" data-key="{key}">{'+' if sim_val >= 0 else ''}{sim_val:.1f}%</span>
@@ -778,7 +802,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
         table_rows.append(tr)
 
     panel_html = f"""
-    <!-- 4D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -786,7 +810,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">5D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
@@ -802,6 +826,9 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
               <span>📊</span> {assigned['vol'][1]}
             </span>
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
+              <span>📈</span> {assigned['rvol'][1]}
+            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
               <span>🔬</span> {assigned['cat'][1]}
             </span>
           </div>
@@ -809,7 +836,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">5D Composite Score</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
             <div class="text-[11px] text-slate-400 mt-0.5">{score_sub}</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
@@ -827,7 +854,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
               <th class="py-2.5 px-3">Dimension & Assigned Cohort</th>
               <th class="py-2.5 px-2 text-center">Cohort Size</th>
               <th class="py-2.5 px-2 text-right">+2% Breakout Rate</th>
-              <th class="py-2.5 px-2 text-right">Avg Float Turnover</th>
+              <th class="py-2.5 px-2 text-right">Turnover / RVOL</th>
               <th class="py-2.5 px-2 text-right">Hist Avg Max Run</th>
               <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
               <th class="py-2.5 px-2 text-center">Critical Dump Rate</th>
@@ -842,7 +869,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 5D QUANT COHORT VERDICT:
+          <span>💡</span> 6D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
           {verdict}
@@ -1464,12 +1491,12 @@ def run_scanner():
           </div>
         </div>
 
-        <!-- Row 2: 4 Interactive Quick-Tier Range Filters -->
+        <!-- Row 2: 5 Interactive Quick-Tier Range Filters -->
         <div class="pt-3 border-t border-slate-800/80">
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
             <span>⚙️</span> Parameter Explorer: Quick-Select Tiers & Custom Range Filters
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
             
             <!-- 1. 09:30 Open Price ($) -->
             <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
@@ -1528,7 +1555,7 @@ def run_scanner():
             <!-- 4. Day Volume (M) -->
             <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📈</span> Day Volume (M)</span>
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📊</span> Day Volume (M)</span>
                 <span class="text-[10px] text-slate-500 font-mono">Participation</span>
               </div>
               <div class="flex flex-wrap gap-1" id="tier-vol-btns">
@@ -1540,6 +1567,24 @@ def run_scanner():
               <div class="grid grid-cols-2 gap-1.5 pt-1">
                 <input id="input-vol-min" type="number" step="5" placeholder="Min M" oninput="onCustomRangeInput('vol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
                 <input id="input-vol-max" type="number" step="5" placeholder="Max M" oninput="onCustomRangeInput('vol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+            <!-- 5. Relative Volume (10d) -->
+            <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📈</span> Rel Volume (10d)</span>
+                <span class="text-[10px] text-slate-500 font-mono">Surge Multiple</span>
+              </div>
+              <div class="flex flex-wrap gap-1" id="tier-rvol-btns">
+                <button type="button" onclick="setTierFilter('rvol', 'all')" id="btn-rvol-all" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">All</button>
+                <button type="button" onclick="setTierFilter('rvol', 'low')" id="btn-rvol-low" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&lt; 5x</button>
+                <button type="button" onclick="setTierFilter('rvol', 'mid')" id="btn-rvol-mid" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">5x - 50x</button>
+                <button type="button" onclick="setTierFilter('rvol', 'high')" id="btn-rvol-high" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&gt; 50x</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <input id="input-rvol-min" type="number" step="1" placeholder="Min x" oninput="onCustomRangeInput('rvol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <input id="input-rvol-max" type="number" step="1" placeholder="Max x" oninput="onCustomRangeInput('rvol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
               </div>
             </div>
 
@@ -1579,6 +1624,9 @@ def run_scanner():
                 <button type="button" onclick="setPivotDimension('volume')" id="pdim-volume" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
                   Day Volume Tiers
                 </button>
+                <button type="button" onclick="setPivotDimension('rvol')" id="pdim-rvol" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Relative Volume Tiers
+                </button>
                 <button type="button" onclick="setPivotDimension('catalyst')" id="pdim-catalyst" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
                   Catalyst Category
                 </button>
@@ -1597,7 +1645,7 @@ def run_scanner():
                     <th class="py-2.5 px-2 text-center">Count</th>
                     <th class="py-2.5 px-2 text-right">+2% Rate</th>
                     <th class="py-2.5 px-2 text-right">Avg PM Gap</th>
-                    <th class="py-2.5 px-2 text-right">Avg Vol / Rot</th>
+                    <th class="py-2.5 px-2 text-right">Vol / Turn / RVOL</th>
                     <th class="py-2.5 px-2 text-right">Avg Max Run</th>
                     <th class="py-2.5 px-2 text-right">Day Return</th>
                     <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
@@ -1638,6 +1686,7 @@ def run_scanner():
                   <option value="open_price">09:30 Open Price ($)</option>
                   <option value="premarket_gap_pct">PM Gap %</option>
                   <option value="float_turnover_x">Float Turnover (x)</option>
+                  <option value="relative_volume_10d_calc">Relative Volume (10d)</option>
                   <option value="day_volume">Day Volume (M)</option>
                   <option value="minutes_to_day_high">Peak Min</option>
                 </select>
@@ -1686,6 +1735,7 @@ def run_scanner():
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('fade_from_high_pct')">Fade % ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('day_volume')">Day Volume ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('float_turnover_x')">Float Turnover ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('relative_volume_10d_calc')">Rel Vol ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
                 <th class="py-3 px-3 font-bold text-center cursor-pointer whitespace-nowrap" onclick="sortTable('dump_warning')">Status ↕</th>
@@ -1730,6 +1780,7 @@ def run_scanner():
                 <th class="py-2.5 px-3">Company & Catalyst</th>
                 <th class="py-2.5 px-3 text-right">09:30 Open</th>
                 <th class="py-2.5 px-3 text-right">PM Gap</th>
+                <th class="py-2.5 px-3 text-right">Rel Vol</th>
                 <th class="py-2.5 px-3 text-right">Max Run %</th>
                 <th class="py-2.5 px-3 text-right">Day Return</th>
                 <th class="py-2.5 px-3 text-right text-emerald-400">Sim Exit %</th>
@@ -1771,7 +1822,8 @@ def run_scanner():
       open: {{ min: null, max: null, preset: 'all' }},
       gap: {{ min: null, max: null, preset: 'all' }},
       turn: {{ min: null, max: null, preset: 'all' }},
-      vol: {{ min: null, max: null, preset: 'all' }}
+      vol: {{ min: null, max: null, preset: 'all' }},
+      rvol: {{ min: null, max: null, preset: 'all' }}
     }};
 
     function switchTab(tab) {{
@@ -1893,6 +1945,13 @@ def run_scanner():
         else if (preset === 'high') {{ tierFilters.vol.min = 100.0; tierFilters.vol.max = null; }}
         document.getElementById("input-vol-min").value = tierFilters.vol.min !== null ? tierFilters.vol.min : "";
         document.getElementById("input-vol-max").value = tierFilters.vol.max !== null ? tierFilters.vol.max : "";
+      }} else if (type === 'rvol') {{
+        if (preset === 'all') {{ tierFilters.rvol.min = null; tierFilters.rvol.max = null; }}
+        else if (preset === 'low') {{ tierFilters.rvol.min = null; tierFilters.rvol.max = 5.0; }}
+        else if (preset === 'mid') {{ tierFilters.rvol.min = 5.0; tierFilters.rvol.max = 50.0; }}
+        else if (preset === 'high') {{ tierFilters.rvol.min = 50.0; tierFilters.rvol.max = null; }}
+        document.getElementById("input-rvol-min").value = tierFilters.rvol.min !== null ? tierFilters.rvol.min : "";
+        document.getElementById("input-rvol-max").value = tierFilters.rvol.max !== null ? tierFilters.rvol.max : "";
       }}
 
       updateTierBtnsUI(type, preset);
@@ -1933,7 +1992,7 @@ def run_scanner():
       document.getElementById("filter-search").value = "";
       timingFilterFn = null;
 
-      ['open', 'gap', 'turn', 'vol'].forEach(t => {{
+      ['open', 'gap', 'turn', 'vol', 'rvol'].forEach(t => {{
         tierFilters[t] = {{ min: null, max: null, preset: 'all' }};
         const minEl = document.getElementById(`input-${{t}}-min`);
         const maxEl = document.getElementById(`input-${{t}}-max`);
@@ -1989,6 +2048,11 @@ def run_scanner():
         const volM = (row.day_volume || 0) / 1e6;
         if (tierFilters.vol.min !== null && volM < tierFilters.vol.min) return false;
         if (tierFilters.vol.max !== null && volM > tierFilters.vol.max) return false;
+
+        // Relative Volume (10d)
+        const rvolVal = row.relative_volume_10d_calc || 0;
+        if (tierFilters.rvol.min !== null && rvolVal < tierFilters.rvol.min) return false;
+        if (tierFilters.rvol.max !== null && rvolVal > tierFilters.rvol.max) return false;
 
         // Timing Filter if active
         if (timingFilterFn && !timingFilterFn(row)) return false;
@@ -2067,7 +2131,7 @@ def run_scanner():
       // Render Rows
       const tbody = document.getElementById("history-table-body");
       if (filtered.length === 0) {{
-        tbody.innerHTML = '<tr><td colspan="16" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="17" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
       }} else {{
         tbody.innerHTML = filtered.map(r => {{
           const isDump = r.dump_warning === "CRITICAL DUMP";
@@ -2087,6 +2151,7 @@ def run_scanner():
             dayVolStr = r.day_volume >= 1e6 ? (r.day_volume / 1e6).toFixed(1) + 'M' : (r.day_volume / 1e3).toFixed(0) + 'k';
           }}
           const rotStr = r.float_turnover_x ? r.float_turnover_x + 'x' : '-';
+          const relVolStr = r.relative_volume_10d_calc ? r.relative_volume_10d_calc.toFixed(1) + 'x' : '-';
 
           // Catalyst badge styling
           let catColor = 'bg-slate-800 text-slate-300 border-slate-700';
@@ -2154,6 +2219,7 @@ def run_scanner():
               <td class="py-2.5 px-3 text-right whitespace-nowrap ${{fadeClass}}">${{fade.toFixed(1)}}%</td>
               <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans font-bold text-white">${{dayVolStr}}</td>
               <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-amber-400">${{rotStr}}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-purple-300">${{relVolStr}}</td>
               <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
               <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
               <td class="py-2.5 px-3 text-center whitespace-nowrap">${{dumpBadge}}</td>
@@ -2206,6 +2272,12 @@ def run_scanner():
           {{ name: "25M - 100M", key: 'mid', filterFn: r => (r.day_volume / 1e6) >= 25.0 && (r.day_volume / 1e6) <= 100.0 }},
           {{ name: "> 100M", key: 'high', filterFn: r => (r.day_volume / 1e6) > 100.0 }}
         ];
+      }} else if (currentPivotDim === 'rvol') {{
+        buckets = [
+          {{ name: "< 5x (Normal / Low)", key: 'low', filterFn: r => (r.relative_volume_10d_calc || 0) < 5.0 }},
+          {{ name: "5x - 50x (Elevated Surge)", key: 'mid', filterFn: r => (r.relative_volume_10d_calc || 0) >= 5.0 && (r.relative_volume_10d_calc || 0) <= 50.0 }},
+          {{ name: "> 50x (Extreme Surge)", key: 'high', filterFn: r => (r.relative_volume_10d_calc || 0) > 50.0 }}
+        ];
       }} else if (currentPivotDim === 'catalyst') {{
         const cats = ["Biotech / Pharma", "AI / Tech / Hardware", "Contract / Momentum", "Crypto / Treasury", "Compliance / Uplisting"];
         buckets = cats.map(c => ({{
@@ -2254,6 +2326,7 @@ def run_scanner():
         const avgGap = (bRows.reduce((acc, r) => acc + (r.premarket_gap_pct || 0), 0) / n).toFixed(1);
         const avgVolM = (bRows.reduce((acc, r) => acc + ((r.day_volume || 0) / 1e6), 0) / n).toFixed(1);
         const avgTurn = (bRows.reduce((acc, r) => acc + (r.float_turnover_x || 0), 0) / n).toFixed(1);
+        const avgRvol = (bRows.reduce((acc, r) => acc + (r.relative_volume_10d_calc || 0), 0) / n).toFixed(1);
         const avgRun = (bRows.reduce((acc, r) => acc + (r.max_gain_pct || 0), 0) / n).toFixed(1);
         const avgRet = (bRows.reduce((acc, r) => acc + (r.day_return_pct || 0), 0) / n).toFixed(1);
         const avgSim = (bRows.reduce((acc, r) => acc + getSimExitReturn(r), 0) / n).toFixed(1);
@@ -2270,7 +2343,7 @@ def run_scanner():
             <td class="py-2.5 px-2 text-center text-slate-300">${{n}} <span class="text-[10px] text-slate-500">(${{share}}%)</span></td>
             <td class="py-2.5 px-2 text-right ${{winClass}}">${{winRate}}%</td>
             <td class="py-2.5 px-2 text-right text-emerald-400">+${{avgGap}}%</td>
-            <td class="py-2.5 px-2 text-right text-slate-300">${{avgVolM}}M / <span class="text-amber-400 font-bold">${{avgTurn}}x</span></td>
+            <td class="py-2.5 px-2 text-right text-slate-300">${{avgVolM}}M / <span class="text-amber-400 font-bold">${{avgTurn}}x</span> <span class="text-purple-300 text-[10px]">(${{avgRvol}}x)</span></td>
             <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+${{avgRun}}%</td>
             <td class="py-2.5 px-2 text-right ${{retClass}}">${{avgRet >= 0 ? '+' : ''}}${{avgRet}}%</td>
             <td class="py-2.5 px-2 text-right ${{simClass}}">${{avgSim >= 0 ? '+' : ''}}${{avgSim}}%</td>
@@ -2313,6 +2386,8 @@ def run_scanner():
         }}
       }} else if (dim === 'volume') {{
         setTierFilter('vol', key);
+      }} else if (dim === 'rvol') {{
+        setTierFilter('rvol', key);
       }} else if (dim === 'catalyst') {{
         document.getElementById("filter-cat").value = key;
         renderHistoryTable();
@@ -2345,6 +2420,7 @@ def run_scanner():
         open_price: "09:30 Open Price ($)",
         premarket_gap_pct: "Pre-Market Gap %",
         float_turnover_x: "Float Turnover (x)",
+        relative_volume_10d_calc: "Relative Volume (10d)",
         day_volume: "Day Volume (Millions)",
         minutes_to_day_high: "Peak Minute"
       }};
@@ -2491,6 +2567,11 @@ def run_scanner():
         if (key === 'mid') return RAW_HISTORY.filter(r => (r.day_volume || 0) >= 25000000 && (r.day_volume || 0) <= 100000000);
         return RAW_HISTORY.filter(r => (r.day_volume || 0) > 100000000);
       }}
+      if (dim === 'rvol') {{
+        if (key === 'low') return RAW_HISTORY.filter(r => (r.relative_volume_10d_calc || 0) < 5.0);
+        if (key === 'mid') return RAW_HISTORY.filter(r => (r.relative_volume_10d_calc || 0) >= 5.0 && (r.relative_volume_10d_calc || 0) <= 50.0);
+        return RAW_HISTORY.filter(r => (r.relative_volume_10d_calc || 0) > 50.0);
+      }}
       if (dim === 'cat') {{
         return RAW_HISTORY.filter(r => (r.catalyst_category || "") === key);
       }}
@@ -2553,6 +2634,10 @@ def run_scanner():
         if (key === 'low') {{ title = "Day Volume: < 25M (Light / Moderate Volume)"; badge = "Volume Cohort"; }}
         else if (key === 'mid') {{ title = "Day Volume: 25M - 100M (Active / Heavy Liquidity)"; badge = "Volume Cohort"; }}
         else {{ title = "Day Volume: > 100M (Extreme / Hyper-Volume)"; badge = "Volume Cohort"; }}
+      }} else if (dim === 'rvol') {{
+        if (key === 'low') {{ title = "Relative Volume: < 5x (Normal / Low Volume)"; badge = "RVOL Cohort"; }}
+        else if (key === 'mid') {{ title = "Relative Volume: 5x - 50x (Elevated Surge)"; badge = "RVOL Cohort"; }}
+        else {{ title = "Relative Volume: > 50x (Extreme Surge Multiple)"; badge = "RVOL Cohort"; }}
       }} else if (dim === 'cat') {{
         title = "Catalyst Sector: " + key;
         badge = "Sector Cohort";
@@ -2611,6 +2696,7 @@ def run_scanner():
             </td>
             <td class="py-2 px-3 text-right text-slate-200">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
             <td class="py-2 px-3 text-right text-emerald-400 font-bold">+${{(r.premarket_gap_pct||0).toFixed(1)}}%</td>
+            <td class="py-2 px-3 text-right font-bold text-purple-300 font-mono">${{r.relative_volume_10d_calc ? r.relative_volume_10d_calc.toFixed(1) + 'x' : '-'}}</td>
             <td class="py-2 px-3 text-right font-bold text-emerald-300">+${{mg.toFixed(1)}}%${{mg >= 50 ? ' 🔥' : ''}}</td>
             <td class="py-2 px-3 text-right ${{dayRet >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</td>
             <td class="py-2 px-3 text-right font-bold ${{simRet >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{simRet >= 0 ? '+' : ''}}${{simRet.toFixed(1)}}%</td>

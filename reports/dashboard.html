@@ -3740,7 +3740,7 @@ return Plotly;
               <span class="font-extrabold text-white text-sm bg-slate-800 px-2 py-0.5 rounded border border-slate-700">3 Leaders</span>
             </div>
             <div class="text-[11px] text-slate-500 text-right px-1">
-              Last Scan: 2026-10-17 15:07:38 UTC
+              Last Scan: 2026-10-17 16:07:49 UTC
             </div>
           </div>
         </div>
@@ -3771,22 +3771,22 @@ return Plotly;
 
       <!-- 4D MULTIDIMENSIONAL CATEGORY MATRIX -->
       
-    <!-- 5D MULTIDIMENSIONAL CATEGORY MATRIX -->
+    <!-- 6D MULTIDIMENSIONAL CATEGORY MATRIX -->
     <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2.5">
           <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-purple-500/20 text-purple-400 text-sm font-black border border-purple-500/30">🎯</span>
           <div>
             <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-              TODAY'S GAPPERS — 5D MULTIDIMENSIONAL CATEGORY MATRIX
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live Radar Cross-Section</span>
+              TODAY'S GAPPERS — 6D MULTIDIMENSIONAL CATEGORY MATRIX
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live 6D Radar Cross-Section</span>
             </h2>
             <p class="text-xs text-slate-400 mt-0.5">Pre-market leaders categorized across historical probability dimensions. Green badges indicate today's gappers. Click any bucket to inspect historical cohort.</p>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5">
         
         <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
           <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
@@ -3986,7 +3986,56 @@ return Plotly;
         
         <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
           <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
-            <span>🔬 E) CATALYST SECTOR</span>
+            <span>📈 E) RELATIVE VOLUME TIER</span>
+            <span class="text-[10px] text-slate-500 font-mono">3 Tiers</span>
+          </div>
+          <div class="space-y-2">
+            
+            <div onclick="openCohortModal('rvol', 'low')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">< 5x (Normal / Low)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=5 (17.2%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('TCRT')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">TCRT</span><span onclick="event.stopPropagation(); scrollToGapper('NCPL')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">NCPL</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">80.0%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+12.8%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="rvol" data-key="low">+-3.2%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('rvol', 'mid')" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 opacity-80 hover:opacity-100 hover:border-slate-700 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">5x - 50x (Elevated Surge)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=8 (27.6%)</span>
+              </div>
+              
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-500">75.0%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+24.1%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="rvol" data-key="mid">+-3.3%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('rvol', 'high')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">> 50x (Extreme Surge)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=16 (55.2%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('XLAB')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">XLAB</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">93.8%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+66.3%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="rvol" data-key="high">+0.7%</strong></span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
+            <span>🔬 F) CATALYST SECTOR</span>
             <span class="text-[10px] text-slate-500 font-mono">5 Tiers</span>
           </div>
           <div class="space-y-2">
@@ -4156,7 +4205,7 @@ return Plotly;
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           
-    <!-- 4D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -4164,7 +4213,7 @@ return Plotly;
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">5D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
@@ -4180,6 +4229,9 @@ return Plotly;
               <span>📊</span> > 100M (Extreme)
             </span>
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
+              <span>📈</span> > 50x (Extreme Surge)
+            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
               <span>🔬</span> AI / Tech / Hardware
             </span>
           </div>
@@ -4187,8 +4239,8 @@ return Plotly;
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">5D Composite Score</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 90.3% | Dump Risk: LOW (5.5%)</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 90.9% | Dump Risk: LOW (5.6%)</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
             <span class="text-2xl font-black text-purple-400 font-mono">95</span>
@@ -4205,7 +4257,7 @@ return Plotly;
               <th class="py-2.5 px-3">Dimension & Assigned Cohort</th>
               <th class="py-2.5 px-2 text-center">Cohort Size</th>
               <th class="py-2.5 px-2 text-right">+2% Breakout Rate</th>
-              <th class="py-2.5 px-2 text-right">Avg Float Turnover</th>
+              <th class="py-2.5 px-2 text-right">Turnover / RVOL</th>
               <th class="py-2.5 px-2 text-right">Hist Avg Max Run</th>
               <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
               <th class="py-2.5 px-2 text-center">Critical Dump Rate</th>
@@ -4220,7 +4272,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">4 of 29 <span class="text-[10px] text-slate-500">(13.8%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(4/4)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">59.4x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">59.4x <span class="text-[10px] text-purple-300 font-normal">(1399.9x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+111.3%</td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
             <span class="sim-exit-cohort" data-dim="price" data-key="micro">+2.0%</span>
@@ -4239,7 +4291,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">80.0% <span class="text-[10px] text-slate-500">(12/15)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">84.9x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">84.9x <span class="text-[10px] text-purple-300 font-normal">(793.0x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+37.0%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="gap" data-key="mod">-2.2%</span>
@@ -4258,7 +4310,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-500">71.4% <span class="text-[10px] text-slate-500">(10/14)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">7.5x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">7.5x <span class="text-[10px] text-purple-300 font-normal">(558.7x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+22.6%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="turn" data-key="low">-4.4%</span>
@@ -4277,7 +4329,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">9 of 29 <span class="text-[10px] text-slate-500">(31.0%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(9/9)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">145.1x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">145.1x <span class="text-[10px] text-purple-300 font-normal">(1289.6x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+92.6%</td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
             <span class="sim-exit-cohort" data-dim="vol" data-key="high">+2.0%</span>
@@ -4292,11 +4344,30 @@ return Plotly;
         
         <tr class="hover:bg-slate-800/40 transition-colors">
           <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>📈 Relative Volume Cohort:</span> <span class="text-purple-300 font-mono ml-1">> 50x (Extreme Surge)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">16 of 29 <span class="text-[10px] text-slate-500">(55.2%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">93.8% <span class="text-[10px] text-slate-500">(15/16)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">151.4x <span class="text-[10px] text-purple-300 font-normal">(1802.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+66.3%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="rvol" data-key="high">+0.7%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">6.2% <span class="text-[10px] text-slate-500">(1)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('rvol', 'high')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (16)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
             <span>🔬 Catalyst Sector Cohort:</span> <span class="text-purple-300 font-mono ml-1">AI / Tech / Hardware</span>
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">6 of 29 <span class="text-[10px] text-slate-500">(20.7%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(6/6)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">87.7x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">87.7x <span class="text-[10px] text-purple-300 font-normal">(778.7x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+58.6%</td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
             <span class="sim-exit-cohort" data-dim="cat" data-key="AI / Tech / Hardware">+2.0%</span>
@@ -4315,10 +4386,10 @@ return Plotly;
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 5D QUANT COHORT VERDICT:
+          <span>💡</span> 6D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
-          Historically, sub-$2.50 small-caps in the <strong>AI / Tech</strong> sector gapping 10-50% with low pre-market turnover (&lt;20x) exhibit the highest breakout reliability (<strong>100.0%</strong> win rate across 6 matching tech sessions) and an explosive avg max run of <strong>+58.6%</strong>. Dump risk is negligible (0.0%). <em>Strategic Recommendation:</em> High-conviction morning scalp candidate with disciplined scaling on the opening spike.
+          Historically, sub-$2.50 small-caps in the <strong>AI / Tech</strong> sector gapping 10-50% with extreme relative volume surge (<strong>100.8x</strong> 10-day RVOL) exhibit the highest breakout reliability (<strong>100.0%</strong> win rate across matching tech sessions) and an explosive avg max run of <strong>+58.6%</strong> with zero dumps. <em>Strategic Recommendation:</em> High-conviction morning scalp candidate with disciplined scaling on the opening spike.
         </p>
       </div>
     </div>
@@ -4448,7 +4519,7 @@ return Plotly;
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           
-    <!-- 4D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -4456,7 +4527,7 @@ return Plotly;
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">5D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
@@ -4472,6 +4543,9 @@ return Plotly;
               <span>📊</span> 25M - 100M (Active / Heavy)
             </span>
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
+              <span>📈</span> < 5x (Normal / Low)
+            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
               <span>🔬</span> Biotech / Pharma
             </span>
           </div>
@@ -4479,11 +4553,11 @@ return Plotly;
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">5D Composite Score</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 79.9% | Dump Risk: ELEVATED (10.6%)</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 79.9% | Dump Risk: ELEVATED (12.1%)</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
-            <span class="text-2xl font-black text-purple-400 font-mono">64</span>
+            <span class="text-2xl font-black text-purple-400 font-mono">59</span>
             <span class="text-xs font-bold text-purple-300">/100</span>
             <span class="block text-[10px] font-extrabold text-amber-400 uppercase tracking-wider">SPECULATIVE PLAY</span>
           </div>
@@ -4497,7 +4571,7 @@ return Plotly;
               <th class="py-2.5 px-3">Dimension & Assigned Cohort</th>
               <th class="py-2.5 px-2 text-center">Cohort Size</th>
               <th class="py-2.5 px-2 text-right">+2% Breakout Rate</th>
-              <th class="py-2.5 px-2 text-right">Avg Float Turnover</th>
+              <th class="py-2.5 px-2 text-right">Turnover / RVOL</th>
               <th class="py-2.5 px-2 text-right">Hist Avg Max Run</th>
               <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
               <th class="py-2.5 px-2 text-center">Critical Dump Rate</th>
@@ -4512,7 +4586,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">18 of 29 <span class="text-[10px] text-slate-500">(62.1%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">94.4% <span class="text-[10px] text-slate-500">(17/18)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">126.2x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">126.2x <span class="text-[10px] text-purple-300 font-normal">(835.3x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+43.2%</td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
             <span class="sim-exit-cohort" data-dim="price" data-key="sweet">+0.8%</span>
@@ -4531,7 +4605,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">80.0% <span class="text-[10px] text-slate-500">(12/15)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">84.9x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">84.9x <span class="text-[10px] text-purple-300 font-normal">(793.0x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+37.0%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="gap" data-key="mod">-2.2%</span>
@@ -4550,7 +4624,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-500">71.4% <span class="text-[10px] text-slate-500">(10/14)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">7.5x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">7.5x <span class="text-[10px] text-purple-300 font-normal">(558.7x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+22.6%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="turn" data-key="low">-4.4%</span>
@@ -4569,7 +4643,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-500">78.6% <span class="text-[10px] text-slate-500">(11/14)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">104.4x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">104.4x <span class="text-[10px] text-purple-300 font-normal">(1237.3x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+27.7%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="vol" data-key="mid">-2.6%</span>
@@ -4584,11 +4658,30 @@ return Plotly;
         
         <tr class="hover:bg-slate-800/40 transition-colors">
           <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>📈 Relative Volume Cohort:</span> <span class="text-purple-300 font-mono ml-1">< 5x (Normal / Low)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">5 of 29 <span class="text-[10px] text-slate-500">(17.2%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">80.0% <span class="text-[10px] text-slate-500">(4/5)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">5.5x <span class="text-[10px] text-purple-300 font-normal">(1.0x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+12.8%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="rvol" data-key="low">-3.2%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-rose-400 font-bold">20.0% <span class="text-[10px] text-slate-500">(1)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('rvol', 'low')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (5)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
             <span>🔬 Catalyst Sector Cohort:</span> <span class="text-purple-300 font-mono ml-1">Biotech / Pharma</span>
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">8 of 29 <span class="text-[10px] text-slate-500">(27.6%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-500">75.0% <span class="text-[10px] text-slate-500">(6/8)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">40.5x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">40.5x <span class="text-[10px] text-purple-300 font-normal">(1307.4x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+28.0%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="cat" data-key="Biotech / Pharma">-4.7%</span>
@@ -4607,10 +4700,10 @@ return Plotly;
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 5D QUANT COHORT VERDICT:
+          <span>💡</span> 6D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
-          Biotech runners in the <strong>$2-$5 Sweet Spot</strong> attract sustained retail volume with an <strong>84.2%</strong> breakout rate and <strong>+28.0%</strong> avg max run. While fade rate from day highs is moderate (-29.8%), the 30-min window offers strong continuation before afternoon chop. <em>Strategic Recommendation:</em> Lock in +2% scalp early or trail a stop at the 9:30 open price.
+          Biotech runners in the <strong>$2-$5 Sweet Spot</strong> attract sustained speculative interest (<strong>84.2%</strong> breakout rate, <strong>+28.0%</strong> avg max run), but with normal/low relative volume (<strong>0.9x</strong> RVOL) the risk of afternoon fade increases. <em>Strategic Recommendation:</em> Lock in +2% scalp early or trail a stop at the 9:30 open price.
         </p>
       </div>
     </div>
@@ -4740,7 +4833,7 @@ return Plotly;
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           
-    <!-- 4D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -4748,7 +4841,7 @@ return Plotly;
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">5D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
@@ -4764,6 +4857,9 @@ return Plotly;
               <span>📊</span> < 25M (Light / Moderate)
             </span>
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
+              <span>📈</span> < 5x (Normal / Low)
+            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
               <span>🔬</span> Compliance / Uplisting
             </span>
           </div>
@@ -4771,11 +4867,11 @@ return Plotly;
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">5D Composite Score</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 85.8% | Dump Risk: ELEVATED (10.0%)</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 84.9% | Dump Risk: ELEVATED (11.7%)</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
-            <span class="text-2xl font-black text-purple-400 font-mono">62</span>
+            <span class="text-2xl font-black text-purple-400 font-mono">57</span>
             <span class="text-xs font-bold text-purple-300">/100</span>
             <span class="block text-[10px] font-extrabold text-amber-400 uppercase tracking-wider">SPECULATIVE PLAY</span>
           </div>
@@ -4789,7 +4885,7 @@ return Plotly;
               <th class="py-2.5 px-3">Dimension & Assigned Cohort</th>
               <th class="py-2.5 px-2 text-center">Cohort Size</th>
               <th class="py-2.5 px-2 text-right">+2% Breakout Rate</th>
-              <th class="py-2.5 px-2 text-right">Avg Float Turnover</th>
+              <th class="py-2.5 px-2 text-right">Turnover / RVOL</th>
               <th class="py-2.5 px-2 text-right">Hist Avg Max Run</th>
               <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
               <th class="py-2.5 px-2 text-center">Critical Dump Rate</th>
@@ -4804,7 +4900,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">18 of 29 <span class="text-[10px] text-slate-500">(62.1%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">94.4% <span class="text-[10px] text-slate-500">(17/18)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">126.2x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">126.2x <span class="text-[10px] text-purple-300 font-normal">(835.3x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+43.2%</td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
             <span class="sim-exit-cohort" data-dim="price" data-key="sweet">+0.8%</span>
@@ -4823,7 +4919,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">80.0% <span class="text-[10px] text-slate-500">(12/15)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">84.9x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">84.9x <span class="text-[10px] text-purple-300 font-normal">(793.0x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+37.0%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="gap" data-key="mod">-2.2%</span>
@@ -4842,7 +4938,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-500">71.4% <span class="text-[10px] text-slate-500">(10/14)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">7.5x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">7.5x <span class="text-[10px] text-purple-300 font-normal">(558.7x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+22.6%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="turn" data-key="low">-4.4%</span>
@@ -4861,7 +4957,7 @@ return Plotly;
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">6 of 29 <span class="text-[10px] text-slate-500">(20.7%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">83.3% <span class="text-[10px] text-slate-500">(5/6)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">2.5x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">2.5x <span class="text-[10px] text-purple-300 font-normal">(15.1x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+16.0%</td>
           <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
             <span class="sim-exit-cohort" data-dim="vol" data-key="low">-2.3%</span>
@@ -4876,11 +4972,30 @@ return Plotly;
         
         <tr class="hover:bg-slate-800/40 transition-colors">
           <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>📈 Relative Volume Cohort:</span> <span class="text-purple-300 font-mono ml-1">< 5x (Normal / Low)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">5 of 29 <span class="text-[10px] text-slate-500">(17.2%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">80.0% <span class="text-[10px] text-slate-500">(4/5)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">5.5x <span class="text-[10px] text-purple-300 font-normal">(1.0x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+12.8%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="rvol" data-key="low">-3.2%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-rose-400 font-bold">20.0% <span class="text-[10px] text-slate-500">(1)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('rvol', 'low')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (5)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
             <span>🔬 Catalyst Sector Cohort:</span> <span class="text-purple-300 font-mono ml-1">Compliance / Uplisting</span>
           </td>
           <td class="py-2.5 px-2 text-center text-slate-300">2 of 29 <span class="text-[10px] text-slate-500">(6.9%)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(2/2)</span></td>
-          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">13.6x</td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">13.6x <span class="text-[10px] text-purple-300 font-normal">(171.1x RV)</span></td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+34.7%</td>
           <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
             <span class="sim-exit-cohort" data-dim="cat" data-key="Compliance / Uplisting">+2.0%</span>
@@ -4899,10 +5014,10 @@ return Plotly;
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 5D QUANT COHORT VERDICT:
+          <span>💡</span> 6D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
-          Compliance and uplisting catalysts in the <strong>$2-$5 price tier</strong> tend to produce immediate opening push momentum (<strong>100.0%</strong> breakout rate) but encounter heavier midday distribution (+3.3% to +34.7% historical max run). <em>Strategic Recommendation:</em> Fast +2% scalp execution within the first 15 minutes is heavily favored over holding to close.
+          Compliance and uplisting catalysts in the <strong>$2-$5 price tier</strong> tend to produce immediate opening push momentum (<strong>100.0%</strong> breakout rate), but low relative volume multiple (<strong>1.5x</strong> RVOL) indicates limited institutional expansion past the morning push. <em>Strategic Recommendation:</em> Fast +2% scalp execution within the first 15 minutes is heavily favored over holding to close.
         </p>
       </div>
     </div>
@@ -5111,12 +5226,12 @@ return Plotly;
           </div>
         </div>
 
-        <!-- Row 2: 4 Interactive Quick-Tier Range Filters -->
+        <!-- Row 2: 5 Interactive Quick-Tier Range Filters -->
         <div class="pt-3 border-t border-slate-800/80">
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
             <span>⚙️</span> Parameter Explorer: Quick-Select Tiers & Custom Range Filters
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
             
             <!-- 1. 09:30 Open Price ($) -->
             <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
@@ -5175,7 +5290,7 @@ return Plotly;
             <!-- 4. Day Volume (M) -->
             <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📈</span> Day Volume (M)</span>
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📊</span> Day Volume (M)</span>
                 <span class="text-[10px] text-slate-500 font-mono">Participation</span>
               </div>
               <div class="flex flex-wrap gap-1" id="tier-vol-btns">
@@ -5187,6 +5302,24 @@ return Plotly;
               <div class="grid grid-cols-2 gap-1.5 pt-1">
                 <input id="input-vol-min" type="number" step="5" placeholder="Min M" oninput="onCustomRangeInput('vol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
                 <input id="input-vol-max" type="number" step="5" placeholder="Max M" oninput="onCustomRangeInput('vol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+              </div>
+            </div>
+
+            <!-- 5. Relative Volume (10d) -->
+            <div class="bg-slate-950/80 border border-slate-800/90 rounded-xl p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1"><span>📈</span> Rel Volume (10d)</span>
+                <span class="text-[10px] text-slate-500 font-mono">Surge Multiple</span>
+              </div>
+              <div class="flex flex-wrap gap-1" id="tier-rvol-btns">
+                <button type="button" onclick="setTierFilter('rvol', 'all')" id="btn-rvol-all" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">All</button>
+                <button type="button" onclick="setTierFilter('rvol', 'low')" id="btn-rvol-low" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&lt; 5x</button>
+                <button type="button" onclick="setTierFilter('rvol', 'mid')" id="btn-rvol-mid" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">5x - 50x</button>
+                <button type="button" onclick="setTierFilter('rvol', 'high')" id="btn-rvol-high" class="tier-btn-rvol px-2 py-1 rounded text-[11px] font-semibold bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">&gt; 50x</button>
+              </div>
+              <div class="grid grid-cols-2 gap-1.5 pt-1">
+                <input id="input-rvol-min" type="number" step="1" placeholder="Min x" oninput="onCustomRangeInput('rvol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
+                <input id="input-rvol-max" type="number" step="1" placeholder="Max x" oninput="onCustomRangeInput('rvol')" class="w-full bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-emerald-500">
               </div>
             </div>
 
@@ -5226,6 +5359,9 @@ return Plotly;
                 <button type="button" onclick="setPivotDimension('volume')" id="pdim-volume" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
                   Day Volume Tiers
                 </button>
+                <button type="button" onclick="setPivotDimension('rvol')" id="pdim-rvol" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Relative Volume Tiers
+                </button>
                 <button type="button" onclick="setPivotDimension('catalyst')" id="pdim-catalyst" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
                   Catalyst Category
                 </button>
@@ -5244,7 +5380,7 @@ return Plotly;
                     <th class="py-2.5 px-2 text-center">Count</th>
                     <th class="py-2.5 px-2 text-right">+2% Rate</th>
                     <th class="py-2.5 px-2 text-right">Avg PM Gap</th>
-                    <th class="py-2.5 px-2 text-right">Avg Vol / Rot</th>
+                    <th class="py-2.5 px-2 text-right">Vol / Turn / RVOL</th>
                     <th class="py-2.5 px-2 text-right">Avg Max Run</th>
                     <th class="py-2.5 px-2 text-right">Day Return</th>
                     <th class="py-2.5 px-2 text-right text-emerald-400">Sim Exit %</th>
@@ -5285,6 +5421,7 @@ return Plotly;
                   <option value="open_price">09:30 Open Price ($)</option>
                   <option value="premarket_gap_pct">PM Gap %</option>
                   <option value="float_turnover_x">Float Turnover (x)</option>
+                  <option value="relative_volume_10d_calc">Relative Volume (10d)</option>
                   <option value="day_volume">Day Volume (M)</option>
                   <option value="minutes_to_day_high">Peak Min</option>
                 </select>
@@ -5333,6 +5470,7 @@ return Plotly;
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('fade_from_high_pct')">Fade % ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('day_volume')">Day Volume ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('float_turnover_x')">Float Turnover ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('relative_volume_10d_calc')">Rel Vol ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
                 <th class="py-3 px-3 font-bold text-center cursor-pointer whitespace-nowrap" onclick="sortTable('dump_warning')">Status ↕</th>
@@ -5377,6 +5515,7 @@ return Plotly;
                 <th class="py-2.5 px-3">Company & Catalyst</th>
                 <th class="py-2.5 px-3 text-right">09:30 Open</th>
                 <th class="py-2.5 px-3 text-right">PM Gap</th>
+                <th class="py-2.5 px-3 text-right">Rel Vol</th>
                 <th class="py-2.5 px-3 text-right">Max Run %</th>
                 <th class="py-2.5 px-3 text-right">Day Return</th>
                 <th class="py-2.5 px-3 text-right text-emerald-400">Sim Exit %</th>
@@ -5407,7 +5546,7 @@ return Plotly;
 
   <!-- Historical Data & Application Logic -->
   <script>
-    const RAW_HISTORY = [{"date": "2026-10-16", "ticker": "NCPL", "company": "Netcapital Inc.", "catalyst_category": "Compliance / Uplisting", "premarket_gap_pct": 32.27, "premarket_volume": 2233296, "float_shares": 2089079, "open_price": 2.4, "day_high": 2.4799, "day_low": 2.02, "close_price": 2.15, "max_gain_pct": 3.33, "day_return_pct": -10.42, "fade_from_high_pct": -13.3, "day_range_pct": 22.77, "day_volume": 24010000, "float_turnover_x": 11.5, "first_30m_change_pct": -12.5, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed"}, {"date": "2026-10-16", "ticker": "TCRT", "company": "Alaunos Therapeutics, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 31.65, "premarket_volume": 10120703, "float_shares": 2325202, "open_price": 2.81, "day_high": 2.99, "day_low": 2.31, "close_price": 2.62, "max_gain_pct": 6.41, "day_return_pct": -6.76, "fade_from_high_pct": -12.37, "day_range_pct": 29.44, "day_volume": 32042200, "float_turnover_x": 13.8, "first_30m_change_pct": -6.94, "hit_plus_2pct": "Yes", "minutes_to_day_high": 12, "dump_warning": "Held/Pushed"}, {"date": "2026-10-16", "ticker": "XLAB", "company": "Exascale Labs Holdings Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 20.22, "premarket_volume": 10844742, "float_shares": 19397076, "open_price": 1.85, "day_high": 3.8399, "day_low": 1.75, "close_price": 2.335, "max_gain_pct": 107.56, "day_return_pct": 26.22, "fade_from_high_pct": -39.19, "day_range_pct": 119.42, "day_volume": 170455200, "float_turnover_x": 8.8, "first_30m_change_pct": 19.19, "hit_plus_2pct": "Yes", "minutes_to_day_high": 44, "dump_warning": "Held/Pushed"}, {"date": "2026-10-15", "ticker": "SPRC", "company": "SciSparc Ltd.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 16.0, "premarket_volume": 14850000, "float_shares": 562600, "open_price": 4.2, "day_high": 5.3299, "day_low": 1.63, "close_price": 2.0, "max_gain_pct": 26.9, "day_return_pct": -52.38, "fade_from_high_pct": -62.48, "day_range_pct": 226.99, "day_volume": 34767400, "float_turnover_x": 61.8, "first_30m_change_pct": 6.67, "hit_plus_2pct": "Yes", "minutes_to_day_high": 15, "dump_warning": "Held/Pushed"}, {"date": "2026-10-14", "ticker": "AEHL", "company": "Antelope Enterprise Holdings Limited", "catalyst_category": "Crypto / Treasury", "premarket_gap_pct": 183.04, "premarket_volume": 1268519, "float_shares": 16457836, "open_price": 24.11, "day_high": 30.6, "day_low": 11.6, "close_price": 11.98, "max_gain_pct": 26.92, "day_return_pct": -50.31, "fade_from_high_pct": -60.85, "day_range_pct": 163.79, "day_volume": 12982000, "float_turnover_x": 0.8, "first_30m_change_pct": 1.74, "hit_plus_2pct": "Yes", "minutes_to_day_high": 172, "dump_warning": "Held/Pushed"}, {"date": "2026-10-14", "ticker": "GRML", "company": "Greenland Mines Ltd", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 35.38, "premarket_volume": 9166266, "float_shares": 12072721, "open_price": 7.51, "day_high": 7.53, "day_low": 6.35, "close_price": 6.5198, "max_gain_pct": 0.27, "day_return_pct": -13.19, "fade_from_high_pct": -13.42, "day_range_pct": 18.58, "day_volume": 27862500, "float_turnover_x": 2.3, "first_30m_change_pct": -1.26, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed"}, {"date": "2026-10-13", "ticker": "PFAI", "company": "Pinnacle Food Group Limited", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 129.5, "premarket_volume": 11950000, "float_shares": 3590000, "open_price": 5.95, "day_high": 6.01, "day_low": 3.97, "close_price": 4.4501, "max_gain_pct": 1.01, "day_return_pct": -25.21, "fade_from_high_pct": -25.96, "day_range_pct": 51.39, "day_volume": 38390800, "float_turnover_x": 10.7, "first_30m_change_pct": -20.96, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed"}, {"date": "2026-10-13", "ticker": "TCRT", "company": "Alaunos Therapeutics, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 64.8, "premarket_volume": 61360000, "float_shares": 2430000, "open_price": 1.74, "day_high": 4.32, "day_low": 1.51, "close_price": 3.03, "max_gain_pct": 148.28, "day_return_pct": 74.14, "fade_from_high_pct": -29.86, "day_range_pct": 186.09, "day_volume": 256847300, "float_turnover_x": 105.7, "first_30m_change_pct": 2.3, "hit_plus_2pct": "Yes", "minutes_to_day_high": 165, "dump_warning": "Held/Pushed"}, {"date": "2026-10-13", "ticker": "YJ", "company": "Yunji Inc. - American Depository Shares", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 37.0, "premarket_volume": 16489999, "float_shares": 2550000, "open_price": 2.5797, "day_high": 2.5797, "day_low": 1.8301, "close_price": 2.075, "max_gain_pct": 0.0, "day_return_pct": -19.56, "fade_from_high_pct": -19.56, "day_range_pct": 40.96, "day_volume": 25137900, "float_turnover_x": 9.9, "first_30m_change_pct": -18.98, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "CRITICAL DUMP"}, {"date": "2026-10-12", "ticker": "MNDR", "company": "Mobile-health Network Solutions", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 204.7, "premarket_volume": 48970000, "float_shares": 428800, "open_price": 2.585, "day_high": 5.67, "day_low": 2.3, "close_price": 3.025, "max_gain_pct": 119.34, "day_return_pct": 17.02, "fade_from_high_pct": -46.65, "day_range_pct": 146.52, "day_volume": 192512600, "float_turnover_x": 449.0, "first_30m_change_pct": 27.85, "hit_plus_2pct": "Yes", "minutes_to_day_high": 105, "dump_warning": "Held/Pushed"}, {"date": "2026-10-12", "ticker": "YMAT", "company": "J-Star Holding Co., Ltd.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 101.6, "premarket_volume": 30890000, "float_shares": 1580000, "open_price": 2.58, "day_high": 4.49, "day_low": 1.95, "close_price": 2.875, "max_gain_pct": 74.03, "day_return_pct": 11.43, "fade_from_high_pct": -35.97, "day_range_pct": 130.26, "day_volume": 85404400, "float_turnover_x": 54.1, "first_30m_change_pct": -18.61, "hit_plus_2pct": "Yes", "minutes_to_day_high": 80, "dump_warning": "Held/Pushed"}, {"date": "2026-10-12", "ticker": "GIXI", "company": "Gix Internet Ltd.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 53.0, "premarket_volume": 7810000, "float_shares": 2490000, "open_price": 6.25, "day_high": 8.34, "day_low": 4.2, "close_price": 4.68, "max_gain_pct": 33.44, "day_return_pct": -25.12, "fade_from_high_pct": -43.88, "day_range_pct": 98.57, "day_volume": 38928500, "float_turnover_x": 15.6, "first_30m_change_pct": -6.56, "hit_plus_2pct": "Yes", "minutes_to_day_high": 50, "dump_warning": "Held/Pushed"}, {"date": "2026-10-12", "ticker": "CLWT", "company": "Euro Tech Holdings Company Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 45.6, "premarket_volume": 34350000, "float_shares": 3080000, "open_price": 1.99, "day_high": 2.34, "day_low": 1.63, "close_price": 2.15, "max_gain_pct": 17.59, "day_return_pct": 8.04, "fade_from_high_pct": -8.12, "day_range_pct": 43.56, "day_volume": 71134400, "float_turnover_x": 23.1, "first_30m_change_pct": 3.51, "hit_plus_2pct": "Yes", "minutes_to_day_high": 5, "dump_warning": "Held/Pushed"}, {"date": "2026-10-12", "ticker": "LNKS", "company": "Linkers Industries Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 34.4, "premarket_volume": 17130000, "float_shares": 1500000, "open_price": 1.285, "day_high": 3.49, "day_low": 1.23, "close_price": 2.2501, "max_gain_pct": 171.6, "day_return_pct": 75.11, "fade_from_high_pct": -35.53, "day_range_pct": 183.74, "day_volume": 150137700, "float_turnover_x": 100.1, "first_30m_change_pct": 6.61, "hit_plus_2pct": "Yes", "minutes_to_day_high": 305, "dump_warning": "Held/Pushed"}, {"date": "2026-10-08", "ticker": "FLYE", "company": "Fly-E Group, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 149.6, "premarket_volume": 60370000, "float_shares": 1560000, "open_price": 3.17, "day_high": 3.47, "day_low": 1.95, "close_price": 2.32, "max_gain_pct": 9.46, "day_return_pct": -26.81, "fade_from_high_pct": -33.14, "day_range_pct": 77.95, "day_volume": 133012600, "float_turnover_x": 85.3, "first_30m_change_pct": -18.29, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed"}, {"date": "2026-10-07", "ticker": "SXTC", "company": "China SXT Pharmaceuticals, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 156.0, "premarket_volume": 30950000, "float_shares": 1030000, "open_price": 3.21, "day_high": 9.59, "day_low": 1.87, "close_price": 2.83, "max_gain_pct": 198.75, "day_return_pct": -11.84, "fade_from_high_pct": -70.49, "day_range_pct": 412.83, "day_volume": 146566900, "float_turnover_x": 142.3, "first_30m_change_pct": -27.12, "hit_plus_2pct": "Yes", "minutes_to_day_high": 270, "dump_warning": "Held/Pushed"}, {"date": "2026-10-07", "ticker": "BIYA", "company": "Baiya International Group Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 56.8, "premarket_volume": 57770000, "float_shares": 2700000, "open_price": 2.14, "day_high": 2.89, "day_low": 1.78, "close_price": 2.285, "max_gain_pct": 35.05, "day_return_pct": 6.78, "fade_from_high_pct": -20.93, "day_range_pct": 62.36, "day_volume": 116012100, "float_turnover_x": 43.0, "first_30m_change_pct": 3.97, "hit_plus_2pct": "Yes", "minutes_to_day_high": 250, "dump_warning": "Held/Pushed"}, {"date": "2026-10-07", "ticker": "LPCN", "company": "Lipocine Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 40.0, "premarket_volume": 67330000, "float_shares": 7860000, "open_price": 2.9599, "day_high": 3.14, "day_low": 2.07, "close_price": 2.19, "max_gain_pct": 6.08, "day_return_pct": -26.01, "fade_from_high_pct": -30.25, "day_range_pct": 51.69, "day_volume": 105835900, "float_turnover_x": 13.5, "first_30m_change_pct": -10.98, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed"}, {"date": "2026-10-07", "ticker": "LGCL", "company": "Lucas GC Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 10.6, "premarket_volume": 8199999, "float_shares": 48700, "open_price": 2.49, "day_high": 4.53, "day_low": 2.41, "close_price": 2.84, "max_gain_pct": 81.93, "day_return_pct": 14.06, "fade_from_high_pct": -37.31, "day_range_pct": 87.97, "day_volume": 45645000, "float_turnover_x": 937.3, "first_30m_change_pct": 30.12, "hit_plus_2pct": "Yes", "minutes_to_day_high": 10, "dump_warning": "Held/Pushed"}, {"date": "2026-10-07", "ticker": "SPAI", "company": "Safe Pro Group Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 5.1, "premarket_volume": 3560000, "float_shares": 10230000, "open_price": 4.32, "day_high": 4.81, "day_low": 3.8501, "close_price": 4.7011, "max_gain_pct": 11.34, "day_return_pct": 8.82, "fade_from_high_pct": -2.26, "day_range_pct": 24.93, "day_volume": 5705600, "float_turnover_x": 0.6, "first_30m_change_pct": -3.24, "hit_plus_2pct": "Yes", "minutes_to_day_high": 380, "dump_warning": "Held/Pushed"}, {"date": "2026-10-06", "ticker": "IPDN", "company": "Professional Diversity Network, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 102.6, "premarket_volume": 30690000, "float_shares": 475700, "open_price": 6.31, "day_high": 6.78, "day_low": 4.09, "close_price": 4.585, "max_gain_pct": 7.45, "day_return_pct": -27.34, "fade_from_high_pct": -32.37, "day_range_pct": 65.77, "day_volume": 70599400, "float_turnover_x": 148.4, "first_30m_change_pct": -10.06, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed"}, {"date": "2026-10-02", "ticker": "AMOD", "company": "Alpha Modus Holdings, Inc.", "catalyst_category": "Crypto / Treasury", "premarket_gap_pct": 197.44, "premarket_volume": 78074895, "float_shares": 542550, "open_price": 3.4703, "day_high": 4.77, "day_low": 3.08, "close_price": 3.485, "max_gain_pct": 37.45, "day_return_pct": 0.42, "fade_from_high_pct": -26.94, "day_range_pct": 54.87, "day_volume": 194457300, "float_turnover_x": 358.4, "first_30m_change_pct": 12.65, "hit_plus_2pct": "Yes", "minutes_to_day_high": 17, "dump_warning": "Held/Pushed"}, {"date": "2026-10-02", "ticker": "CYCU", "company": "Cycurion, Inc.", "catalyst_category": "Compliance / Uplisting", "premarket_gap_pct": 11.52, "premarket_volume": 3058165, "float_shares": 3137181, "open_price": 2.98, "day_high": 4.95, "day_low": 2.6401, "close_price": 3.81, "max_gain_pct": 66.11, "day_return_pct": 27.85, "fade_from_high_pct": -23.03, "day_range_pct": 87.49, "day_volume": 49204600, "float_turnover_x": 15.7, "first_30m_change_pct": -6.25, "hit_plus_2pct": "Yes", "minutes_to_day_high": 78, "dump_warning": "Held/Pushed"}, {"date": "2026-10-01", "ticker": "NXL", "company": "Nexalin Technology, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 104.91, "premarket_volume": 14092562, "float_shares": 652226, "open_price": 8.8, "day_high": 10.9745, "day_low": 6.8, "close_price": 7.5299, "max_gain_pct": 24.71, "day_return_pct": -14.43, "fade_from_high_pct": -31.39, "day_range_pct": 61.39, "day_volume": 62336600, "float_turnover_x": 95.6, "first_30m_change_pct": 12.5, "hit_plus_2pct": "Yes", "minutes_to_day_high": 36, "dump_warning": "Held/Pushed"}, {"date": "2026-10-01", "ticker": "VEEA", "company": "Veea Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 36.87, "premarket_volume": 24840842, "float_shares": 1594437, "open_price": 2.98, "day_high": 4.08, "day_low": 2.92, "close_price": 3.48, "max_gain_pct": 36.91, "day_return_pct": 16.78, "fade_from_high_pct": -14.71, "day_range_pct": 39.73, "day_volume": 80637800, "float_turnover_x": 50.6, "first_30m_change_pct": 9.23, "hit_plus_2pct": "Yes", "minutes_to_day_high": 356, "dump_warning": "Held/Pushed"}, {"date": "2026-10-01", "ticker": "MEDS", "company": "DataMeds AI, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 22.71, "premarket_volume": 18666771, "float_shares": 1535288, "open_price": 3.92, "day_high": 4.35, "day_low": 3.63, "close_price": 4.04, "max_gain_pct": 10.97, "day_return_pct": 3.06, "fade_from_high_pct": -7.13, "day_range_pct": 19.83, "day_volume": 34897600, "float_turnover_x": 22.7, "first_30m_change_pct": 4.78, "hit_plus_2pct": "Yes", "minutes_to_day_high": 20, "dump_warning": "Held/Pushed"}, {"date": "2026-09-30", "ticker": "SMX", "company": "SMX Security Matters Ltd", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 68.2, "premarket_volume": 19500000, "float_shares": 890000, "open_price": 3.4, "day_high": 4.6, "day_low": 3.1, "close_price": 3.85, "max_gain_pct": 35.29, "day_return_pct": 13.24, "fade_from_high_pct": -16.3, "day_range_pct": 48.39, "day_volume": 58100, "float_turnover_x": 0.1, "first_30m_change_pct": 14.71, "hit_plus_2pct": "Yes", "minutes_to_day_high": 45, "dump_warning": "Held/Pushed"}, {"date": "2026-09-30", "ticker": "LUNG", "company": "LungLife AI, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 42.5, "premarket_volume": 11200000, "float_shares": 1200000, "open_price": 5.2, "day_high": 5.2, "day_low": 3.85, "close_price": 3.95, "max_gain_pct": 0.0, "day_return_pct": -24.04, "fade_from_high_pct": -24.04, "day_range_pct": 35.06, "day_volume": 250900, "float_turnover_x": 0.2, "first_30m_change_pct": -18.27, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "CRITICAL DUMP"}, {"date": "2026-09-29", "ticker": "POET", "company": "POET Technologies Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 28.4, "premarket_volume": 8400000, "float_shares": 3400000, "open_price": 4.1, "day_high": 4.88, "day_low": 3.95, "close_price": 4.52, "max_gain_pct": 19.02, "day_return_pct": 10.24, "fade_from_high_pct": -7.38, "day_range_pct": 23.54, "day_volume": 6907600, "float_turnover_x": 2.0, "first_30m_change_pct": 8.54, "hit_plus_2pct": "Yes", "minutes_to_day_high": 72, "dump_warning": "Held/Pushed"}];
+    const RAW_HISTORY = [{"date": "2026-10-16", "ticker": "NCPL", "company": "Netcapital Inc.", "catalyst_category": "Compliance / Uplisting", "premarket_gap_pct": 32.27, "premarket_volume": 2233296, "float_shares": 2089079, "open_price": 2.4, "day_high": 2.4799, "day_low": 2.02, "close_price": 2.15, "max_gain_pct": 3.33, "day_return_pct": -10.42, "fade_from_high_pct": -13.3, "day_range_pct": 22.77, "day_volume": 24010000, "float_turnover_x": 11.5, "first_30m_change_pct": -12.5, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 1.5}, {"date": "2026-10-16", "ticker": "TCRT", "company": "Alaunos Therapeutics, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 31.65, "premarket_volume": 10120703, "float_shares": 2325202, "open_price": 2.81, "day_high": 2.99, "day_low": 2.31, "close_price": 2.62, "max_gain_pct": 6.41, "day_return_pct": -6.76, "fade_from_high_pct": -12.37, "day_range_pct": 29.44, "day_volume": 32042200, "float_turnover_x": 13.8, "first_30m_change_pct": -6.94, "hit_plus_2pct": "Yes", "minutes_to_day_high": 12, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 0.9}, {"date": "2026-10-16", "ticker": "XLAB", "company": "Exascale Labs Holdings Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 20.22, "premarket_volume": 10844742, "float_shares": 19397076, "open_price": 1.85, "day_high": 3.8399, "day_low": 1.75, "close_price": 2.335, "max_gain_pct": 107.56, "day_return_pct": 26.22, "fade_from_high_pct": -39.19, "day_range_pct": 119.42, "day_volume": 170455200, "float_turnover_x": 8.8, "first_30m_change_pct": 19.19, "hit_plus_2pct": "Yes", "minutes_to_day_high": 44, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 100.2}, {"date": "2026-10-15", "ticker": "SPRC", "company": "SciSparc Ltd.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 16.0, "premarket_volume": 14850000, "float_shares": 562600, "open_price": 4.2, "day_high": 5.3299, "day_low": 1.63, "close_price": 2.0, "max_gain_pct": 26.9, "day_return_pct": -52.38, "fade_from_high_pct": -62.48, "day_range_pct": 226.99, "day_volume": 34767400, "float_turnover_x": 61.8, "first_30m_change_pct": 6.67, "hit_plus_2pct": "Yes", "minutes_to_day_high": 15, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 2863.9}, {"date": "2026-10-14", "ticker": "AEHL", "company": "Antelope Enterprise Holdings Limited", "catalyst_category": "Crypto / Treasury", "premarket_gap_pct": 183.04, "premarket_volume": 1268519, "float_shares": 16457836, "open_price": 24.11, "day_high": 30.6, "day_low": 11.6, "close_price": 11.98, "max_gain_pct": 26.92, "day_return_pct": -50.31, "fade_from_high_pct": -60.85, "day_range_pct": 163.79, "day_volume": 12982000, "float_turnover_x": 0.8, "first_30m_change_pct": 1.74, "hit_plus_2pct": "Yes", "minutes_to_day_high": 172, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 32.8}, {"date": "2026-10-14", "ticker": "GRML", "company": "Greenland Mines Ltd", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 35.38, "premarket_volume": 9166266, "float_shares": 12072721, "open_price": 7.51, "day_high": 7.53, "day_low": 6.35, "close_price": 6.5198, "max_gain_pct": 0.27, "day_return_pct": -13.19, "fade_from_high_pct": -13.42, "day_range_pct": 18.58, "day_volume": 27862500, "float_turnover_x": 2.3, "first_30m_change_pct": -1.26, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 6.5}, {"date": "2026-10-13", "ticker": "PFAI", "company": "Pinnacle Food Group Limited", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 129.5, "premarket_volume": 11950000, "float_shares": 3590000, "open_price": 5.95, "day_high": 6.01, "day_low": 3.97, "close_price": 4.4501, "max_gain_pct": 1.01, "day_return_pct": -25.21, "fade_from_high_pct": -25.96, "day_range_pct": 51.39, "day_volume": 38390800, "float_turnover_x": 10.7, "first_30m_change_pct": -20.96, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 12.0}, {"date": "2026-10-13", "ticker": "TCRT", "company": "Alaunos Therapeutics, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 64.8, "premarket_volume": 61360000, "float_shares": 2430000, "open_price": 1.74, "day_high": 4.32, "day_low": 1.51, "close_price": 3.03, "max_gain_pct": 148.28, "day_return_pct": 74.14, "fade_from_high_pct": -29.86, "day_range_pct": 186.09, "day_volume": 256847300, "float_turnover_x": 105.7, "first_30m_change_pct": 2.3, "hit_plus_2pct": "Yes", "minutes_to_day_high": 165, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 586.0}, {"date": "2026-10-13", "ticker": "YJ", "company": "Yunji Inc. - American Depository Shares", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 37.0, "premarket_volume": 16489999, "float_shares": 2550000, "open_price": 2.5797, "day_high": 2.5797, "day_low": 1.8301, "close_price": 2.075, "max_gain_pct": 0.0, "day_return_pct": -19.56, "fade_from_high_pct": -19.56, "day_range_pct": 40.96, "day_volume": 25137900, "float_turnover_x": 9.9, "first_30m_change_pct": -18.98, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "CRITICAL DUMP", "relative_volume_10d_calc": 503.7}, {"date": "2026-10-12", "ticker": "MNDR", "company": "Mobile-health Network Solutions", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 204.7, "premarket_volume": 48970000, "float_shares": 428800, "open_price": 2.585, "day_high": 5.67, "day_low": 2.3, "close_price": 3.025, "max_gain_pct": 119.34, "day_return_pct": 17.02, "fade_from_high_pct": -46.65, "day_range_pct": 146.52, "day_volume": 192512600, "float_turnover_x": 449.0, "first_30m_change_pct": 27.85, "hit_plus_2pct": "Yes", "minutes_to_day_high": 105, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 488.9}, {"date": "2026-10-12", "ticker": "YMAT", "company": "J-Star Holding Co., Ltd.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 101.6, "premarket_volume": 30890000, "float_shares": 1580000, "open_price": 2.58, "day_high": 4.49, "day_low": 1.95, "close_price": 2.875, "max_gain_pct": 74.03, "day_return_pct": 11.43, "fade_from_high_pct": -35.97, "day_range_pct": 130.26, "day_volume": 85404400, "float_turnover_x": 54.1, "first_30m_change_pct": -18.61, "hit_plus_2pct": "Yes", "minutes_to_day_high": 80, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 27.0}, {"date": "2026-10-12", "ticker": "GIXI", "company": "Gix Internet Ltd.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 53.0, "premarket_volume": 7810000, "float_shares": 2490000, "open_price": 6.25, "day_high": 8.34, "day_low": 4.2, "close_price": 4.68, "max_gain_pct": 33.44, "day_return_pct": -25.12, "fade_from_high_pct": -43.88, "day_range_pct": 98.57, "day_volume": 38928500, "float_turnover_x": 15.6, "first_30m_change_pct": -6.56, "hit_plus_2pct": "Yes", "minutes_to_day_high": 50, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 4046.6}, {"date": "2026-10-12", "ticker": "CLWT", "company": "Euro Tech Holdings Company Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 45.6, "premarket_volume": 34350000, "float_shares": 3080000, "open_price": 1.99, "day_high": 2.34, "day_low": 1.63, "close_price": 2.15, "max_gain_pct": 17.59, "day_return_pct": 8.04, "fade_from_high_pct": -8.12, "day_range_pct": 43.56, "day_volume": 71134400, "float_turnover_x": 23.1, "first_30m_change_pct": 3.51, "hit_plus_2pct": "Yes", "minutes_to_day_high": 5, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 4793.4}, {"date": "2026-10-12", "ticker": "LNKS", "company": "Linkers Industries Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 34.4, "premarket_volume": 17130000, "float_shares": 1500000, "open_price": 1.285, "day_high": 3.49, "day_low": 1.23, "close_price": 2.2501, "max_gain_pct": 171.6, "day_return_pct": 75.11, "fade_from_high_pct": -35.53, "day_range_pct": 183.74, "day_volume": 150137700, "float_turnover_x": 100.1, "first_30m_change_pct": 6.61, "hit_plus_2pct": "Yes", "minutes_to_day_high": 305, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 119.9}, {"date": "2026-10-08", "ticker": "FLYE", "company": "Fly-E Group, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 149.6, "premarket_volume": 60370000, "float_shares": 1560000, "open_price": 3.17, "day_high": 3.47, "day_low": 1.95, "close_price": 2.32, "max_gain_pct": 9.46, "day_return_pct": -26.81, "fade_from_high_pct": -33.14, "day_range_pct": 77.95, "day_volume": 133012600, "float_turnover_x": 85.3, "first_30m_change_pct": -18.29, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 7328.5}, {"date": "2026-10-07", "ticker": "SXTC", "company": "China SXT Pharmaceuticals, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 156.0, "premarket_volume": 30950000, "float_shares": 1030000, "open_price": 3.21, "day_high": 9.59, "day_low": 1.87, "close_price": 2.83, "max_gain_pct": 198.75, "day_return_pct": -11.84, "fade_from_high_pct": -70.49, "day_range_pct": 412.83, "day_volume": 146566900, "float_turnover_x": 142.3, "first_30m_change_pct": -27.12, "hit_plus_2pct": "Yes", "minutes_to_day_high": 270, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 114.5}, {"date": "2026-10-07", "ticker": "BIYA", "company": "Baiya International Group Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 56.8, "premarket_volume": 57770000, "float_shares": 2700000, "open_price": 2.14, "day_high": 2.89, "day_low": 1.78, "close_price": 2.285, "max_gain_pct": 35.05, "day_return_pct": 6.78, "fade_from_high_pct": -20.93, "day_range_pct": 62.36, "day_volume": 116012100, "float_turnover_x": 43.0, "first_30m_change_pct": 3.97, "hit_plus_2pct": "Yes", "minutes_to_day_high": 250, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 39.4}, {"date": "2026-10-07", "ticker": "LPCN", "company": "Lipocine Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 40.0, "premarket_volume": 67330000, "float_shares": 7860000, "open_price": 2.9599, "day_high": 3.14, "day_low": 2.07, "close_price": 2.19, "max_gain_pct": 6.08, "day_return_pct": -26.01, "fade_from_high_pct": -30.25, "day_range_pct": 51.69, "day_volume": 105835900, "float_turnover_x": 13.5, "first_30m_change_pct": -10.98, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 2720.0}, {"date": "2026-10-07", "ticker": "LGCL", "company": "Lucas GC Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 10.6, "premarket_volume": 8199999, "float_shares": 48700, "open_price": 2.49, "day_high": 4.53, "day_low": 2.41, "close_price": 2.84, "max_gain_pct": 81.93, "day_return_pct": 14.06, "fade_from_high_pct": -37.31, "day_range_pct": 87.97, "day_volume": 45645000, "float_turnover_x": 937.3, "first_30m_change_pct": 30.12, "hit_plus_2pct": "Yes", "minutes_to_day_high": 10, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 401.7}, {"date": "2026-10-07", "ticker": "SPAI", "company": "Safe Pro Group Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 5.1, "premarket_volume": 3560000, "float_shares": 10230000, "open_price": 4.32, "day_high": 4.81, "day_low": 3.8501, "close_price": 4.7011, "max_gain_pct": 11.34, "day_return_pct": 8.82, "fade_from_high_pct": -2.26, "day_range_pct": 24.93, "day_volume": 5705600, "float_turnover_x": 0.6, "first_30m_change_pct": -3.24, "hit_plus_2pct": "Yes", "minutes_to_day_high": 380, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 53.8}, {"date": "2026-10-06", "ticker": "IPDN", "company": "Professional Diversity Network, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 102.6, "premarket_volume": 30690000, "float_shares": 475700, "open_price": 6.31, "day_high": 6.78, "day_low": 4.09, "close_price": 4.585, "max_gain_pct": 7.45, "day_return_pct": -27.34, "fade_from_high_pct": -32.37, "day_range_pct": 65.77, "day_volume": 70599400, "float_turnover_x": 148.4, "first_30m_change_pct": -10.06, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 15.8}, {"date": "2026-10-02", "ticker": "AMOD", "company": "Alpha Modus Holdings, Inc.", "catalyst_category": "Crypto / Treasury", "premarket_gap_pct": 197.44, "premarket_volume": 78074895, "float_shares": 542550, "open_price": 3.4703, "day_high": 4.77, "day_low": 3.08, "close_price": 3.485, "max_gain_pct": 37.45, "day_return_pct": 0.42, "fade_from_high_pct": -26.94, "day_range_pct": 54.87, "day_volume": 194457300, "float_turnover_x": 358.4, "first_30m_change_pct": 12.65, "hit_plus_2pct": "Yes", "minutes_to_day_high": 17, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 109.0}, {"date": "2026-10-02", "ticker": "CYCU", "company": "Cycurion, Inc.", "catalyst_category": "Compliance / Uplisting", "premarket_gap_pct": 11.52, "premarket_volume": 3058165, "float_shares": 3137181, "open_price": 2.98, "day_high": 4.95, "day_low": 2.6401, "close_price": 3.81, "max_gain_pct": 66.11, "day_return_pct": 27.85, "fade_from_high_pct": -23.03, "day_range_pct": 87.49, "day_volume": 49204600, "float_turnover_x": 15.7, "first_30m_change_pct": -6.25, "hit_plus_2pct": "Yes", "minutes_to_day_high": 78, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 340.6}, {"date": "2026-10-01", "ticker": "NXL", "company": "Nexalin Technology, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 104.91, "premarket_volume": 14092562, "float_shares": 652226, "open_price": 8.8, "day_high": 10.9745, "day_low": 6.8, "close_price": 7.5299, "max_gain_pct": 24.71, "day_return_pct": -14.43, "fade_from_high_pct": -31.39, "day_range_pct": 61.39, "day_volume": 62336600, "float_turnover_x": 95.6, "first_30m_change_pct": 12.5, "hit_plus_2pct": "Yes", "minutes_to_day_high": 36, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 4269.6}, {"date": "2026-10-01", "ticker": "VEEA", "company": "Veea Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 36.87, "premarket_volume": 24840842, "float_shares": 1594437, "open_price": 2.98, "day_high": 4.08, "day_low": 2.92, "close_price": 3.48, "max_gain_pct": 36.91, "day_return_pct": 16.78, "fade_from_high_pct": -14.71, "day_range_pct": 39.73, "day_volume": 80637800, "float_turnover_x": 50.6, "first_30m_change_pct": 9.23, "hit_plus_2pct": "Yes", "minutes_to_day_high": 356, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 34.7}, {"date": "2026-10-01", "ticker": "MEDS", "company": "DataMeds AI, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 22.71, "premarket_volume": 18666771, "float_shares": 1535288, "open_price": 3.92, "day_high": 4.35, "day_low": 3.63, "close_price": 4.04, "max_gain_pct": 10.97, "day_return_pct": 3.06, "fade_from_high_pct": -7.13, "day_range_pct": 19.83, "day_volume": 34897600, "float_turnover_x": 22.7, "first_30m_change_pct": 4.78, "hit_plus_2pct": "Yes", "minutes_to_day_high": 20, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 5.4}, {"date": "2026-09-30", "ticker": "SMX", "company": "SMX Security Matters Ltd", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 68.2, "premarket_volume": 19500000, "float_shares": 890000, "open_price": 3.4, "day_high": 4.6, "day_low": 3.1, "close_price": 3.85, "max_gain_pct": 35.29, "day_return_pct": 13.24, "fade_from_high_pct": -16.3, "day_range_pct": 48.39, "day_volume": 58100, "float_turnover_x": 0.1, "first_30m_change_pct": 14.71, "hit_plus_2pct": "Yes", "minutes_to_day_high": 45, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 0.7}, {"date": "2026-09-30", "ticker": "LUNG", "company": "LungLife AI, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 42.5, "premarket_volume": 11200000, "float_shares": 1200000, "open_price": 5.2, "day_high": 5.2, "day_low": 3.85, "close_price": 3.95, "max_gain_pct": 0.0, "day_return_pct": -24.04, "fade_from_high_pct": -24.04, "day_range_pct": 35.06, "day_volume": 250900, "float_turnover_x": 0.2, "first_30m_change_pct": -18.27, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "CRITICAL DUMP", "relative_volume_10d_calc": 1.0}, {"date": "2026-09-29", "ticker": "POET", "company": "POET Technologies Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 28.4, "premarket_volume": 8400000, "float_shares": 3400000, "open_price": 4.1, "day_high": 4.88, "day_low": 3.95, "close_price": 4.52, "max_gain_pct": 19.02, "day_return_pct": 10.24, "fade_from_high_pct": -7.38, "day_range_pct": 23.54, "day_volume": 6907600, "float_turnover_x": 2.0, "first_30m_change_pct": 8.54, "hit_plus_2pct": "Yes", "minutes_to_day_high": 72, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 0.9}];
     let currentSortCol = 'date';
     let sortAsc = false;
     let currentExitStrategy = 'close'; // 'close', 'scalp2', 'm30', 'tp25', 'tp50'
@@ -5418,7 +5557,8 @@ return Plotly;
       open: { min: null, max: null, preset: 'all' },
       gap: { min: null, max: null, preset: 'all' },
       turn: { min: null, max: null, preset: 'all' },
-      vol: { min: null, max: null, preset: 'all' }
+      vol: { min: null, max: null, preset: 'all' },
+      rvol: { min: null, max: null, preset: 'all' }
     };
 
     function switchTab(tab) {
@@ -5540,6 +5680,13 @@ return Plotly;
         else if (preset === 'high') { tierFilters.vol.min = 100.0; tierFilters.vol.max = null; }
         document.getElementById("input-vol-min").value = tierFilters.vol.min !== null ? tierFilters.vol.min : "";
         document.getElementById("input-vol-max").value = tierFilters.vol.max !== null ? tierFilters.vol.max : "";
+      } else if (type === 'rvol') {
+        if (preset === 'all') { tierFilters.rvol.min = null; tierFilters.rvol.max = null; }
+        else if (preset === 'low') { tierFilters.rvol.min = null; tierFilters.rvol.max = 5.0; }
+        else if (preset === 'mid') { tierFilters.rvol.min = 5.0; tierFilters.rvol.max = 50.0; }
+        else if (preset === 'high') { tierFilters.rvol.min = 50.0; tierFilters.rvol.max = null; }
+        document.getElementById("input-rvol-min").value = tierFilters.rvol.min !== null ? tierFilters.rvol.min : "";
+        document.getElementById("input-rvol-max").value = tierFilters.rvol.max !== null ? tierFilters.rvol.max : "";
       }
 
       updateTierBtnsUI(type, preset);
@@ -5580,7 +5727,7 @@ return Plotly;
       document.getElementById("filter-search").value = "";
       timingFilterFn = null;
 
-      ['open', 'gap', 'turn', 'vol'].forEach(t => {
+      ['open', 'gap', 'turn', 'vol', 'rvol'].forEach(t => {
         tierFilters[t] = { min: null, max: null, preset: 'all' };
         const minEl = document.getElementById(`input-${t}-min`);
         const maxEl = document.getElementById(`input-${t}-max`);
@@ -5636,6 +5783,11 @@ return Plotly;
         const volM = (row.day_volume || 0) / 1e6;
         if (tierFilters.vol.min !== null && volM < tierFilters.vol.min) return false;
         if (tierFilters.vol.max !== null && volM > tierFilters.vol.max) return false;
+
+        // Relative Volume (10d)
+        const rvolVal = row.relative_volume_10d_calc || 0;
+        if (tierFilters.rvol.min !== null && rvolVal < tierFilters.rvol.min) return false;
+        if (tierFilters.rvol.max !== null && rvolVal > tierFilters.rvol.max) return false;
 
         // Timing Filter if active
         if (timingFilterFn && !timingFilterFn(row)) return false;
@@ -5714,7 +5866,7 @@ return Plotly;
       // Render Rows
       const tbody = document.getElementById("history-table-body");
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="16" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="17" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
       } else {
         tbody.innerHTML = filtered.map(r => {
           const isDump = r.dump_warning === "CRITICAL DUMP";
@@ -5734,6 +5886,7 @@ return Plotly;
             dayVolStr = r.day_volume >= 1e6 ? (r.day_volume / 1e6).toFixed(1) + 'M' : (r.day_volume / 1e3).toFixed(0) + 'k';
           }
           const rotStr = r.float_turnover_x ? r.float_turnover_x + 'x' : '-';
+          const relVolStr = r.relative_volume_10d_calc ? r.relative_volume_10d_calc.toFixed(1) + 'x' : '-';
 
           // Catalyst badge styling
           let catColor = 'bg-slate-800 text-slate-300 border-slate-700';
@@ -5801,6 +5954,7 @@ return Plotly;
               <td class="py-2.5 px-3 text-right whitespace-nowrap ${fadeClass}">${fade.toFixed(1)}%</td>
               <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans font-bold text-white">${dayVolStr}</td>
               <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-amber-400">${rotStr}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono font-bold text-purple-300">${relVolStr}</td>
               <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${m30}</td>
               <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}</td>
               <td class="py-2.5 px-3 text-center whitespace-nowrap">${dumpBadge}</td>
@@ -5853,6 +6007,12 @@ return Plotly;
           { name: "25M - 100M", key: 'mid', filterFn: r => (r.day_volume / 1e6) >= 25.0 && (r.day_volume / 1e6) <= 100.0 },
           { name: "> 100M", key: 'high', filterFn: r => (r.day_volume / 1e6) > 100.0 }
         ];
+      } else if (currentPivotDim === 'rvol') {
+        buckets = [
+          { name: "< 5x (Normal / Low)", key: 'low', filterFn: r => (r.relative_volume_10d_calc || 0) < 5.0 },
+          { name: "5x - 50x (Elevated Surge)", key: 'mid', filterFn: r => (r.relative_volume_10d_calc || 0) >= 5.0 && (r.relative_volume_10d_calc || 0) <= 50.0 },
+          { name: "> 50x (Extreme Surge)", key: 'high', filterFn: r => (r.relative_volume_10d_calc || 0) > 50.0 }
+        ];
       } else if (currentPivotDim === 'catalyst') {
         const cats = ["Biotech / Pharma", "AI / Tech / Hardware", "Contract / Momentum", "Crypto / Treasury", "Compliance / Uplisting"];
         buckets = cats.map(c => ({
@@ -5901,6 +6061,7 @@ return Plotly;
         const avgGap = (bRows.reduce((acc, r) => acc + (r.premarket_gap_pct || 0), 0) / n).toFixed(1);
         const avgVolM = (bRows.reduce((acc, r) => acc + ((r.day_volume || 0) / 1e6), 0) / n).toFixed(1);
         const avgTurn = (bRows.reduce((acc, r) => acc + (r.float_turnover_x || 0), 0) / n).toFixed(1);
+        const avgRvol = (bRows.reduce((acc, r) => acc + (r.relative_volume_10d_calc || 0), 0) / n).toFixed(1);
         const avgRun = (bRows.reduce((acc, r) => acc + (r.max_gain_pct || 0), 0) / n).toFixed(1);
         const avgRet = (bRows.reduce((acc, r) => acc + (r.day_return_pct || 0), 0) / n).toFixed(1);
         const avgSim = (bRows.reduce((acc, r) => acc + getSimExitReturn(r), 0) / n).toFixed(1);
@@ -5917,7 +6078,7 @@ return Plotly;
             <td class="py-2.5 px-2 text-center text-slate-300">${n} <span class="text-[10px] text-slate-500">(${share}%)</span></td>
             <td class="py-2.5 px-2 text-right ${winClass}">${winRate}%</td>
             <td class="py-2.5 px-2 text-right text-emerald-400">+${avgGap}%</td>
-            <td class="py-2.5 px-2 text-right text-slate-300">${avgVolM}M / <span class="text-amber-400 font-bold">${avgTurn}x</span></td>
+            <td class="py-2.5 px-2 text-right text-slate-300">${avgVolM}M / <span class="text-amber-400 font-bold">${avgTurn}x</span> <span class="text-purple-300 text-[10px]">(${avgRvol}x)</span></td>
             <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+${avgRun}%</td>
             <td class="py-2.5 px-2 text-right ${retClass}">${avgRet >= 0 ? '+' : ''}${avgRet}%</td>
             <td class="py-2.5 px-2 text-right ${simClass}">${avgSim >= 0 ? '+' : ''}${avgSim}%</td>
@@ -5960,6 +6121,8 @@ return Plotly;
         }
       } else if (dim === 'volume') {
         setTierFilter('vol', key);
+      } else if (dim === 'rvol') {
+        setTierFilter('rvol', key);
       } else if (dim === 'catalyst') {
         document.getElementById("filter-cat").value = key;
         renderHistoryTable();
@@ -5992,6 +6155,7 @@ return Plotly;
         open_price: "09:30 Open Price ($)",
         premarket_gap_pct: "Pre-Market Gap %",
         float_turnover_x: "Float Turnover (x)",
+        relative_volume_10d_calc: "Relative Volume (10d)",
         day_volume: "Day Volume (Millions)",
         minutes_to_day_high: "Peak Minute"
       };
@@ -6138,6 +6302,11 @@ return Plotly;
         if (key === 'mid') return RAW_HISTORY.filter(r => (r.day_volume || 0) >= 25000000 && (r.day_volume || 0) <= 100000000);
         return RAW_HISTORY.filter(r => (r.day_volume || 0) > 100000000);
       }
+      if (dim === 'rvol') {
+        if (key === 'low') return RAW_HISTORY.filter(r => (r.relative_volume_10d_calc || 0) < 5.0);
+        if (key === 'mid') return RAW_HISTORY.filter(r => (r.relative_volume_10d_calc || 0) >= 5.0 && (r.relative_volume_10d_calc || 0) <= 50.0);
+        return RAW_HISTORY.filter(r => (r.relative_volume_10d_calc || 0) > 50.0);
+      }
       if (dim === 'cat') {
         return RAW_HISTORY.filter(r => (r.catalyst_category || "") === key);
       }
@@ -6200,6 +6369,10 @@ return Plotly;
         if (key === 'low') { title = "Day Volume: < 25M (Light / Moderate Volume)"; badge = "Volume Cohort"; }
         else if (key === 'mid') { title = "Day Volume: 25M - 100M (Active / Heavy Liquidity)"; badge = "Volume Cohort"; }
         else { title = "Day Volume: > 100M (Extreme / Hyper-Volume)"; badge = "Volume Cohort"; }
+      } else if (dim === 'rvol') {
+        if (key === 'low') { title = "Relative Volume: < 5x (Normal / Low Volume)"; badge = "RVOL Cohort"; }
+        else if (key === 'mid') { title = "Relative Volume: 5x - 50x (Elevated Surge)"; badge = "RVOL Cohort"; }
+        else { title = "Relative Volume: > 50x (Extreme Surge Multiple)"; badge = "RVOL Cohort"; }
       } else if (dim === 'cat') {
         title = "Catalyst Sector: " + key;
         badge = "Sector Cohort";
@@ -6258,6 +6431,7 @@ return Plotly;
             </td>
             <td class="py-2 px-3 text-right text-slate-200">${r.open_price ? '$' + r.open_price.toFixed(2) : '-'}</td>
             <td class="py-2 px-3 text-right text-emerald-400 font-bold">+${(r.premarket_gap_pct||0).toFixed(1)}%</td>
+            <td class="py-2 px-3 text-right font-bold text-purple-300 font-mono">${r.relative_volume_10d_calc ? r.relative_volume_10d_calc.toFixed(1) + 'x' : '-'}</td>
             <td class="py-2 px-3 text-right font-bold text-emerald-300">+${mg.toFixed(1)}%${mg >= 50 ? ' 🔥' : ''}</td>
             <td class="py-2 px-3 text-right ${dayRet >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${dayRet >= 0 ? '+' : ''}${dayRet.toFixed(1)}%</td>
             <td class="py-2 px-3 text-right font-bold ${simRet >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${simRet >= 0 ? '+' : ''}${simRet.toFixed(1)}%</td>
