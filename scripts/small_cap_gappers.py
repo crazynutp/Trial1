@@ -79,7 +79,7 @@ def fetch_fallback_headlines(ticker):
 
 def extract_chart_series(df):
     if df is None or df.empty:
-        return {"candleData": [], "volumeData": [], "smaData": [], "openTime": None}
+        return {"candleData": [], "volumeData": [], "smaData": [], "sessionData": [], "openTime": None}
 
     df = df.copy()
     if df.index.tz is None:
@@ -92,6 +92,7 @@ def extract_chart_series(df):
     candle_data = []
     volume_data = []
     sma_data = []
+    session_data = []
     open_time = None
 
     last_time = 0
@@ -111,9 +112,20 @@ def extract_chart_series(df):
         is_up = c >= o
         vol_color = "rgba(8, 153, 129, 0.45)" if is_up else "rgba(242, 54, 69, 0.45)"
 
+        # Classify session phase (ET): pre-market, regular hours, after-hours
+        bar_hour = ts.hour
+        bar_minute = ts.minute
+        if bar_hour < 9 or (bar_hour == 9 and bar_minute < 30):
+            session = "pre"
+        elif bar_hour < 16:
+            session = "regular"
+        else:
+            session = "after"
+
         candle_data.append({"time": unix_time, "open": o, "high": h, "low": l, "close": c})
         volume_data.append({"time": unix_time, "value": v, "color": vol_color})
         sma_data.append({"time": unix_time, "value": sma})
+        session_data.append({"time": unix_time, "session": session})
 
         if ts.hour == 9 and ts.minute == 30:
             open_time = unix_time
@@ -122,6 +134,7 @@ def extract_chart_series(df):
         "candleData": candle_data,
         "volumeData": volume_data,
         "smaData": sma_data,
+        "sessionData": session_data,
         "openTime": open_time
     }
 
@@ -152,7 +165,7 @@ def build_candlestick_chart(ticker, hist_dfs):
         elif intervals_data["10m"]["candleData"]:
             active_int = "10m"
 
-    active_series = intervals_data.get(active_int, {"candleData": [], "volumeData": [], "smaData": [], "openTime": None})
+    active_series = intervals_data.get(active_int, {"candleData": [], "volumeData": [], "smaData": [], "sessionData": [], "openTime": None})
 
     if not active_series["candleData"]:
         empty_html = f"""
@@ -223,7 +236,17 @@ def build_candlestick_chart(ticker, hist_dfs):
               <span class="w-2 h-2 rounded-full bg-emerald-500/80"></span> Volume
             </span>
             <span class="flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-sky-400"></span> 09:30 Open Marker
+              <span class="w-2 h-2 rounded-full bg-sky-400"></span> 09:30 Open
+            </span>
+            <span class="text-slate-600">|</span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded" style="background: rgba(245,158,11,0.25); border: 1px solid #f59e0b;"></span> Pre-Mkt
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded" style="background: #131722; border: 1px solid #334155;"></span> Regular
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded" style="background: rgba(168,85,247,0.25); border: 1px solid #a855f7;"></span> Post-Mkt
             </span>
           </div>
         </div>
@@ -253,6 +276,7 @@ def build_candlestick_chart(ticker, hist_dfs):
         "candleData": active_series["candleData"],
         "volumeData": active_series["volumeData"],
         "smaData": active_series["smaData"],
+        "sessionData": active_series.get("sessionData", []),
         "openTime": active_series["openTime"]
     }
     return container_html, chart_data
@@ -3686,6 +3710,142 @@ def run_scanner():
     const TV_CHARTS_DATA = {tv_charts_json_str};
     const TV_INSTANCES = {{}};
 
+    // Session background color constants (TradingView-style)
+    const SESSION_COLORS = {{
+      pre:     'rgba(245, 158, 11, 0.08)',   // TradingView warm golden/amber
+      regular: 'rgba(0, 0, 0, 0)',            // Standard dark background
+      after:   'rgba(168, 85, 247, 0.08)'     // TradingView purple/indigo
+    }};
+
+    class SessionBackgroundRenderer {{
+      constructor(bands) {{
+        this._bands = bands || [];
+      }}
+      draw(target) {{
+        target.useBitmapCoordinateSpace((scope) => {{
+          const ctx = scope.context;
+          const hRatio = scope.horizontalPixelRatio;
+          const height = scope.bitmapSize.height;
+          for (const band of this._bands) {{
+            if (!band.color || band.color === 'rgba(0, 0, 0, 0)') continue;
+            ctx.fillStyle = band.color;
+            const x1 = Math.round(band.x1 * hRatio);
+            const x2 = Math.round(band.x2 * hRatio);
+            ctx.fillRect(x1, 0, Math.max(1, x2 - x1), height);
+          }}
+        }});
+      }}
+      drawBackground(target) {{
+        this.draw(target);
+      }}
+    }}
+
+    class SessionBackgroundPaneView {{
+      constructor(source) {{
+        this._source = source;
+        this._renderer = new SessionBackgroundRenderer([]);
+      }}
+      update() {{
+        this._renderer._bands = this._source._computeBands();
+      }}
+      renderer() {{
+        return this._renderer;
+      }}
+      zOrder() {{
+        return 'bottom';
+      }}
+    }}
+
+    class SessionBackgroundPrimitive {{
+      constructor(chart, candleSeries, sessionData) {{
+        this._chart = chart;
+        this._series = candleSeries;
+        this._sessionData = sessionData || [];
+        this._paneView = new SessionBackgroundPaneView(this);
+        this._requestUpdate = null;
+      }}
+      attached(params) {{
+        if (params && params.chart) this._chart = params.chart;
+        if (params && params.series) this._series = params.series;
+        if (params && params.requestUpdate) this._requestUpdate = params.requestUpdate;
+      }}
+      detached() {{
+        this._requestUpdate = null;
+      }}
+      updateAllViews() {{
+        this._paneView.update();
+      }}
+      paneViews() {{
+        return [this._paneView];
+      }}
+      setSessionData(sessionData) {{
+        this._sessionData = sessionData || [];
+        this._paneView.update();
+        if (this._requestUpdate) this._requestUpdate();
+      }}
+      _computeBands() {{
+        if (!this._chart || !this._sessionData || this._sessionData.length === 0) return [];
+        const timeScale = this._chart.timeScale();
+        const bands = [];
+        
+        const barSpacing = (typeof timeScale.options === 'function' && timeScale.options().barSpacing) 
+          ? timeScale.options().barSpacing 
+          : 6;
+        const halfBar = Math.max(2, barSpacing / 2);
+
+        let currSess = null;
+        let startIdx = 0;
+
+        for (let i = 0; i < this._sessionData.length; i++) {{
+          const item = this._sessionData[i];
+          const sess = item.session || this._detectSession(item.time);
+          if (sess !== currSess) {{
+            if (currSess !== null && currSess !== 'regular') {{
+              const t1 = this._sessionData[startIdx].time;
+              const t2 = this._sessionData[i - 1].time;
+              const x1 = timeScale.timeToCoordinate(t1);
+              const x2 = timeScale.timeToCoordinate(t2);
+              if (x1 !== null && x2 !== null) {{
+                bands.push({{
+                  x1: Math.min(x1, x2) - halfBar,
+                  x2: Math.max(x1, x2) + halfBar,
+                  color: SESSION_COLORS[currSess] || 'rgba(0,0,0,0)'
+                }});
+              }}
+            }}
+            currSess = sess;
+            startIdx = i;
+          }}
+        }}
+        if (currSess !== null && currSess !== 'regular' && startIdx < this._sessionData.length) {{
+          const t1 = this._sessionData[startIdx].time;
+          const t2 = this._sessionData[this._sessionData.length - 1].time;
+          const x1 = timeScale.timeToCoordinate(t1);
+          const x2 = timeScale.timeToCoordinate(t2);
+          if (x1 !== null && x2 !== null) {{
+            bands.push({{
+              x1: Math.min(x1, x2) - halfBar,
+              x2: Math.max(x1, x2) + halfBar,
+              color: SESSION_COLORS[currSess] || 'rgba(0,0,0,0)'
+            }});
+          }}
+        }}
+        return bands;
+      }}
+      _detectSession(unixTime) {{
+        const d = new Date(unixTime * 1000);
+        const nyStr = d.toLocaleTimeString('en-US', {{ timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' }});
+        const parts = nyStr.split(':');
+        const h = parseInt(parts[0], 10);
+        const m = parseInt(parts[1], 10);
+        if (h < 9 || (h === 9 && m < 30)) return 'pre';
+        if (h < 16) return 'regular';
+        return 'after';
+      }}
+    }}
+
+
+
     function initTradingViewCharts() {{
       if (typeof LightweightCharts === 'undefined') return;
 
@@ -3776,6 +3936,14 @@ def run_scanner():
           volumeSeries.setData(cData.volumeData);
           smaSeries.setData(cData.smaData);
 
+          // Attach TradingView-style session background shading (Pre-Market, Regular, Post-Market)
+          const sData = (cData.sessionData && cData.sessionData.length > 0) ? cData.sessionData : cData.candleData;
+          const sessionPlugin = new SessionBackgroundPrimitive(chart, candleSeries, sData);
+          candleSeries.attachPrimitive(sessionPlugin);
+          chart.timeScale().subscribeVisibleTimeRangeChange(() => {{
+            sessionPlugin.updateAllViews();
+          }});
+
           if (cData.openTime && typeof LightweightCharts.createSeriesMarkers === 'function') {{
             LightweightCharts.createSeriesMarkers(candleSeries, [{{
               time: cData.openTime,
@@ -3831,7 +3999,7 @@ def run_scanner():
           }});
           ro.observe(container);
 
-          TV_INSTANCES[ticker] = {{ chart, candleSeries, volumeSeries, smaSeries, cData, activeInterval: cData.activeInterval || '5m' }};
+          TV_INSTANCES[ticker] = {{ chart, candleSeries, volumeSeries, smaSeries, sessionPlugin, cData, activeInterval: cData.activeInterval || '5m' }};
         }} catch(err) {{
           console.error("Failed to initialize TradingView chart for " + ticker, err);
         }}
@@ -3853,6 +4021,12 @@ def run_scanner():
       inst.candleSeries.setData(targetData.candleData);
       inst.volumeSeries.setData(targetData.volumeData);
       inst.smaSeries.setData(targetData.smaData);
+
+      // Update session background shading for current interval
+      if (inst.sessionPlugin) {{
+        const newSData = (targetData.sessionData && targetData.sessionData.length > 0) ? targetData.sessionData : targetData.candleData;
+        inst.sessionPlugin.setSessionData(newSData);
+      }}
 
       // 2. Update 09:30 Open marker
       if (targetData.openTime && typeof LightweightCharts.createSeriesMarkers === 'function') {{
