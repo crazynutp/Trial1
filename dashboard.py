@@ -245,4 +245,22 @@ st.download_button(
 )
 
 st.markdown("---")
+
+with st.expander("🔮 Recommended Missing Parameters to Include (Predictive Alpha Roadmap)", expanded=True):
+    st.markdown("""
+    **To make this momentum hub even more predictive, consider integrating the following missing parameters:**
+
+    1. **Short Interest & Float Turnover %:**
+       * *Why it matters:* In small-cap momentum trading, high short interest combined with a high float turnover (e.g., $100\%+$ of the float traded in pre-market) is the textbook recipe for a violent short squeeze.
+
+    2. **Relative Strength vs. Broad Market (SPY / QQQ):**
+       * *Why it matters:* Distinguishes whether a stock is rallying purely on its own news catalyst or simply riding a broad market beta wave. True high-performers display absolute relative strength when indices are flat or red.
+
+    3. **Execution Time Window / Session Phase:**
+       * *Why it matters:* Tracking whether entries occurred during the Opening Range Breakout (9:30–10:00 AM), Midday Consolidation, or Afternoon Trend Continuation helps isolate when follow-through is most reliable.
+
+    4. **Catalyst Classification Tag (News vs. Technical):**
+       * *Why it matters:* Categorizing whether the move was driven by hard news (SEC filing, FDA approval, earnings) versus technical momentum (social media buzz, sympathy play) helps quantify durability.
+    """)
+
 st.caption("Multi-Day Historical Follow-Through Engine • Antigravity Trading Platform")
