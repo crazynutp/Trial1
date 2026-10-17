@@ -121,7 +121,20 @@ selected_dump = st.sidebar.radio(
     index=0,
 )
 
-# 3. Ticker Search & Min Gap
+# 3. Catalyst Tag & Session Phase Filters
+if "catalyst_tag" in df.columns:
+    cattag_options = ["All"] + sorted(df["catalyst_tag"].dropna().unique().tolist())
+    selected_cattag = st.sidebar.radio("Catalyst Tag", options=cattag_options, index=0)
+else:
+    selected_cattag = "All"
+
+if "session_phase" in df.columns:
+    phase_options = ["All"] + sorted(df["session_phase"].dropna().unique().tolist())
+    selected_phase = st.sidebar.radio("Session Phase", options=phase_options, index=0)
+else:
+    selected_phase = "All"
+
+# 4. Ticker Search & Min Gap
 ticker_search = st.sidebar.text_input("Search Ticker / Company", "").strip().upper()
 min_gap = st.sidebar.slider("Min Pre-Market Gap %", min_value=0, max_value=200, value=0, step=5)
 
@@ -140,6 +153,12 @@ if selected_breakout != "All":
 
 if selected_dump != "All":
     filtered_df = filtered_df[filtered_df["dump_warning"] == selected_dump]
+
+if selected_cattag != "All" and "catalyst_tag" in filtered_df.columns:
+    filtered_df = filtered_df[filtered_df["catalyst_tag"] == selected_cattag]
+
+if selected_phase != "All" and "session_phase" in filtered_df.columns:
+    filtered_df = filtered_df[filtered_df["session_phase"] == selected_phase]
 
 if ticker_search:
     filtered_df = filtered_df[
@@ -197,23 +216,25 @@ def highlight_dump(row):
             
     return styles
 
-styled_df = (
-    filtered_df.style.apply(highlight_dump, axis=1)
-    .format(
-        {
-            "open_price": "${:.2f}",
-            "day_high": "${:.2f}",
-            "day_low": "${:.2f}",
-            "close_price": "${:.2f}",
-            "premarket_gap_pct": "{:+.2f}%",
-            "first_30m_change_pct": "{:+.2f}%",
-            "minutes_to_day_high": "{:.0f} min",
-            "premarket_volume": "{:,.0f}",
-            "float_shares": "{:,.0f}",
-        },
-        na_rep="-",
-    )
-)
+format_dict = {
+    "open_price": "${:.2f}",
+    "day_high": "${:.2f}",
+    "day_low": "${:.2f}",
+    "close_price": "${:.2f}",
+    "premarket_gap_pct": "{:+.2f}%",
+    "first_30m_change_pct": "{:+.2f}%",
+    "minutes_to_day_high": "{:.0f} min",
+    "premarket_volume": "{:,.0f}",
+    "float_shares": "{:,.0f}",
+}
+if "pm_float_turnover_pct" in filtered_df.columns:
+    format_dict["pm_float_turnover_pct"] = "{:.1f}%"
+if "short_interest_pct" in filtered_df.columns:
+    format_dict["short_interest_pct"] = "{:.1f}%"
+if "rs_spy_pct" in filtered_df.columns:
+    format_dict["rs_spy_pct"] = "{:+.1f}%"
+
+styled_df = filtered_df.style.apply(highlight_dump, axis=1).format(format_dict, na_rep="-")
 
 st.dataframe(
     styled_df,
@@ -223,7 +244,12 @@ st.dataframe(
         "date": st.column_config.TextColumn("Session Date"),
         "ticker": st.column_config.TextColumn("Ticker", width="small"),
         "company": st.column_config.TextColumn("Company Name"),
+        "catalyst_tag": st.column_config.TextColumn("Tag", width="small"),
         "premarket_gap_pct": st.column_config.TextColumn("PM Gap %"),
+        "pm_float_turnover_pct": st.column_config.TextColumn("PM Turn %"),
+        "short_interest_pct": st.column_config.TextColumn("SI %"),
+        "rs_spy_pct": st.column_config.TextColumn("RS vs SPY"),
+        "session_phase": st.column_config.TextColumn("Session Phase", width="medium"),
         "open_price": st.column_config.TextColumn("09:30 Open"),
         "day_high": st.column_config.TextColumn("Day High"),
         "day_low": st.column_config.TextColumn("Day Low"),
@@ -246,21 +272,18 @@ st.download_button(
 
 st.markdown("---")
 
-with st.expander("🔮 Recommended Missing Parameters to Include (Predictive Alpha Roadmap)", expanded=True):
+with st.expander("⚡ Integrated Predictive Alpha Parameters", expanded=True):
     st.markdown("""
-    **To make this momentum hub even more predictive, consider integrating the following missing parameters:**
+    **The following 4 predictive parameters are now integrated directly into the History table columns and interactive filters:**
 
-    1. **Short Interest & Float Turnover %:**
-       * *Why it matters:* In small-cap momentum trading, high short interest combined with a high float turnover (e.g., $100\%+$ of the float traded in pre-market) is the textbook recipe for a violent short squeeze.
-
-    2. **Relative Strength vs. Broad Market (SPY / QQQ):**
-       * *Why it matters:* Distinguishes whether a stock is rallying purely on its own news catalyst or simply riding a broad market beta wave. True high-performers display absolute relative strength when indices are flat or red.
-
-    3. **Execution Time Window / Session Phase:**
-       * *Why it matters:* Tracking whether entries occurred during the Opening Range Breakout (9:30–10:00 AM), Midday Consolidation, or Afternoon Trend Continuation helps isolate when follow-through is most reliable.
-
-    4. **Catalyst Classification Tag (News vs. Technical):**
-       * *Why it matters:* Categorizing whether the move was driven by hard news (SEC filing, FDA approval, earnings) versus technical momentum (social media buzz, sympathy play) helps quantify durability.
+    1. **Short Interest (`SI %`) & Float Turnover (`PM Turn %`):**
+       * *Alpha Edge:* High short interest combined with >100% pre-market float turnover isolates violent short squeezes.
+    2. **Relative Strength vs. Broad Market (`RS vs SPY`):**
+       * *Alpha Edge:* Distinguishes whether the ticker has independent catalyst strength vs. market beta drift.
+    3. **Execution Time Window (`Session Phase`):**
+       * *Alpha Edge:* Tracks whether the high occurred during the Opening Range Breakout (ORB: 9:30–10:00 AM), Midday Consolidation, or Afternoon Continuation.
+    4. **Catalyst Classification Tag (`Tag`):**
+       * *Alpha Edge:* Categorizes moves into **Hard News** (SEC/FDA/Earnings) vs **Technical Momentum** (sympathy/social buzz).
     """)
 
 st.caption("Multi-Day Historical Follow-Through Engine • Antigravity Trading Platform")

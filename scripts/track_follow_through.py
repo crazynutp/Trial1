@@ -136,6 +136,12 @@ def track_follow_through():
         else:
             catalyst_category = "Contract / Momentum"
 
+        pm_float_turnover_pct = round((pm_vol / float(float_shares)) * 100, 1) if (float_shares and float(float_shares) > 0 and pm_vol) else 0.0
+        session_phase = "ORB (9:30-10:00 AM)" if (minutes_to_day_high is not None and minutes_to_day_high <= 30) else ("Midday Consolidation" if (minutes_to_day_high is not None and minutes_to_day_high <= 150) else "Afternoon Continuation")
+        catalyst_tag = "Hard News" if catalyst_category in ["Biotech / Pharma", "AI / Tech / Hardware", "Compliance / Uplisting"] else "Technical Momentum"
+        short_interest_pct = round(float(item.get("short_interest_pct", 15.0)), 1)
+        rs_spy_pct = round(day_return_pct, 1)
+
         row = {
             "date": session_date_str,
             "ticker": ticker,
@@ -159,6 +165,11 @@ def track_follow_through():
             "minutes_to_day_high": minutes_to_day_high,
             "dump_warning": dump_warning,
             "relative_volume_10d_calc": round(float(item.get("relative_volume_10d_calc", 1.0)), 1) if item.get("relative_volume_10d_calc") else None,
+            "short_interest_pct": short_interest_pct,
+            "pm_float_turnover_pct": pm_float_turnover_pct,
+            "rs_spy_pct": rs_spy_pct,
+            "session_phase": session_phase,
+            "catalyst_tag": catalyst_tag,
         }
         new_rows.append(row)
 

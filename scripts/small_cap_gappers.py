@@ -1187,198 +1187,6 @@ def run_scanner():
     tv_charts_json_str = json.dumps(tv_charts_data)
     matrix_html = build_4d_category_matrix_html(records, history_records, cohort_stats)
 
-    recommended_parameters_html = """
-    <!-- ========================================================== -->
-    <!-- RECOMMENDED MISSING PARAMETERS TO INCLUDE                  -->
-    <!-- ========================================================== -->
-    <div id="recommended-parameters" class="bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden space-y-6">
-      <div class="absolute -right-20 -top-20 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <!-- Section Header -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-800/80 relative z-10">
-        <div class="space-y-1.5">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 text-base font-black border border-indigo-500/30 shadow-inner">
-              🔮
-            </span>
-            <h2 class="text-xl md:text-2xl font-extrabold text-white tracking-tight">
-              Recommended Missing Parameters to Include
-            </h2>
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-              Predictive Alpha Roadmap
-            </span>
-          </div>
-          <p class="text-xs md:text-sm text-slate-300 max-w-3xl leading-relaxed">
-            To make this momentum hub even more predictive, consider integrating the following missing parameters:
-          </p>
-        </div>
-        <div class="flex items-center gap-2 self-start md:self-auto">
-          <span class="bg-slate-950/80 border border-slate-800 text-slate-300 text-[11px] font-mono px-3 py-1.5 rounded-xl shadow-inner flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            4 Core Edge Enhancers
-          </span>
-        </div>
-      </div>
-
-      <!-- 4 Parameter Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 relative z-10">
-        
-        <!-- Parameter 1: Short Interest & Float Turnover % -->
-        <div class="bg-slate-950/80 hover:bg-slate-950 border border-amber-500/30 hover:border-amber-500/50 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition-all duration-200 group">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 font-mono font-black text-xs border border-amber-500/30 shadow-inner">
-                01
-              </span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                Squeeze Acceleration
-              </span>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-extrabold text-white group-hover:text-amber-300 transition-colors flex items-center gap-1.5">
-                <span>💥</span> 1. Short Interest & Float Turnover %
-              </h3>
-              <p class="text-[11px] text-slate-400 font-mono mt-0.5">Metrics: % Float Shorted + Pre-Market Turnover Ratio</p>
-            </div>
-
-            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black uppercase tracking-wider text-amber-400 block">
-                Why it matters:
-              </span>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                In small-cap momentum trading, high short interest combined with a high float turnover (e.g., <strong class="text-amber-300 font-mono">100%+</strong> of the float traded in pre-market) is the textbook recipe for a violent short squeeze.
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-400 font-mono">
-            <span class="text-slate-500">Edge Trigger:</span>
-            <span class="text-amber-300 font-semibold bg-amber-500/10 px-1.5 py-0.5 rounded">SI &gt; 15% + Turnover &ge; 100%</span>
-          </div>
-        </div>
-
-        <!-- Parameter 2: Relative Strength vs. Broad Market (SPY / QQQ) -->
-        <div class="bg-slate-950/80 hover:bg-slate-950 border border-sky-500/30 hover:border-sky-500/50 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition-all duration-200 group">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 font-mono font-black text-xs border border-sky-500/30 shadow-inner">
-                02
-              </span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/15 text-sky-300 border border-sky-500/30">
-                Beta Decoupling
-              </span>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-extrabold text-white group-hover:text-sky-300 transition-colors flex items-center gap-1.5">
-                <span>⚖️</span> 2. Relative Strength vs. Broad Market (SPY / QQQ)
-              </h3>
-              <p class="text-[11px] text-slate-400 font-mono mt-0.5">Metrics: Beta-Decoupled Alpha Spread vs SPY/QQQ</p>
-            </div>
-
-            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black uppercase tracking-wider text-sky-400 block">
-                Why it matters:
-              </span>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Distinguishes whether a stock is rallying purely on its own news catalyst or simply riding a broad market beta wave. True high-performers display absolute relative strength when indices are flat or red.
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-400 font-mono">
-            <span class="text-slate-500">Edge Trigger:</span>
-            <span class="text-sky-300 font-semibold bg-sky-500/10 px-1.5 py-0.5 rounded">RS &gt; 0 when SPY &le; 0%</span>
-          </div>
-        </div>
-
-        <!-- Parameter 3: Execution Time Window / Session Phase -->
-        <div class="bg-slate-950/80 hover:bg-slate-950 border border-emerald-500/30 hover:border-emerald-500/50 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition-all duration-200 group">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-mono font-black text-xs border border-emerald-500/30 shadow-inner">
-                03
-              </span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                Session Chronometry
-              </span>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-extrabold text-white group-hover:text-emerald-300 transition-colors flex items-center gap-1.5">
-                <span>⏱️</span> 3. Execution Time Window / Session Phase
-              </h3>
-              <p class="text-[11px] text-slate-400 font-mono mt-0.5">Metrics: ORB (09:30-10:00) &bull; Midday &bull; Power Hour</p>
-            </div>
-
-            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black uppercase tracking-wider text-emerald-400 block">
-                Why it matters:
-              </span>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Tracking whether entries occurred during the Opening Range Breakout (9:30–10:00 AM), Midday Consolidation, or Afternoon Trend Continuation helps isolate when follow-through is most reliable.
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-400 font-mono">
-            <span class="text-slate-500">Edge Trigger:</span>
-            <span class="text-emerald-300 font-semibold bg-emerald-500/10 px-1.5 py-0.5 rounded">09:30–10:00 ORB Window</span>
-          </div>
-        </div>
-
-        <!-- Parameter 4: Catalyst Classification Tag (News vs. Technical) -->
-        <div class="bg-slate-950/80 hover:bg-slate-950 border border-purple-500/30 hover:border-purple-500/50 rounded-2xl p-5 shadow-lg flex flex-col justify-between transition-all duration-200 group">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 font-mono font-black text-xs border border-purple-500/30 shadow-inner">
-                04
-              </span>
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30">
-                Durability Classification
-              </span>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-extrabold text-white group-hover:text-purple-300 transition-colors flex items-center gap-1.5">
-                <span>🏷️</span> 4. Catalyst Classification Tag (News vs. Technical)
-              </h3>
-              <p class="text-[11px] text-slate-400 font-mono mt-0.5">Metrics: Hard Catalyst (SEC/FDA) vs Sympathy Buzz</p>
-            </div>
-
-            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-1.5">
-              <span class="text-[11px] font-black uppercase tracking-wider text-purple-400 block">
-                Why it matters:
-              </span>
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Categorizing whether the move was driven by hard news (SEC filing, FDA approval, earnings) versus technical momentum (social media buzz, sympathy play) helps quantify durability.
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-4 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-1.5 text-[10px] text-slate-400 font-mono">
-            <span class="text-slate-500">Edge Trigger:</span>
-            <span class="text-purple-300 font-semibold bg-purple-500/10 px-1.5 py-0.5 rounded">Hard News &gt; Technical Fade</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Quantitative Synergy Note / Footer Callout -->
-      <div class="bg-slate-950/70 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 relative z-10">
-        <div class="flex items-center gap-2.5">
-          <span class="text-base text-amber-400">💡</span>
-          <span><strong>Multi-Factor Alpha Edge:</strong> When all 4 parameters converge (e.g. <em>Hard News + 100%+ Float Turnover + Absolute RS vs SPY during 09:30–10:00 AM ORB</em>), breakout success rates historically reach their statistical peak.</span>
-        </div>
-        <button type="button" onclick="scrollToTop()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-colors shrink-0 flex items-center gap-1">
-          <span>↑</span> Back to Top
-        </button>
-      </div>
-    </div>
-    """
-
     # 3. Complete Dual-Tab Dashboard HTML
     dashboard_html = f"""<!DOCTYPE html>
 <html lang="en" class="dark">
@@ -1505,9 +1313,6 @@ def run_scanner():
         <button id="tab-btn-history" onclick="switchTab('history')" class="px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2">
           <span>📈</span> Follow-Through History
         </button>
-        <button id="tab-btn-params" onclick="switchTab('params')" class="px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2">
-          <span>🔮</span> Missing Parameters
-        </button>
       </div>
     </div>
 
@@ -1585,9 +1390,6 @@ def run_scanner():
 
       <!-- 4D MULTIDIMENSIONAL CATEGORY MATRIX -->
       {matrix_html}
-
-      <!-- RECOMMENDED MISSING PARAMETERS TO INCLUDE -->
-      {recommended_parameters_html}
 
       <!-- Stock Cards Grid -->
       <div class="space-y-6">
@@ -1858,6 +1660,73 @@ def run_scanner():
           </div>
         </div>
 
+        <!-- Row 2: Predictive Factor Filters (Tag, Phase, SI%, RS vs SPY, PM Turnover) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
+          <!-- Catalyst Tag Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
+              <span>🏷️</span> Catalyst Tag
+            </label>
+            <select id="filter-cattag" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-purple-500">
+              <option value="All">All Catalyst Types</option>
+              <option value="Hard News">📰 Hard News (SEC/FDA/Earnings)</option>
+              <option value="Technical Momentum">⚡ Technical Momentum</option>
+            </select>
+          </div>
+
+          <!-- Execution Session Phase Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
+              <span>⏱️</span> Session Phase
+            </label>
+            <select id="filter-phase" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
+              <option value="All">All Session Phases</option>
+              <option value="ORB (9:30-10:00 AM)">🌅 ORB (9:30-10:00 AM)</option>
+              <option value="Midday Consolidation">☀️ Midday Consolidation</option>
+              <option value="Afternoon Continuation">🌇 Afternoon Continuation</option>
+            </select>
+          </div>
+
+          <!-- Short Interest Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
+              <span>🩳</span> Short Interest (SI %)
+            </label>
+            <select id="filter-si" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+              <option value="All">All Short Interest</option>
+              <option value="low">&lt; 10% (Low Float Short)</option>
+              <option value="mid">10% - 20% (Moderate Short)</option>
+              <option value="high">&gt; 20% (High Squeeze Target 🔥)</option>
+            </select>
+          </div>
+
+          <!-- PM Float Turnover % Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
+              <span>🔄</span> PM Float Turnover %
+            </label>
+            <select id="filter-pmturn" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+              <option value="All">All PM Turnover</option>
+              <option value="low">&lt; 50% Turnover</option>
+              <option value="mid">50% - 100% Turnover</option>
+              <option value="high">&gt; 100% (Float Rotated in PM 🔥)</option>
+            </select>
+          </div>
+
+          <!-- Relative Strength vs SPY Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5 flex items-center gap-1">
+              <span>⚖️</span> RS vs SPY
+            </label>
+            <select id="filter-rs" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+              <option value="All">All Relative Strength</option>
+              <option value="pos">Outperforming SPY (RS &gt; 0%)</option>
+              <option value="super">Super Alpha (RS &gt;= +10%)</option>
+              <option value="neg">Lagging SPY (RS &le; 0%)</option>
+            </select>
+          </div>
+        </div>
+
         <!-- Row 2: 5 Interactive Quick-Tier Range Filters -->
         <div class="pt-3 border-t border-slate-800/80">
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
@@ -1997,6 +1866,21 @@ def run_scanner():
                 <button type="button" onclick="setPivotDimension('catalyst')" id="pdim-catalyst" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
                   Catalyst Category
                 </button>
+                <button type="button" onclick="setPivotDimension('cattag')" id="pdim-cattag" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Catalyst Tag (News vs Tech)
+                </button>
+                <button type="button" onclick="setPivotDimension('si')" id="pdim-si" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Short Interest Tiers
+                </button>
+                <button type="button" onclick="setPivotDimension('pmturn')" id="pdim-pmturn" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  PM Float Turnover %
+                </button>
+                <button type="button" onclick="setPivotDimension('rs')" id="pdim-rs" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  RS vs SPY
+                </button>
+                <button type="button" onclick="setPivotDimension('phase')" id="pdim-phase" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
+                  Session Phase
+                </button>
                 <button type="button" onclick="setPivotDimension('timing')" id="pdim-timing" class="pdim-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-slate-800 bg-slate-950">
                   Peak Timing Window
                 </button>
@@ -2021,7 +1905,7 @@ def run_scanner():
                     <th class="py-2.5 px-2 text-center">Action</th>
                   </tr>
                 </thead>
-                <tbody id="pivot-table-body" class="divide-y divide-slate-800/60 font-mono text-slate-300 text-[11px]">
+                <tbody id="pivot-table-body" class="divide-y border-slate-800/60 font-mono text-slate-300 text-[11px]">
                   <!-- Rendered dynamically -->
                 </tbody>
               </table>
@@ -2052,6 +1936,9 @@ def run_scanner():
                 <select id="scatter-x" onchange="renderScatterChart()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-sky-500">
                   <option value="open_price">09:30 Open Price ($)</option>
                   <option value="premarket_gap_pct">PM Gap %</option>
+                  <option value="pm_float_turnover_pct">PM Float Turnover %</option>
+                  <option value="short_interest_pct">Short Interest (SI %)</option>
+                  <option value="rs_spy_pct">RS vs SPY (%)</option>
                   <option value="float_turnover_x">Float Turnover (x)</option>
                   <option value="relative_volume_10d_calc">Relative Volume (10d)</option>
                   <option value="day_volume">Day Volume (M)</option>
@@ -2064,6 +1951,7 @@ def run_scanner():
                   <option value="max_gain_pct">Max Run %</option>
                   <option value="day_return_pct">Actual Day Return %</option>
                   <option value="sim_exit_return_pct">Simulated Exit Return %</option>
+                  <option value="rs_spy_pct">RS vs SPY (%)</option>
                   <option value="first_30m_change_pct">30M %</option>
                   <option value="fade_from_high_pct">Fade %</option>
                 </select>
@@ -2092,7 +1980,12 @@ def run_scanner():
                 <th class="py-3 px-3 font-bold cursor-pointer whitespace-nowrap" onclick="sortTable('date')">Date ↕</th>
                 <th class="py-3 px-3 font-bold cursor-pointer whitespace-nowrap" onclick="sortTable('ticker')">Ticker ↕</th>
                 <th class="py-3 px-3 font-bold cursor-pointer whitespace-nowrap" onclick="sortTable('catalyst_category')">Company & Catalyst ↕</th>
+                <th class="py-3 px-2 font-bold text-center cursor-pointer whitespace-nowrap" onclick="sortTable('catalyst_tag')">Tag ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('premarket_gap_pct')">PM Gap ↕</th>
+                <th class="py-3 px-2 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('pm_float_turnover_pct')">PM Turn % ↕</th>
+                <th class="py-3 px-2 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('short_interest_pct')">SI % ↕</th>
+                <th class="py-3 px-2 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('rs_spy_pct')">RS vs SPY ↕</th>
+                <th class="py-3 px-2 font-bold text-center cursor-pointer whitespace-nowrap" onclick="sortTable('session_phase')">Session Phase ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('open_price')">09:30 Open ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('day_high')">Day High ↕</th>
                 <th class="py-3 px-3 font-bold text-right cursor-pointer whitespace-nowrap" onclick="sortTable('max_gain_pct')">Max Run % ↕</th>
@@ -2114,13 +2007,6 @@ def run_scanner():
           </table>
         </div>
       </div>
-    </div>
-
-    <!-- ========================================================== -->
-    <!-- TAB 3: RECOMMENDED MISSING PARAMETERS (DEDICATED VIEW)     -->
-    <!-- ========================================================== -->
-    <div id="tab-content-params" class="space-y-6 hidden">
-      {recommended_parameters_html}
     </div>
 
   <!-- Historical Cohort Inspector Modal -->
@@ -2151,8 +2037,13 @@ def run_scanner():
                 <th class="py-2.5 px-3">Date</th>
                 <th class="py-2.5 px-3">Ticker</th>
                 <th class="py-2.5 px-3">Company & Catalyst</th>
+                <th class="py-2.5 px-2 text-center">Tag</th>
                 <th class="py-2.5 px-3 text-right">09:30 Open</th>
                 <th class="py-2.5 px-3 text-right">PM Gap</th>
+                <th class="py-2.5 px-2 text-right">PM Turn %</th>
+                <th class="py-2.5 px-2 text-right">SI %</th>
+                <th class="py-2.5 px-2 text-right">RS vs SPY</th>
+                <th class="py-2.5 px-2 text-center">Phase</th>
                 <th class="py-2.5 px-3 text-right">Rel Vol</th>
                 <th class="py-2.5 px-3 text-right">Max Run %</th>
                 <th class="py-2.5 px-3 text-right">Day Return</th>
@@ -2204,21 +2095,17 @@ def run_scanner():
     function switchTab(tab) {{
       const radarBtn = document.getElementById("tab-btn-radar");
       const historyBtn = document.getElementById("tab-btn-history");
-      const paramsBtn = document.getElementById("tab-btn-params");
       const radarContent = document.getElementById("tab-content-radar");
       const historyContent = document.getElementById("tab-content-history");
-      const paramsContent = document.getElementById("tab-content-params");
 
       const activeClass = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2";
       const inactiveClass = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2";
 
       if (radarBtn) radarBtn.className = inactiveClass;
       if (historyBtn) historyBtn.className = inactiveClass;
-      if (paramsBtn) paramsBtn.className = inactiveClass;
 
       if (radarContent) radarContent.classList.add("hidden");
       if (historyContent) historyContent.classList.add("hidden");
-      if (paramsContent) paramsContent.classList.add("hidden");
 
       if (tab === 'radar') {{
         if (radarBtn) radarBtn.className = activeClass;
@@ -2232,15 +2119,7 @@ def run_scanner():
             Plotly.Plots.resize('scatter-chart-container');
           }}
         }}, 50);
-      }} else if (tab === 'params') {{
-        if (paramsBtn) paramsBtn.className = activeClass;
-        if (paramsContent) paramsContent.classList.remove("hidden");
       }}
-    }}
-
-    function scrollToParameters() {{
-      const el = document.getElementById("recommended-parameters");
-      if (el) el.scrollIntoView({{ behavior: "smooth" }});
     }}
 
     function scrollToTop() {{
@@ -2588,6 +2467,11 @@ def run_scanner():
       document.getElementById("filter-breakout").value = "All";
       document.getElementById("filter-dump").value = "All";
       if (document.getElementById("filter-cat")) document.getElementById("filter-cat").value = "All";
+      if (document.getElementById("filter-cattag")) document.getElementById("filter-cattag").value = "All";
+      if (document.getElementById("filter-phase")) document.getElementById("filter-phase").value = "All";
+      if (document.getElementById("filter-si")) document.getElementById("filter-si").value = "All";
+      if (document.getElementById("filter-pmturn")) document.getElementById("filter-pmturn").value = "All";
+      if (document.getElementById("filter-rs")) document.getElementById("filter-rs").value = "All";
       if (document.getElementById("filter-min-run")) document.getElementById("filter-min-run").value = "0";
       document.getElementById("filter-search").value = "";
       timingFilterFn = null;
@@ -2621,6 +2505,11 @@ def run_scanner():
       const breakoutFilter = document.getElementById("filter-breakout").value;
       const dumpFilter = document.getElementById("filter-dump").value;
       const catFilter = document.getElementById("filter-cat") ? document.getElementById("filter-cat").value : "All";
+      const catTagFilter = document.getElementById("filter-cattag") ? document.getElementById("filter-cattag").value : "All";
+      const phaseFilter = document.getElementById("filter-phase") ? document.getElementById("filter-phase").value : "All";
+      const siFilter = document.getElementById("filter-si") ? document.getElementById("filter-si").value : "All";
+      const pmTurnFilter = document.getElementById("filter-pmturn") ? document.getElementById("filter-pmturn").value : "All";
+      const rsFilter = document.getElementById("filter-rs") ? document.getElementById("filter-rs").value : "All";
       const minRunFilter = document.getElementById("filter-min-run") ? parseFloat(document.getElementById("filter-min-run").value) : 0;
       const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
 
@@ -2628,6 +2517,26 @@ def run_scanner():
         if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
         if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
         if (catFilter !== "All" && row.catalyst_category !== catFilter) return false;
+        if (catTagFilter !== "All" && row.catalyst_tag !== catTagFilter) return false;
+        if (phaseFilter !== "All" && row.session_phase !== phaseFilter) return false;
+
+        // SI % Filter
+        const siVal = row.short_interest_pct || 0;
+        if (siFilter === "low" && siVal >= 10) return false;
+        if (siFilter === "mid" && (siVal < 10 || siVal > 20)) return false;
+        if (siFilter === "high" && siVal <= 20) return false;
+
+        // PM Float Turnover % Filter
+        const pmTurnVal = row.pm_float_turnover_pct || 0;
+        if (pmTurnFilter === "low" && pmTurnVal >= 50) return false;
+        if (pmTurnFilter === "mid" && (pmTurnVal < 50 || pmTurnVal > 100)) return false;
+        if (pmTurnFilter === "high" && pmTurnVal <= 100) return false;
+
+        // RS vs SPY Filter
+        const rsVal = row.rs_spy_pct || 0;
+        if (rsFilter === "pos" && rsVal <= 0) return false;
+        if (rsFilter === "super" && rsVal < 10) return false;
+        if (rsFilter === "neg" && rsVal > 0) return false;
         
         const mg = row.max_gain_pct !== null && row.max_gain_pct !== undefined ? row.max_gain_pct : ((row.day_high - row.open_price) / row.open_price * 100);
         if (minRunFilter > 0 && mg < minRunFilter) return false;
@@ -2661,7 +2570,9 @@ def run_scanner():
           const t = (row.ticker || "").toLowerCase();
           const c = (row.company || "").toLowerCase();
           const cat = (row.catalyst_category || "").toLowerCase();
-          if (!t.includes(search) && !c.includes(search) && !cat.includes(search)) return false;
+          const tag = (row.catalyst_tag || "").toLowerCase();
+          const phase = (row.session_phase || "").toLowerCase();
+          if (!t.includes(search) && !c.includes(search) && !cat.includes(search) && !tag.includes(search) && !phase.includes(search)) return false;
         }}
         return true;
       }});
@@ -2773,7 +2684,7 @@ def run_scanner():
       // Render Rows
       const tbody = document.getElementById("history-table-body");
       if (filtered.length === 0) {{
-        tbody.innerHTML = '<tr><td colspan="17" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="22" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected parameters.</td></tr>';
       }} else {{
         tbody.innerHTML = filtered.map(r => {{
           const isDump = r.dump_warning === "CRITICAL DUMP";
@@ -2802,6 +2713,48 @@ def run_scanner():
           else if (r.catalyst_category === 'Crypto / Treasury') catColor = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
           else if (r.catalyst_category === 'Compliance / Uplisting') catColor = 'bg-purple-500/15 text-purple-400 border-purple-500/30';
           else if (r.catalyst_category === 'Contract / Momentum') catColor = 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+
+          // 1. Catalyst Tag Badge (News vs Technical)
+          const tagBadge = r.catalyst_tag === 'Hard News'
+            ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap">📰 News</span>'
+            : '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30 whitespace-nowrap">⚡ Tech</span>';
+
+          // 2. PM Float Turnover % Badge
+          const pmTurnVal = r.pm_float_turnover_pct !== null && r.pm_float_turnover_pct !== undefined ? r.pm_float_turnover_pct : null;
+          let pmTurnBadge = '-';
+          if (pmTurnVal !== null) {{
+            pmTurnBadge = pmTurnVal >= 100 
+              ? `<span class="text-amber-400 font-extrabold font-mono bg-amber-500/10 px-1 py-0.5 rounded border border-amber-500/30">${{pmTurnVal.toFixed(1)}}% 🔥</span>`
+              : `<span class="text-slate-300 font-mono">${{pmTurnVal.toFixed(1)}}%</span>`;
+          }}
+
+          // 3. Short Interest % Badge
+          const siVal = r.short_interest_pct !== null && r.short_interest_pct !== undefined ? r.short_interest_pct : null;
+          let siBadge = '-';
+          if (siVal !== null) {{
+            siBadge = siVal >= 20 
+              ? `<span class="text-rose-400 font-extrabold font-mono bg-rose-500/10 px-1 py-0.5 rounded border border-rose-500/30">${{siVal.toFixed(1)}}% 🩳</span>`
+              : (siVal >= 10 ? `<span class="text-amber-300 font-mono font-semibold">${{siVal.toFixed(1)}}%</span>` : `<span class="text-slate-400 font-mono">${{siVal.toFixed(1)}}%</span>`);
+          }}
+
+          // 4. Relative Strength vs SPY % Badge
+          const rsVal = r.rs_spy_pct !== null && r.rs_spy_pct !== undefined ? r.rs_spy_pct : null;
+          let rsBadge = '-';
+          if (rsVal !== null) {{
+            rsBadge = rsVal >= 0 
+              ? `<span class="text-emerald-400 font-bold font-mono">+${{rsVal.toFixed(1)}}%</span>`
+              : `<span class="text-rose-400 font-mono">${{rsVal.toFixed(1)}}%</span>`;
+          }}
+
+          // 5. Execution Session Phase Badge
+          let phaseBadge = '-';
+          if (r.session_phase === 'ORB (9:30-10:00 AM)') {{
+            phaseBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30 whitespace-nowrap">🌅 ORB</span>';
+          }} else if (r.session_phase === 'Midday Consolidation') {{
+            phaseBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 whitespace-nowrap">☀️ Midday</span>';
+          }} else if (r.session_phase === 'Afternoon Continuation') {{
+            phaseBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 whitespace-nowrap">🌇 Afternoon</span>';
+          }}
 
           const maxRunClass = mg >= 50 
             ? 'text-emerald-300 font-black bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/40' 
@@ -2832,7 +2785,12 @@ def run_scanner():
                 <div class="text-white truncate">${{r.company || '-'}}</div>
                 <span class="inline-block px-1.5 py-0.2 rounded text-[10px] font-semibold border ${{catColor}} mt-0.5">${{r.catalyst_category || 'Momentum'}}</span>
               </td>
+              <td class="py-2.5 px-2 text-center whitespace-nowrap">${{tagBadge}}</td>
               <td class="py-2.5 px-3 text-right font-bold text-emerald-400 whitespace-nowrap">${{gap}}</td>
+              <td class="py-2.5 px-2 text-right whitespace-nowrap">${{pmTurnBadge}}</td>
+              <td class="py-2.5 px-2 text-right whitespace-nowrap">${{siBadge}}</td>
+              <td class="py-2.5 px-2 text-right whitespace-nowrap">${{rsBadge}}</td>
+              <td class="py-2.5 px-2 text-center whitespace-nowrap">${{phaseBadge}}</td>
               <td class="py-2.5 px-3 text-right text-slate-200 whitespace-nowrap">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
               <td class="py-2.5 px-3 text-right font-bold text-white whitespace-nowrap">${{r.day_high ? '$' + r.day_high.toFixed(2) : '-'}}</td>
               <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono">
@@ -2910,6 +2868,34 @@ def run_scanner():
           key: c,
           filterFn: r => (r.catalyst_category || "") === c
         }}));
+      }} else if (currentPivotDim === 'cattag') {{
+        buckets = [
+          {{ name: "📰 Hard News (SEC/FDA/Earnings)", key: 'Hard News', filterFn: r => r.catalyst_tag === 'Hard News' }},
+          {{ name: "⚡ Technical Momentum (Sympathy/Buzz)", key: 'Technical Momentum', filterFn: r => r.catalyst_tag === 'Technical Momentum' }}
+        ];
+      }} else if (currentPivotDim === 'si') {{
+        buckets = [
+          {{ name: "< 10% (Low Float Short)", key: 'low', filterFn: r => (r.short_interest_pct || 0) < 10.0 }},
+          {{ name: "10% - 20% (Moderate Short)", key: 'mid', filterFn: r => (r.short_interest_pct || 0) >= 10.0 && (r.short_interest_pct || 0) <= 20.0 }},
+          {{ name: "> 20% (High Squeeze Target 🔥)", key: 'high', filterFn: r => (r.short_interest_pct || 0) > 20.0 }}
+        ];
+      }} else if (currentPivotDim === 'pmturn') {{
+        buckets = [
+          {{ name: "< 50% (Light PM Turnover)", key: 'low', filterFn: r => (r.pm_float_turnover_pct || 0) < 50.0 }},
+          {{ name: "50% - 100% (Active Float Rotation)", key: 'mid', filterFn: r => (r.pm_float_turnover_pct || 0) >= 50.0 && (r.pm_float_turnover_pct || 0) <= 100.0 }},
+          {{ name: "> 100% (Hyper PM Rotation 🔥)", key: 'high', filterFn: r => (r.pm_float_turnover_pct || 0) > 100.0 }}
+        ];
+      }} else if (currentPivotDim === 'rs') {{
+        buckets = [
+          {{ name: "Alpha Decoupled (> 0% vs SPY)", key: 'pos', filterFn: r => (r.rs_spy_pct || 0) > 0 }},
+          {{ name: "Broad Beta Lag (<= 0% vs SPY)", key: 'neg', filterFn: r => (r.rs_spy_pct || 0) <= 0 }}
+        ];
+      }} else if (currentPivotDim === 'phase') {{
+        buckets = [
+          {{ name: "🌅 ORB (9:30-10:00 AM)", key: 'ORB (9:30-10:00 AM)', filterFn: r => r.session_phase === 'ORB (9:30-10:00 AM)' }},
+          {{ name: "☀️ Midday Consolidation", key: 'Midday Consolidation', filterFn: r => r.session_phase === 'Midday Consolidation' }},
+          {{ name: "🌇 Afternoon Continuation", key: 'Afternoon Continuation', filterFn: r => r.session_phase === 'Afternoon Continuation' }}
+        ];
       }} else if (currentPivotDim === 'timing') {{
         buckets = [
           {{ name: "0 - 15m (Opening Spike)", key: 'spike', filterFn: r => r.minutes_to_day_high !== null && r.minutes_to_day_high <= 15 }},
@@ -3017,6 +3003,21 @@ def run_scanner():
       }} else if (dim === 'catalyst') {{
         document.getElementById("filter-cat").value = key;
         renderHistoryTable();
+      }} else if (dim === 'cattag') {{
+        document.getElementById("filter-cattag").value = key;
+        renderHistoryTable();
+      }} else if (dim === 'si') {{
+        document.getElementById("filter-si").value = key;
+        renderHistoryTable();
+      }} else if (dim === 'pmturn') {{
+        document.getElementById("filter-pmturn").value = key;
+        renderHistoryTable();
+      }} else if (dim === 'rs') {{
+        document.getElementById("filter-rs").value = key;
+        renderHistoryTable();
+      }} else if (dim === 'phase') {{
+        document.getElementById("filter-phase").value = key;
+        renderHistoryTable();
       }} else if (dim === 'timing') {{
         if (key === 'spike') {{
           timingFilterFn = r => r.minutes_to_day_high !== null && r.minutes_to_day_high <= 15;
@@ -3045,6 +3046,9 @@ def run_scanner():
       const xLabels = {{
         open_price: "09:30 Open Price ($)",
         premarket_gap_pct: "Pre-Market Gap %",
+        pm_float_turnover_pct: "PM Float Turnover %",
+        short_interest_pct: "Short Interest (SI %)",
+        rs_spy_pct: "RS vs SPY (%)",
         float_turnover_x: "Float Turnover (x)",
         relative_volume_10d_calc: "Relative Volume (10d)",
         day_volume: "Day Volume (Millions)",
@@ -3055,6 +3059,7 @@ def run_scanner():
         max_gain_pct: "Max Run %",
         day_return_pct: "Actual Day Return %",
         sim_exit_return_pct: "Simulated Exit Return %",
+        rs_spy_pct: "RS vs SPY (%)",
         first_30m_change_pct: "30-Min Return %",
         fade_from_high_pct: "Fade from High %"
       }};
@@ -3312,6 +3317,44 @@ def run_scanner():
         const simRet = getSimExitReturn(r);
         const fade = r.fade_from_high_pct !== null ? r.fade_from_high_pct : 0;
         const isDump = r.dump_warning === "CRITICAL DUMP";
+
+        const tagBadge = r.catalyst_tag === 'Hard News'
+          ? '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap">📰 News</span>'
+          : '<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30 whitespace-nowrap">⚡ Tech</span>';
+
+        const pmTurnVal = r.pm_float_turnover_pct !== null && r.pm_float_turnover_pct !== undefined ? r.pm_float_turnover_pct : null;
+        let pmTurnBadge = '-';
+        if (pmTurnVal !== null) {{
+          pmTurnBadge = pmTurnVal >= 100 
+            ? `<span class="text-amber-400 font-extrabold font-mono">${{pmTurnVal.toFixed(1)}}% 🔥</span>`
+            : `<span class="text-slate-300 font-mono">${{pmTurnVal.toFixed(1)}}%</span>`;
+        }}
+
+        const siVal = r.short_interest_pct !== null && r.short_interest_pct !== undefined ? r.short_interest_pct : null;
+        let siBadge = '-';
+        if (siVal !== null) {{
+          siBadge = siVal >= 20 
+            ? `<span class="text-rose-400 font-extrabold font-mono">${{siVal.toFixed(1)}}% 🩳</span>`
+            : (siVal >= 10 ? `<span class="text-amber-300 font-mono">${{siVal.toFixed(1)}}%</span>` : `<span class="text-slate-400 font-mono">${{siVal.toFixed(1)}}%</span>`);
+        }}
+
+        const rsVal = r.rs_spy_pct !== null && r.rs_spy_pct !== undefined ? r.rs_spy_pct : null;
+        let rsBadge = '-';
+        if (rsVal !== null) {{
+          rsBadge = rsVal >= 0 
+            ? `<span class="text-emerald-400 font-bold font-mono">+${{rsVal.toFixed(1)}}%</span>`
+            : `<span class="text-rose-400 font-mono">${{rsVal.toFixed(1)}}%</span>`;
+        }}
+
+        let phaseBadge = '-';
+        if (r.session_phase === 'ORB (9:30-10:00 AM)') {{
+          phaseBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-sky-500/15 text-sky-300 border border-sky-500/30 whitespace-nowrap">🌅 ORB</span>';
+        }} else if (r.session_phase === 'Midday Consolidation') {{
+          phaseBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 whitespace-nowrap">☀️ Midday</span>';
+        }} else if (r.session_phase === 'Afternoon Continuation') {{
+          phaseBadge = '<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 whitespace-nowrap">🌇 Afternoon</span>';
+        }}
+
         return `
           <tr class="hover:bg-slate-800/40 transition-colors">
             <td class="py-2 px-3 text-slate-400 whitespace-nowrap">${{r.date || '-'}}</td>
@@ -3322,8 +3365,13 @@ def run_scanner():
               <span class="text-white">${{r.company || '-'}}</span>
               <span class="block text-[10px] text-slate-500">${{r.catalyst_category || 'Momentum'}}</span>
             </td>
+            <td class="py-2 px-2 text-center whitespace-nowrap">${{tagBadge}}</td>
             <td class="py-2 px-3 text-right text-slate-200">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
             <td class="py-2 px-3 text-right text-emerald-400 font-bold">+${{(r.premarket_gap_pct||0).toFixed(1)}}%</td>
+            <td class="py-2 px-2 text-right whitespace-nowrap">${{pmTurnBadge}}</td>
+            <td class="py-2 px-2 text-right whitespace-nowrap">${{siBadge}}</td>
+            <td class="py-2 px-2 text-right whitespace-nowrap">${{rsBadge}}</td>
+            <td class="py-2 px-2 text-center whitespace-nowrap">${{phaseBadge}}</td>
             <td class="py-2 px-3 text-right font-bold text-purple-300 font-mono">${{r.relative_volume_10d_calc ? r.relative_volume_10d_calc.toFixed(1) + 'x' : '-'}}</td>
             <td class="py-2 px-3 text-right font-bold text-emerald-300">+${{mg.toFixed(1)}}%${{mg >= 50 ? ' 🔥' : ''}}</td>
             <td class="py-2 px-3 text-right ${{dayRet >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</td>
