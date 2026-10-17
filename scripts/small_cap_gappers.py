@@ -870,7 +870,7 @@ def run_scanner():
           </button>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
             <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Tracked Stocks</span>
             <p id="kpi-total" class="text-2xl font-extrabold text-white mt-1">0</p>
@@ -880,16 +880,20 @@ def run_scanner():
             <p id="kpi-breakout" class="text-2xl font-extrabold text-emerald-400 mt-1">0%</p>
           </div>
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Max Run %</span>
+            <p id="kpi-maxrun" class="text-2xl font-extrabold text-emerald-300 mt-1">+0.0%</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Float Turnover</span>
+            <p id="kpi-turnover" class="text-2xl font-extrabold text-amber-400 mt-1">0.0x</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
+            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Day Return</span>
+            <p id="kpi-dayreturn" class="text-2xl font-extrabold text-sky-400 mt-1">0.0%</p>
+          </div>
+          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
             <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Critical Dump Rate</span>
             <p id="kpi-dump" class="text-2xl font-extrabold text-rose-400 mt-1">0%</p>
-          </div>
-          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
-            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg 30m Change</span>
-            <p id="kpi-30m" class="text-2xl font-extrabold text-sky-400 mt-1">0.00%</p>
-          </div>
-          <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
-            <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Avg Time to High</span>
-            <p id="kpi-time" class="text-2xl font-extrabold text-amber-400 mt-1">0m</p>
           </div>
         </div>
       </div>
@@ -899,7 +903,7 @@ def run_scanner():
         <div class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
           <span>🔍</span> Interactive Filter Controls
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <!-- +2% Breakout Filter -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">+2% Breakout</label>
@@ -912,7 +916,7 @@ def run_scanner():
 
           <!-- Dump Warning Filter -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Dump Warning Status</label>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Dump Status</label>
             <select id="filter-dump" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
               <option value="All">All Dump Statuses</option>
               <option value="CRITICAL DUMP">🚨 CRITICAL DUMP Only</option>
@@ -920,19 +924,36 @@ def run_scanner():
             </select>
           </div>
 
+          <!-- Catalyst Category Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Catalyst Category</label>
+            <select id="filter-cat" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500">
+              <option value="All">All Categories</option>
+              <option value="Biotech / Pharma">Biotech / Pharma</option>
+              <option value="AI / Tech / Hardware">AI / Tech / Hardware</option>
+              <option value="Crypto / Treasury">Crypto / Treasury</option>
+              <option value="Compliance / Uplisting">Compliance / Uplisting</option>
+              <option value="Contract / Momentum">Contract / Momentum</option>
+            </select>
+          </div>
+
+          <!-- Min Max Run Filter -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Min Max Run %</label>
+            <select id="filter-min-run" onchange="renderHistoryTable()" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+              <option value="0">Any Run %</option>
+              <option value="5">🔥 At least +5%</option>
+              <option value="15">🔥 At least +15%</option>
+              <option value="30">🚀 At least +30%</option>
+              <option value="50">⚡ At least +50%</option>
+              <option value="100">💥 100%+ Super-Runner</option>
+            </select>
+          </div>
+
           <!-- Search Filter -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1.5">Search Ticker / Company</label>
-            <input id="filter-search" type="text" oninput="renderHistoryTable()" placeholder="e.g. NXL, VEEA..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
-          </div>
-
-          <!-- Min Gap Slider -->
-          <div>
-            <div class="flex justify-between items-center mb-1.5">
-              <label class="text-xs font-semibold text-slate-300">Min Pre-Market Gap %</label>
-              <span id="gap-val" class="text-xs font-mono font-bold text-sky-400">0%</span>
-            </div>
-            <input id="filter-gap" type="range" min="0" max="150" value="0" step="5" oninput="document.getElementById('gap-val').innerText = this.value + '%'; renderHistoryTable()" class="w-full accent-sky-500">
+            <input id="filter-search" type="text" oninput="renderHistoryTable()" placeholder="e.g. TCRT, XLAB, AI..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-500">
           </div>
         </div>
       </div>
@@ -943,17 +964,20 @@ def run_scanner():
           <table class="w-full text-left text-xs text-slate-300">
             <thead class="bg-slate-950/80 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
               <tr>
-                <th class="py-3 px-4 font-bold cursor-pointer" onclick="sortTable('date')">Date ↕</th>
-                <th class="py-3 px-4 font-bold cursor-pointer" onclick="sortTable('ticker')">Ticker ↕</th>
-                <th class="py-3 px-4 font-bold">Company</th>
-                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('premarket_gap_pct')">PM Gap ↕</th>
-                <th class="py-3 px-4 font-bold text-right">09:30 Open</th>
-                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('day_high')">Day High ↕</th>
-                <th class="py-3 px-4 font-bold text-right">16:00 Close</th>
-                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
-                <th class="py-3 px-4 font-bold text-center cursor-pointer" onclick="sortTable('hit_plus_2pct')">+2% Hit ↕</th>
-                <th class="py-3 px-4 font-bold text-right cursor-pointer" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
-                <th class="py-3 px-4 font-bold text-center">Dump Warning</th>
+                <th class="py-3 px-3 font-bold cursor-pointer" onclick="sortTable('date')">Date ↕</th>
+                <th class="py-3 px-3 font-bold cursor-pointer" onclick="sortTable('ticker')">Ticker ↕</th>
+                <th class="py-3 px-3 font-bold cursor-pointer" onclick="sortTable('catalyst_category')">Company & Catalyst ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('premarket_gap_pct')">PM Gap ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('open_price')">09:30 Open ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_high')">Day High ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('max_gain_pct')">Max Run % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('close_price')">16:00 Close ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('day_return_pct')">Day Return ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('fade_from_high_pct')">Fade % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('float_turnover_x')">Day Vol & Turnover ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('first_30m_change_pct')">30m % ↕</th>
+                <th class="py-3 px-3 font-bold text-right cursor-pointer" onclick="sortTable('minutes_to_day_high')">Peak Min ↕</th>
+                <th class="py-3 px-3 font-bold text-center cursor-pointer" onclick="sortTable('dump_warning')">Status ↕</th>
               </tr>
             </thead>
             <tbody id="history-table-body" class="divide-y divide-slate-800/60 font-mono">
@@ -999,17 +1023,23 @@ def run_scanner():
     function renderHistoryTable() {{
       const breakoutFilter = document.getElementById("filter-breakout").value;
       const dumpFilter = document.getElementById("filter-dump").value;
+      const catFilter = document.getElementById("filter-cat") ? document.getElementById("filter-cat").value : "All";
+      const minRunFilter = document.getElementById("filter-min-run") ? parseFloat(document.getElementById("filter-min-run").value) : 0;
       const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
-      const minGap = parseFloat(document.getElementById("filter-gap").value) || 0;
 
       let filtered = RAW_HISTORY.filter(row => {{
         if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
         if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
-        if (minGap > 0 && (row.premarket_gap_pct || 0) < minGap) return false;
+        if (catFilter !== "All" && row.catalyst_category !== catFilter) return false;
+        
+        const mg = row.max_gain_pct !== null && row.max_gain_pct !== undefined ? row.max_gain_pct : ((row.day_high - row.open_price) / row.open_price * 100);
+        if (minRunFilter > 0 && mg < minRunFilter) return false;
+
         if (search) {{
           const t = (row.ticker || "").toLowerCase();
           const c = (row.company || "").toLowerCase();
-          if (!t.includes(search) && !c.includes(search)) return false;
+          const cat = (row.catalyst_category || "").toLowerCase();
+          if (!t.includes(search) && !c.includes(search) && !cat.includes(search)) return false;
         }}
         return true;
       }});
@@ -1020,6 +1050,9 @@ def run_scanner():
         let v2 = b[currentSortCol];
         if (v1 === null || v1 === undefined) v1 = 0;
         if (v2 === null || v2 === undefined) v2 = 0;
+        if (typeof v1 === 'string') {{
+          return sortAsc ? v1.localeCompare(v2) : v2.localeCompare(v1);
+        }}
         if (v1 < v2) return sortAsc ? -1 : 1;
         if (v1 > v2) return sortAsc ? 1 : -1;
         return 0;
@@ -1032,51 +1065,90 @@ def run_scanner():
       const winRate = total > 0 ? (winCount / total * 100).toFixed(1) : 0;
       const dumpRate = total > 0 ? (dumpCount / total * 100).toFixed(1) : 0;
       
-      const sum30m = filtered.reduce((acc, r) => acc + (parseFloat(r.first_30m_change_pct) || 0), 0);
-      const avg30m = total > 0 ? (sum30m / total).toFixed(2) : "0.00";
+      const sumMaxRun = filtered.reduce((acc, r) => acc + (r.max_gain_pct !== null && r.max_gain_pct !== undefined ? r.max_gain_pct : ((r.day_high - r.open_price) / r.open_price * 100)), 0);
+      const avgMaxRun = total > 0 ? (sumMaxRun / total).toFixed(1) : "0.0";
 
-      const sumTime = filtered.reduce((acc, r) => acc + (parseFloat(r.minutes_to_day_high) || 0), 0);
-      const avgTime = total > 0 ? Math.round(sumTime / total) : 0;
+      const turnoverRows = filtered.filter(r => r.float_turnover_x !== null && r.float_turnover_x !== undefined);
+      const sumTurnover = turnoverRows.reduce((acc, r) => acc + r.float_turnover_x, 0);
+      const avgTurnover = turnoverRows.length > 0 ? (sumTurnover / turnoverRows.length).toFixed(1) : "0.0";
+
+      const sumDayRet = filtered.reduce((acc, r) => acc + (r.day_return_pct !== null && r.day_return_pct !== undefined ? r.day_return_pct : ((r.close_price - r.open_price) / r.open_price * 100)), 0);
+      const avgDayRet = total > 0 ? (sumDayRet / total).toFixed(1) : "0.0";
 
       document.getElementById("kpi-total").innerText = total;
       document.getElementById("kpi-breakout").innerText = winRate + "% (" + winCount + "/" + total + ")";
+      if (document.getElementById("kpi-maxrun")) document.getElementById("kpi-maxrun").innerText = (avgMaxRun > 0 ? "+" : "") + avgMaxRun + "%";
+      if (document.getElementById("kpi-turnover")) document.getElementById("kpi-turnover").innerText = avgTurnover + "x";
+      if (document.getElementById("kpi-dayreturn")) document.getElementById("kpi-dayreturn").innerText = (avgDayRet > 0 ? "+" : "") + avgDayRet + "%";
       document.getElementById("kpi-dump").innerText = dumpRate + "% (" + dumpCount + ")";
-      document.getElementById("kpi-30m").innerText = (avg30m > 0 ? "+" : "") + avg30m + "%";
-      document.getElementById("kpi-time").innerText = avgTime + "m";
 
       // Render Rows
       const tbody = document.getElementById("history-table-body");
       if (filtered.length === 0) {{
-        tbody.innerHTML = '<tr><td colspan="11" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected filters.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="14" class="py-8 text-center text-slate-500 italic font-sans">No historical gapper records match your selected filters.</td></tr>';
         return;
       }}
 
       tbody.innerHTML = filtered.map(r => {{
         const isDump = r.dump_warning === "CRITICAL DUMP";
         const dumpBadge = isDump 
-          ? '<span class="dump-critical">🚨 CRITICAL DUMP</span>'
-          : '<span class="dump-held">Held / Pushed</span>';
+          ? '<span class="dump-critical">🚨 DUMP</span>'
+          : '<span class="dump-held">Held</span>';
 
-        const hitBadge = r.hit_plus_2pct === "Yes"
-          ? '<span class="breakout-yes">Yes</span>'
-          : '<span class="breakout-no">No</span>';
-
-        const m30 = r.first_30m_change_pct !== null ? (r.first_30m_change_pct > 0 ? "+" : "") + r.first_30m_change_pct.toFixed(2) + "%" : "-";
+        const mg = r.max_gain_pct !== null && r.max_gain_pct !== undefined ? r.max_gain_pct : ((r.day_high - r.open_price) / r.open_price * 100);
+        const dayRet = r.day_return_pct !== null && r.day_return_pct !== undefined ? r.day_return_pct : ((r.close_price - r.open_price) / r.open_price * 100);
+        const fade = r.fade_from_high_pct !== null && r.fade_from_high_pct !== undefined ? r.fade_from_high_pct : ((r.close_price - r.day_high) / r.day_high * 100);
+        
+        const m30 = r.first_30m_change_pct !== null ? (r.first_30m_change_pct > 0 ? "+" : "") + r.first_30m_change_pct.toFixed(1) + "%" : "-";
         const gap = r.premarket_gap_pct !== null ? "+" + r.premarket_gap_pct.toFixed(1) + "%" : "-";
+
+        let dayVolStr = '-';
+        if (r.day_volume) {{
+          dayVolStr = r.day_volume >= 1e6 ? (r.day_volume / 1e6).toFixed(1) + 'M' : (r.day_volume / 1e3).toFixed(0) + 'k';
+        }}
+        const rotStr = r.float_turnover_x ? r.float_turnover_x + 'x' : '-';
+
+        // Catalyst badge styling
+        let catColor = 'bg-slate-800 text-slate-300 border-slate-700';
+        if (r.catalyst_category === 'Biotech / Pharma') catColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+        else if (r.catalyst_category === 'AI / Tech / Hardware') catColor = 'bg-cyan-500/15 text-cyan-400 border-cyan-500/30';
+        else if (r.catalyst_category === 'Crypto / Treasury') catColor = 'bg-amber-500/15 text-amber-400 border-amber-500/30';
+        else if (r.catalyst_category === 'Compliance / Uplisting') catColor = 'bg-purple-500/15 text-purple-400 border-purple-500/30';
+        else if (r.catalyst_category === 'Contract / Momentum') catColor = 'bg-blue-500/15 text-blue-400 border-blue-500/30';
+
+        const maxRunClass = mg >= 50 
+          ? 'text-emerald-300 font-black bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/40' 
+          : (mg >= 15 ? 'text-emerald-400 font-bold' : (mg >= 2 ? 'text-emerald-500' : 'text-slate-400'));
+
+        const dayRetClass = dayRet >= 0 ? 'text-emerald-400' : 'text-rose-400';
+        const fadeClass = fade <= -40 ? 'text-rose-400 font-bold' : (fade <= -20 ? 'text-amber-400' : 'text-slate-300');
 
         return `
           <tr class="hover:bg-slate-800/40 transition-colors">
-            <td class="py-3 px-4 text-slate-400 font-sans">${{r.date || '-'}}</td>
-            <td class="py-3 px-4 font-bold text-white font-sans">${{r.ticker}}</td>
-            <td class="py-3 px-4 text-slate-300 font-sans truncate max-w-[180px]">${{r.company || '-'}}</td>
-            <td class="py-3 px-4 text-right font-bold text-emerald-400">${{gap}}</td>
-            <td class="py-3 px-4 text-right text-slate-200">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
-            <td class="py-3 px-4 text-right font-bold text-white">${{r.day_high ? '$' + r.day_high.toFixed(2) : '-'}}</td>
-            <td class="py-3 px-4 text-right text-slate-300">${{r.close_price ? '$' + r.close_price.toFixed(2) : '-'}}</td>
-            <td class="py-3 px-4 text-right font-semibold ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
-            <td class="py-3 px-4 text-center font-bold">${{hitBadge}}</td>
-            <td class="py-3 px-4 text-right text-slate-300">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
-            <td class="py-3 px-4 text-center">${{dumpBadge}}</td>
+            <td class="py-2.5 px-3 text-slate-400 font-sans whitespace-nowrap">${{r.date || '-'}}</td>
+            <td class="py-2.5 px-3 font-bold text-white font-sans">
+              <a href="https://www.tradingview.com/symbols/${{r.ticker}}/" target="_blank" class="hover:text-sky-400 underline decoration-slate-600 underline-offset-2">${{r.ticker}}</a>
+            </td>
+            <td class="py-2.5 px-3 font-sans truncate max-w-[200px]">
+              <div class="text-white truncate">${{r.company || '-'}}</div>
+              <span class="inline-block px-1.5 py-0.2 rounded text-[10px] font-semibold border ${{catColor}} mt-0.5">${{r.catalyst_category || 'Momentum'}}</span>
+            </td>
+            <td class="py-2.5 px-3 text-right font-bold text-emerald-400 whitespace-nowrap">${{gap}}</td>
+            <td class="py-2.5 px-3 text-right text-slate-200 whitespace-nowrap">${{r.open_price ? '$' + r.open_price.toFixed(2) : '-'}}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-white whitespace-nowrap">${{r.day_high ? '$' + r.day_high.toFixed(2) : '-'}}</td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap font-mono">
+              <span class="${{maxRunClass}}">+${{mg.toFixed(1)}}%${{mg >= 50 ? ' 🔥' : ''}}</span>
+            </td>
+            <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.close_price ? '$' + r.close_price.toFixed(2) : '-'}}</td>
+            <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{dayRetClass}}">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap ${{fadeClass}}">${{fade.toFixed(1)}}%</td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap font-sans">
+              <span class="text-white font-bold">${{dayVolStr}}</span>
+              <span class="text-[10px] ml-1 text-amber-400 font-mono font-semibold">(${{rotStr}})</span>
+            </td>
+            <td class="py-2.5 px-3 text-right font-semibold whitespace-nowrap ${{r.first_30m_change_pct >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{m30}}</td>
+            <td class="py-2.5 px-3 text-right text-slate-300 whitespace-nowrap">${{r.minutes_to_day_high !== null ? r.minutes_to_day_high + 'm' : '-'}}</td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">${{dumpBadge}}</td>
           </tr>
         `;
       }}).join("");
@@ -1095,17 +1167,23 @@ def run_scanner():
     function exportFilteredCSV() {{
       const breakoutFilter = document.getElementById("filter-breakout").value;
       const dumpFilter = document.getElementById("filter-dump").value;
+      const catFilter = document.getElementById("filter-cat") ? document.getElementById("filter-cat").value : "All";
+      const minRunFilter = document.getElementById("filter-min-run") ? parseFloat(document.getElementById("filter-min-run").value) : 0;
       const search = (document.getElementById("filter-search").value || "").trim().toLowerCase();
-      const minGap = parseFloat(document.getElementById("filter-gap").value) || 0;
 
       let filtered = RAW_HISTORY.filter(row => {{
         if (breakoutFilter !== "All" && row.hit_plus_2pct !== breakoutFilter) return false;
         if (dumpFilter !== "All" && row.dump_warning !== dumpFilter) return false;
-        if (minGap > 0 && (row.premarket_gap_pct || 0) < minGap) return false;
+        if (catFilter !== "All" && row.catalyst_category !== catFilter) return false;
+        
+        const mg = row.max_gain_pct !== null && row.max_gain_pct !== undefined ? row.max_gain_pct : ((row.day_high - row.open_price) / row.open_price * 100);
+        if (minRunFilter > 0 && mg < minRunFilter) return false;
+
         if (search) {{
           const t = (row.ticker || "").toLowerCase();
           const c = (row.company || "").toLowerCase();
-          if (!t.includes(search) && !c.includes(search)) return false;
+          const cat = (row.catalyst_category || "").toLowerCase();
+          if (!t.includes(search) && !c.includes(search) && !cat.includes(search)) return false;
         }}
         return true;
       }});

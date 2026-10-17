@@ -114,10 +114,33 @@ def track_follow_through():
         # 5. dump_warning ("CRITICAL DUMP" if stock never exceeded open price (+0.2% buffer), otherwise "Held/Pushed")
         dump_warning = "CRITICAL DUMP" if day_high <= (open_price * 1.002) else "Held/Pushed"
 
+        # 6. Advanced quantitative parameters
+        max_gain_pct = round(((day_high - open_price) / open_price) * 100, 2)
+        day_return_pct = round(((close_price - open_price) / open_price) * 100, 2)
+        fade_from_high_pct = round(((close_price - day_high) / day_high) * 100, 2)
+        day_range_pct = round(((day_high - day_low) / day_low) * 100, 2) if day_low > 0 else 0.0
+        day_volume = int(day_df["Volume"].sum()) if "Volume" in day_df else 0
+        float_turnover_x = round(day_volume / float(float_shares), 1) if (float_shares and float(float_shares) > 0 and day_volume > 0) else None
+
+        # Catalyst categorization
+        cat_lower = (company or "").lower()
+        t_upper = ticker.upper()
+        if any(w in cat_lower for w in ["therapeutics", "pharma", "bio", "health", "medical", "clinical"]) or t_upper in ["TCRT", "SPRC", "PFAI", "LUNG", "LPCN", "MEDS", "NXL"]:
+            catalyst_category = "Biotech / Pharma"
+        elif any(w in cat_lower for w in ["tech", "ai", "labs", "software", "computing", "cloud", "semiconductor"]) or t_upper in ["XLAB", "MNDR", "GIXI", "POET", "VEEA", "SMX"]:
+            catalyst_category = "AI / Tech / Hardware"
+        elif any(w in cat_lower for w in ["crypto", "bitcoin", "blockchain"]) or t_upper in ["AEHL", "AMOD"]:
+            catalyst_category = "Crypto / Treasury"
+        elif any(w in cat_lower for w in ["capital", "acquisition", "holding", "merger", "nasdaq", "compliance"]) or t_upper in ["NCPL", "CYCU", "BMMX"]:
+            catalyst_category = "Compliance / Uplisting"
+        else:
+            catalyst_category = "Contract / Momentum"
+
         row = {
             "date": session_date_str,
             "ticker": ticker,
             "company": company,
+            "catalyst_category": catalyst_category,
             "premarket_gap_pct": round(float(pm_gap_pct), 2),
             "premarket_volume": int(pm_vol) if pm_vol else None,
             "float_shares": int(float_shares) if float_shares else None,
@@ -125,6 +148,12 @@ def track_follow_through():
             "day_high": round(day_high, 4),
             "day_low": round(day_low, 4),
             "close_price": round(close_price, 4),
+            "max_gain_pct": max_gain_pct,
+            "day_return_pct": day_return_pct,
+            "fade_from_high_pct": fade_from_high_pct,
+            "day_range_pct": day_range_pct,
+            "day_volume": day_volume,
+            "float_turnover_x": float_turnover_x,
             "first_30m_change_pct": first_30m_change_pct,
             "hit_plus_2pct": hit_plus_2pct,
             "minutes_to_day_high": minutes_to_day_high,
@@ -132,8 +161,8 @@ def track_follow_through():
         }
         new_rows.append(row)
 
-        print(f"  -> {ticker}: Open=${open_price:.2f} | High=${day_high:.2f} | Close=${close_price:.2f}")
-        print(f"     30m Change: {first_30m_change_pct:+.2f}% | +2% Breakout: {hit_plus_2pct} | Time to High: {minutes_to_day_high}m | Warning: {dump_warning}")
+        print(f"  -> {ticker}: Open=${open_price:.2f} | High=${day_high:.2f} | Close=${close_price:.2f} | MaxRun={max_gain_pct:+.1f}% | DayVol={day_volume:,} ({float_turnover_x}x Float)")
+        print(f"     30m: {first_30m_change_pct:+.2f}% | DayRet: {day_return_pct:+.2f}% | Fade: {fade_from_high_pct:.1f}% | +2% Breakout: {hit_plus_2pct} | Status: {dump_warning}")
 
     if not new_rows:
         print("[!] No new follow-through records computed.")
