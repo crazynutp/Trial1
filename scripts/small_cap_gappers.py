@@ -335,7 +335,7 @@ def generate_static_chart_image(ticker, company, hist_df, output_path):
     plt.close(fig)
     return True
 
-def send_discord_digest(records, known_catalysts, chart_image_path):
+def send_discord_digest(records, known_catalysts, chart_images=None):
     webhook_url = os.environ.get("DISCORD_WEBHOOK_URL", DEFAULT_DISCORD_WEBHOOK_URL)
     if not webhook_url:
         print("[!] No Discord webhook configured. Skipping notification.")
@@ -352,6 +352,7 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
 
     embed_colors = [1096065, 3447003, 16101131]
     embeds = []
+    attachments_to_send = []
 
     top_records = records[:3]
     for idx, item in enumerate(top_records):
@@ -393,8 +394,20 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
 
-        if idx == 0 and chart_image_path and Path(chart_image_path).exists():
-            embed["image"] = {"url": "attachment://chart.png"}
+        # Resolve chart image for this stock
+        img_path = None
+        if isinstance(chart_images, dict):
+            img_path = chart_images.get(ticker) or chart_images.get(item.get("ticker")) or chart_images.get(idx)
+        elif isinstance(chart_images, list) and idx < len(chart_images):
+            img_path = chart_images[idx]
+        elif (isinstance(chart_images, (str, Path)) or hasattr(chart_images, "exists")) and idx == 0:
+            img_path = chart_images
+
+        if img_path and Path(img_path).exists():
+            safe_ticker = "".join(c if c.isalnum() else "_" for c in ticker)
+            attach_filename = f"chart_{safe_ticker}.png" if safe_ticker else f"chart_{idx}.png"
+            embed["image"] = {"url": f"attachment://{attach_filename}"}
+            attachments_to_send.append((attach_filename, Path(img_path)))
 
         embeds.append(embed)
 
@@ -403,21 +416,26 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
         "embeds": embeds,
     }
 
+    opened_files = []
+    files = {}
     try:
-        if chart_image_path and Path(chart_image_path).exists():
-            with open(chart_image_path, "rb") as f:
-                files = {"files[0]": ("chart.png", f, "image/png")}
-                res = requests.post(
-                    webhook_url,
-                    data={"payload_json": json.dumps(payload)},
-                    files=files,
-                    timeout=15,
-                )
+        for f_idx, (fname, fpath) in enumerate(attachments_to_send):
+            f_obj = open(fpath, "rb")
+            opened_files.append(f_obj)
+            files[f"files[{f_idx}]"] = (fname, f_obj, "image/png")
+
+        if files:
+            res = requests.post(
+                webhook_url,
+                data={"payload_json": json.dumps(payload)},
+                files=files,
+                timeout=25,
+            )
         else:
             res = requests.post(webhook_url, json=payload, timeout=15)
 
         if res.status_code in (200, 204):
-            print(f"[+] Discord webhook delivered successfully (HTTP {res.status_code})!")
+            print(f"[+] Discord webhook delivered successfully with {len(attachments_to_send)} chart image(s) (HTTP {res.status_code})!")
             return True
         else:
             print(f"[!] Discord webhook returned HTTP {res.status_code}: {res.text}", file=sys.stderr)
@@ -425,6 +443,12 @@ def send_discord_digest(records, known_catalysts, chart_image_path):
     except Exception as e:
         print(f"[!] Failed to deliver Discord webhook: {e}", file=sys.stderr)
         return False
+    finally:
+        for f_obj in opened_files:
+            try:
+                f_obj.close()
+            except Exception:
+                pass
 
 def generate_premarket_summary_md(records, known_catalysts, output_path):
     date_str = datetime.now().strftime("%Y-%m-%d")
@@ -1254,6 +1278,7 @@ def run_scanner():
     top_hist_df = None
     top_ticker = None
     top_company = None
+    stock_hist_dfs = {}
     tv_charts_data = {}
 
     for idx, item in enumerate(records):
@@ -1303,6 +1328,15 @@ def run_scanner():
             "10m": df_10m,
             "15m": df_15m
         }
+
+        # Store historical dataframe for each stock to generate static charts for Discord
+        best_df = df_5m if (df_5m is not None and not df_5m.empty) else df_1m
+        if best_df is not None and not best_df.empty:
+            stock_hist_dfs[ticker] = {
+                "ticker": ticker,
+                "company": company,
+                "df": best_df
+            }
 
         if idx == 0 and df_5m is not None and not df_5m.empty:
             top_hist_df = df_5m
@@ -4204,10 +4238,39 @@ def run_scanner():
     summary_md_file = reports_dir / "premarket_summary.md"
     generate_premarket_summary_md(records, known_catalysts, summary_md_file)
 
-    if top_hist_df is not None and top_ticker:
-        print(f"\n[*] Generating multi-session chart image for top leader #{top_ticker}...")
-        generate_static_chart_image(top_ticker, top_company, top_hist_df, chart_image_file)
-        print(f"[+] Saved chart image to: {chart_image_file}")
+    chart_image_files = {}
+    print(f"\n[*] Generating multi-session chart images for stocks sent to Discord...")
+    top_records = records[:3]
+    for r_idx, r_item in enumerate(top_records):
+        r_ticker = r_item.get("name") or r_item.get("ticker", "").split(":")[-1]
+        r_company = r_item.get("description", r_ticker)
+        safe_r = "".join(c if c.isalnum() else "_" for c in r_ticker)
+        r_chart_path = reports_dir / f"chart_{safe_r}.png"
+
+        r_hist = stock_hist_dfs.get(r_ticker)
+        r_df = r_hist["df"] if r_hist else None
+
+        if r_df is None or r_df.empty:
+            try:
+                r_df = yf.Ticker(r_ticker).history(period="3d", interval="5m", prepost=True)
+                if r_df is None or r_df.empty:
+                    r_df = yf.Ticker(r_ticker).history(period="3d", interval="1m", prepost=True)
+            except Exception as e:
+                print(f"[!] Warning: Fallback fetch failed for {r_ticker}: {e}")
+
+        if r_df is not None and not r_df.empty:
+            print(f"[*] Generating chart image for #{r_idx + 1}: {r_ticker} ({r_company})...")
+            if generate_static_chart_image(r_ticker, r_company, r_df, r_chart_path):
+                chart_image_files[r_ticker] = r_chart_path
+                chart_image_files[r_idx] = r_chart_path
+                print(f"[+] Saved chart image for {r_ticker} to: {r_chart_path}")
+                if r_idx == 0:
+                    try:
+                        shutil.copyfile(r_chart_path, chart_image_file)
+                    except Exception:
+                        pass
+        else:
+            print(f"[!] Warning: No historical intraday data available to generate chart for {r_ticker}")
 
     # Sync to brain directory for artifact viewing if present
     gemini_brain = Path.home() / ".gemini" / "antigravity" / "brain"
@@ -4222,10 +4285,13 @@ def run_scanner():
                     shutil.copyfile(summary_md_file, target_brain / "premarket_summary.md")
                     if chart_image_file.exists():
                         shutil.copyfile(chart_image_file, target_brain / "chart.png")
+                    for t_ticker, img_path in chart_image_files.items():
+                        if isinstance(img_path, Path) and img_path.exists():
+                            shutil.copyfile(img_path, target_brain / img_path.name)
                 except Exception:
                     pass
 
-    send_discord_digest(records, known_catalysts, chart_image_file)
+    send_discord_digest(records, known_catalysts, chart_image_files)
 
     return records
 
