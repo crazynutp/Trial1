@@ -1,11 +1,51 @@
 {
+  "TCRT": {
+    "catalyst_title": "Acquisition of Velaris Therapeutics & Oversubscribed $350M Preferred Financing",
+    "what_happened": "Alaunos announced the completed acquisition of Velaris Therapeutics (a Paragon Labs incubator company focused on pulmonary arterial hypertension and cardiopulmonary biologics like VLR199). Simultaneously, Alaunos secured an oversubscribed $350 million Series C preferred stock financing led by Fairmount with Venrock, T. Rowe Price, Wellington Management, and Janus Henderson, securing runway into 2029. An amended Schedule 13D filed October 15 affirmed Fairmount's 19.99% stake and planned board reconstitutions.",
+    "chart_breakdown": "TCRT exploded +31.2% in pre-market to $2.18 on over 10.1M shares, extending its multi-session momentum after initially surging ~200% on October 13. The stock continues to hold strong volume shelves above $2.00 with heavy algorithmic absorption.",
+    "float_rotation_risk": "High Float Rotation (4.3x): With a tight float of 2.33M shares, pre-market volume of 10.1M represents more than 4x float rotation. While near-term cash runway is secured into 2029, long-term dilution risk exists upon eventual Series C preferred conversion.",
+    "support_level": "$1.90 / $1.75",
+    "resistance_level": "$2.50 / $3.03"
+  },
+  "NCPL": {
+    "catalyst_title": "Regained Nasdaq Minimum Bid Compliance & Appointed New Independent Auditor Adeptus Partners",
+    "what_happened": "Netcapital announced that Nasdaq confirmed the company officially regained compliance with the $1.00 minimum bid price requirement (Rule 5550(a)(2)) following 10 consecutive trading days above $1.00. Concurrently, Netcapital engaged Adeptus Partners, LLC as its new independent auditor to audit fiscal years 2022-2026 and complete delinquent Form 10-K and 10-Q filings ahead of the October 23 Nasdaq deadline.",
+    "chart_breakdown": "NCPL gapped up +29.8% to $1.98 on 1.75M pre-market shares, continuing upward follow-through after climbing +24.5% in yesterday's session on 46.9M shares.",
+    "float_rotation_risk": "High Float Turnover (~84%): Trading 1.75M shares against a 2.09M float represents ~0.8x pre-market float turnover (and 46.9M shares regular volume yesterday). Structural risks remain: ongoing SEC litigation, investor securities class actions (Dec 7 lead plaintiff deadline), and the impending October 23 Nasdaq deadline to file delinquent 10-K/10-Q reports.",
+    "support_level": "$1.40 / $1.25",
+    "resistance_level": "$1.85 / $2.10"
+  },
+  "XLAB": {
+    "catalyst_title": "$8.2M NVIDIA HGX B300 GPU Server Supply Contract & 14.7% Institutional Stake",
+    "what_happened": "Exascale Labs filed an 8-K disclosing an $8,208,000 contract with Sunon Inc. to deliver 12 NVIDIA HGX B300 GPU servers (96 next-gen GPUs) and high-performance computing infrastructure. Additionally, Schedule 13G and Form 3 filings on October 15 revealed ARC Group International holds a 14.7% beneficial ownership stake (4.95M shares), accelerating momentum interest.",
+    "chart_breakdown": "XLAB gapped up +20.2% to $1.36 on massive relative volume of 159x with 10.8M shares trading in pre-market, establishing a base above the 20-period 5m SMA and testing $1.50+ morning levels.",
+    "float_rotation_risk": "Post-SPAC Volatility & Cash Burn Risk: With a float of 19.4M shares, rotation is at ~0.6x in pre-market. As a recent de-SPAC (late August 2026), the company carries high operational cash burn and negative equity, creating risk of secondary equity offerings or warrant execution into price surges.",
+    "support_level": "$1.20 / $1.10",
+    "resistance_level": "$1.55 / $1.85"
+  },
+  "SPRC": {
+    "catalyst_title": "Strategic Transformation into Agentic AI Technologies for Cybersecurity & Fintech",
+    "what_happened": "SciSparc officially announced a major corporate transformation on October 15, 2026, pivoting its core business toward agentic AI-powered technologies with direct applications in cybersecurity and financial technology. This follows subsidiary NeuroThera Labs' breakthrough quantum-enabled analysis of billions of gene combinations on an S&P 500 company's quantum architecture, triggering immense retail and algorithmic momentum.",
+    "chart_breakdown": "SPRC erupted over +25% in pre-market trade, surging toward multi-dollar morning highs on an astonishing 12.1+ million pre-market shares. Heavy buying volume is absorbing supply and sustaining price action above the 20-period 5m SMA.",
+    "float_rotation_risk": "Monumental Float Turnover (>2,160%): With an ultra-low float of just 562k shares, the float turned over more than 21 times before the opening bell! While micro-float squeeze mechanics fuel explosive vertical momentum, SciSparc has a market cap of only ~$2.1M, creating severe structural risk of rapid capital raises, registered direct offerings, or warrant exercises on elevated liquidity.",
+    "support_level": "$3.20 / $2.85",
+    "resistance_level": "$4.20 / $4.80"
+  },
+  "BMMX": {
+    "catalyst_title": "Official Uplisting to Nasdaq Capital Market Under Ticker 'BMMX' Trading Commences Today",
+    "what_happened": "Black Mammoth Metals Corporation announced that its common shares were approved for listing and commenced trading on the Nasdaq Capital Market under ticker 'BMMX' effective October 15, 2026, transitioning from the OTC Pink market to expand institutional liquidity and capital markets reach across its western US resource assets.",
+    "chart_breakdown": "BMMX jumped +28.6% to $2.76 on 2.65 million pre-market shares, establishing a high-volume opening shelf as market participants price in the transition from OTC to a senior national exchange.",
+    "float_rotation_risk": "Fresh Senior Exchange Uplisting & Resource Sector Volatility: Float of 36.0M shares turned over ~7.4% in pre-market. While Nasdaq uplisting significantly improves liquidity and institutional access, early trading days often see profit-taking from OTC legacy holders and potential warrant or financing overhang.",
+    "support_level": "$2.45 / $2.20",
+    "resistance_level": "$3.20 / $3.60"
+  },
   "AMOD": {
     "catalyst_title": "$200M+ Bitcoin Treasury Strategy & PIPE Closing with Massive Micro-Float Squeeze",
     "what_happened": "Alpha Modus Holdings announced the closing of a strategic PIPE transaction securing 3,170 Bitcoin (over $200M in digital assets) to anchor a major crypto-treasury corporate reserve pivot. The news sparked a retail and algorithmic frenzy, triggering an enormous low-float short squeeze.",
     "chart_breakdown": "The stock exploded +197.4% in pre-market, soaring on a monumental 78M pre-market shares. Intraday momentum continued aggressively, holding massive volume shelves above $3.00.",
     "float_rotation_risk": "Unprecedented Float Turnover (>14,300%): With a micro-float of just 542k shares, the float rotated over 140 times before market open! Extreme dilution risk looms as the PIPE deal included the issuance of 51M new common shares and 51M warrants, meaning catastrophic dilution is locked in once registration takes effect.",
-    "support_level": "$3.00 / $2.40",
-    "resistance_level": "$4.50 / $5.00"
+    "support_level": "$1.25 / $1.10",
+    "resistance_level": "$1.60 / $1.85"
   },
   "CYCU": {
     "catalyst_title": "Regained Nasdaq Minimum Bid Compliance & Secured $800k Commercial Contracts",
@@ -38,5 +78,21 @@
     "float_rotation_risk": "High Float Turnover (>1,215%): Trading volume was more than 12x the total available public float (1.53M shares). With ongoing Nasdaq equity requirements and historically high micro-cap offering volatility, afternoon fade risk is high if early momentum stalls.",
     "support_level": "$3.50 / $3.20",
     "resistance_level": "$4.10 / $4.50"
+  },
+  "AEHL": {
+    "catalyst_title": "$100M ATM Equity Agreement, Trading Halt & Strategic Bitcoin/Livestream Reserve Transformation",
+    "what_happened": "Antelope Enterprise experienced an extraordinary +183% momentum explosion following an exchange trading halt for pending news, a recently announced $100M At-The-Market (ATM) equity offering agreement with D. Boral Capital, and intense market enthusiasm surrounding its 'Genius Plan' crypto-treasury reserve strategy paired with livestream e-commerce operations.",
+    "chart_breakdown": "The stock soared from its previous close near $8.55 to highs above $24 in pre-market trade on massive volume surge exceeding 29x its 10-day benchmark. Multiple vertical intraday pushes tested the $25-$30 price band.",
+    "float_rotation_risk": "High Volatility & Active ATM Facility Risk: Float turnover surpassed 77% in pre-market and rotated multiple times intraday. The active $100M ATM shelf offering presents immediate risk of management selling shares into liquidity spikes.",
+    "support_level": "$12.00 / $10.50",
+    "resistance_level": "$24.00 / $30.00"
+  },
+  "GRML": {
+    "catalyst_title": "EU Strategic Project Status for Offtake Partner & Arctic Security Critical Minerals Boom",
+    "what_happened": "Greenland Mines Ltd. surged +35% in pre-market trade following EU Critical Raw Materials Act Strategic Project designation for strategic partner Neo Performance Materials (which holds a 60% offtake right on Sarfartoq rare earths), further amplified by U.S.-Greenland critical minerals security pact momentum and recent $59M capital funding.",
+    "chart_breakdown": "GRML broke out through $6.50 on 9.1M pre-market shares (6.2x relative volume), with heavy institutional and algorithmic accumulation absorbing morning liquidity across the $7.00 resistance level.",
+    "float_rotation_risk": "Moderate-to-High Float Turnover: With over 9M shares traded pre-market against a 12.0M float (76% pre-market float turnover), high liquidity volatility is expected. Note recent adoption of limited-duration rights plan.",
+    "support_level": "$6.20 / $5.80",
+    "resistance_level": "$7.50 / $8.20"
   }
 }

@@ -8,17 +8,28 @@
     {
       "step": 1,
       "name": "Run Momentum Screener & Extended-Hours Chart Generator",
-      "command": "python3 scripts/small_cap_gappers.py",
+      "command": "python scripts/small_cap_gappers.py",
       "outputs": [
         "./reports/gappers.json",
-        "./reports/dashboard.html"
+        "./reports/dashboard.html",
+        "./reports/premarket_summary.md",
+        "./reports/chart.png"
       ]
     },
     {
       "step": 2,
       "name": "Parse Scanner Output",
       "source": "./reports/gappers.json",
-      "fields": ["ticker", "name", "description", "close", "float_shares_outstanding", "premarket_change", "premarket_volume", "relative_volume_10d_calc"]
+      "fields": [
+        "ticker",
+        "name",
+        "description",
+        "close",
+        "float_shares_outstanding",
+        "premarket_change",
+        "premarket_volume",
+        "relative_volume_10d_calc"
+      ]
     },
     {
       "step": 3,

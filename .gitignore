@@ -20,10 +20,13 @@ ENV/
 .idea/
 *.swp
 
-# Generated ephemeral reports (regenerated automatically on each scan)
-reports/*.html
+# Generated ephemeral reports (charts and temp html)
 reports/*.png
-reports/gappers.json
+
+# Keep core report data files for follow-through tracker and analytics
+!reports/gappers.json
+!reports/catalysts.json
+!reports/premarket_summary.md
 
 # Scratch & temporary test images
 test_*.png

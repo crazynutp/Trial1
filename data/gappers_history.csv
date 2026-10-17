@@ -1,4 +1,25 @@
 date,ticker,company,premarket_gap_pct,premarket_volume,float_shares,open_price,day_high,day_low,close_price,first_30m_change_pct,hit_plus_2pct,minutes_to_day_high,dump_warning
+2026-10-16,NCPL,Netcapital Inc.,32.27,2233296,2089079,2.4,2.4799,2.02,2.15,-12.5,Yes,0,Held/Pushed
+2026-10-16,TCRT,"Alaunos Therapeutics, Inc.",31.65,10120703,2325202,2.81,2.99,2.31,2.62,-6.94,Yes,12,Held/Pushed
+2026-10-16,XLAB,Exascale Labs Holdings Inc.,20.22,10844742,19397076,1.85,3.8399,1.75,2.335,19.19,Yes,44,Held/Pushed
+2026-10-15,SPRC,SciSparc Ltd.,16.0,14850000,562600,4.2,5.3299,1.63,2.0,6.67,Yes,15,Held/Pushed
+2026-10-14,AEHL,Antelope Enterprise Holdings Limited,183.04,1268519,16457836,24.11,30.6,11.6,11.98,1.74,Yes,172,Held/Pushed
+2026-10-14,GRML,Greenland Mines Ltd,35.38,9166266,12072721,7.51,7.53,6.35,6.5198,-1.26,No,0,Held/Pushed
+2026-10-13,PFAI,Pinnacle Food Group Limited,129.5,11950000,3590000,5.95,6.01,3.97,4.4501,-20.96,No,0,Held/Pushed
+2026-10-13,TCRT,"Alaunos Therapeutics, Inc.",64.8,61360000,2430000,1.74,4.32,1.51,3.03,2.3,Yes,165,Held/Pushed
+2026-10-13,YJ,Yunji Inc. - American Depository Shares,37.0,16489999,2550000,2.5797,2.5797,1.8301,2.075,-18.98,No,0,CRITICAL DUMP
+2026-10-12,MNDR,Mobile-health Network Solutions,204.7,48970000,428800,2.585,5.67,2.3,3.025,27.85,Yes,105,Held/Pushed
+2026-10-12,YMAT,"J-Star Holding Co., Ltd.",101.6,30890000,1580000,2.58,4.49,1.95,2.875,-18.61,Yes,80,Held/Pushed
+2026-10-12,GIXI,Gix Internet Ltd.,53.0,7810000,2490000,6.25,8.34,4.2,4.68,-6.56,Yes,50,Held/Pushed
+2026-10-12,CLWT,Euro Tech Holdings Company Limited,45.6,34350000,3080000,1.99,2.34,1.63,2.15,3.51,Yes,5,Held/Pushed
+2026-10-12,LNKS,Linkers Industries Limited,34.4,17130000,1500000,1.285,3.49,1.23,2.2501,6.61,Yes,305,Held/Pushed
+2026-10-08,FLYE,"Fly-E Group, Inc.",149.6,60370000,1560000,3.17,3.47,1.95,2.32,-18.29,Yes,0,Held/Pushed
+2026-10-07,SXTC,"China SXT Pharmaceuticals, Inc.",156.0,30950000,1030000,3.21,9.59,1.87,2.83,-27.12,Yes,270,Held/Pushed
+2026-10-07,BIYA,Baiya International Group Inc.,56.8,57770000,2700000,2.14,2.89,1.78,2.285,3.97,Yes,250,Held/Pushed
+2026-10-07,LPCN,Lipocine Inc.,40.0,67330000,7860000,2.9599,3.14,2.07,2.19,-10.98,Yes,0,Held/Pushed
+2026-10-07,LGCL,Lucas GC Limited,10.6,8199999,48700,2.49,4.53,2.41,2.84,30.12,Yes,10,Held/Pushed
+2026-10-07,SPAI,Safe Pro Group Inc.,5.1,3560000,10230000,4.32,4.81,3.8501,4.7011,-3.24,Yes,380,Held/Pushed
+2026-10-06,IPDN,"Professional Diversity Network, Inc.",102.6,30690000,475700,6.31,6.78,4.09,4.585,-10.06,Yes,0,Held/Pushed
 2026-10-02,AMOD,"Alpha Modus Holdings, Inc.",197.44,78074895,542550,3.4703,4.77,3.08,3.485,12.65,Yes,17,Held/Pushed
 2026-10-02,CYCU,"Cycurion, Inc.",11.52,3058165,3137181,2.98,4.95,2.6401,3.81,-6.25,Yes,78,Held/Pushed
 2026-10-01,NXL,"Nexalin Technology, Inc.",104.91,14092562,652226,8.8,10.9745,6.8,7.5299,12.5,Yes,36,Held/Pushed

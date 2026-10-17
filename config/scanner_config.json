@@ -1,0 +1,35 @@
+{
+  "name": "Small-Cap Momentum Gappers Filter Configuration",
+  "description": "TradingView screener filter configuration for low-float, high-volume pre-market momentum gappers.",
+  "market": "america",
+  "filters": {
+    "min_price": 1.0,
+    "max_price": 20.0,
+    "max_market_cap": 500000000,
+    "max_float_shares": 40000000,
+    "min_relative_volume_10d": 0.0,
+    "require_relative_volume": false,
+    "min_premarket_volume": 250000,
+    "min_premarket_change_pct": 4.0,
+    "require_regular_volume": false,
+    "min_regular_volume": 500000,
+    "require_regular_change": false,
+    "min_regular_change_pct": 4.0
+  },
+  "sort_by": "premarket_change",
+  "ascending": false,
+  "limit": 15,
+  "schedule": {
+    "cron": "30 8 * * 1-5",
+    "timezone": "America/New_York",
+    "description": "8:30 AM EST (Monday - Friday) Pre-Market Session"
+  },
+  "discord": {
+    "enabled": true,
+    "send_top_chart": true
+  },
+  "dashboard": {
+    "sync_to_index_html": true,
+    "sync_to_brain_artifacts": true
+  }
+}

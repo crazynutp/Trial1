@@ -155,6 +155,25 @@ def track_follow_through():
     print(f"\n[+] Successfully saved follow-through records to: {history_csv_file}")
     print(f"[+] Total historical records logged: {len(combined_df)}")
 
+    # Synchronize updated historical records directly into index.html and reports/dashboard.html
+    try:
+        import re
+        history_records = combined_df.where(pd.notnull(combined_df), None).to_dict(orient="records")
+        history_json_str = json.dumps(history_records)
+        for target_html in [project_root / "index.html", reports_dir / "dashboard.html"]:
+            if target_html.exists():
+                html_text = target_html.read_text(encoding="utf-8")
+                updated_html = re.sub(
+                    r"const RAW_HISTORY = .*?;",
+                    f"const RAW_HISTORY = {history_json_str};",
+                    html_text,
+                    count=1
+                )
+                target_html.write_text(updated_html, encoding="utf-8")
+                print(f"[+] Synchronized {target_html.name} with updated follow-through history ({len(history_records)} records).")
+    except Exception as e:
+        print(f"[!] Warning: Failed to sync HTML dashboards with new history: {e}")
+
     # Send End-of-Day Follow-Through Summary to Discord
     env_file = project_root / ".env"
     if env_file.exists():

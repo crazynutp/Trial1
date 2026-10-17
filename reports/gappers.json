@@ -1,0 +1,41 @@
+[
+  {
+    "ticker": "NASDAQ:XLAB",
+    "name": "XLAB",
+    "description": "Exascale Labs Holdings Inc.",
+    "close": 2.35,
+    "market_cap_basic": 79169270,
+    "float_shares_outstanding": 19397076.9404,
+    "relative_volume_10d_calc": 100.81873205333072,
+    "premarket_volume": 18042412,
+    "premarket_change": 36.02941176470588,
+    "volume": 171616761,
+    "change": 72.79411764705883
+  },
+  {
+    "ticker": "NASDAQ:TCRT",
+    "name": "TCRT",
+    "description": "Alaunos Therapeutics, Inc.",
+    "close": 2.63,
+    "market_cap_basic": 7698365,
+    "float_shares_outstanding": 2325202.9304,
+    "relative_volume_10d_calc": 0.9307110924739423,
+    "premarket_volume": 10869763,
+    "premarket_change": 28.44036697247705,
+    "volume": 32220724,
+    "change": 20.642201834862373
+  },
+  {
+    "ticker": "NASDAQ:NCPL",
+    "name": "NCPL",
+    "description": "Netcapital Inc.",
+    "close": 2.17,
+    "market_cap_basic": 17029941,
+    "float_shares_outstanding": 2089079.5884000002,
+    "relative_volume_10d_calc": 1.464230999690542,
+    "premarket_volume": 9905054,
+    "premarket_change": 23.232323232323232,
+    "volume": 24242348,
+    "change": 9.595959595959593
+  }
+]

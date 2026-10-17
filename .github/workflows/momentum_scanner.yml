@@ -57,10 +57,11 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Actions Automation"
-          git add index.html data/gappers_history.csv reports/catalysts.json || true
+          git add index.html data/gappers_history.csv reports/gappers.json reports/premarket_summary.md reports/dashboard.html || true
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
             git commit -m "Automated update: Ingest momentum scan & follow-through analytics [skip ci]"
+            git pull --rebase origin main || true
             git push origin main
           fi
