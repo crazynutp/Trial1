@@ -2048,19 +2048,20 @@ def run_scanner():
       if (filtered.length === 0) return;
 
       const keys = Object.keys(filtered[0]);
-      let csv = keys.join(",") + ",sim_exit_return_pct,exit_strategy_used\n";
+      const csvRows = [];
+      csvRows.push(keys.join(",") + ",sim_exit_return_pct,exit_strategy_used");
       filtered.forEach(row => {{
         const simRet = getSimExitReturn(row);
-        let line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",");
-        line += `,${{simRet.toFixed(2)}},"${{currentExitStrategy}}"\n`;
-        csv += line;
+        const line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "," + simRet.toFixed(2) + ',"' + currentExitStrategy + '"';
+        csvRows.push(line);
       }});
 
-      const blob = new Blob([csv], {{ type: 'text/csv' }});
+      const csvContent = csvRows.join(String.fromCharCode(10));
+      const blob = new Blob([csvContent], {{ type: 'text/csv' }});
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
-      a.setAttribute('download', `filtered_gappers_${{currentExitStrategy}}.csv`);
+      a.setAttribute('download', 'filtered_gappers_' + currentExitStrategy + '.csv');
       a.click();
     }}
 
