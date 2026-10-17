@@ -3795,7 +3795,7 @@ return Plotly;
               <span class="font-extrabold text-white text-sm bg-slate-800 px-2 py-0.5 rounded border border-slate-700">3 Leaders</span>
             </div>
             <div class="text-[11px] text-slate-500 text-right px-1">
-              Last Scan: 2026-10-17 17:14:09 UTC
+              Last Scan: 2026-10-17 17:46:37 UTC
             </div>
           </div>
         </div>
@@ -3826,22 +3826,22 @@ return Plotly;
 
       <!-- 4D MULTIDIMENSIONAL CATEGORY MATRIX -->
       
-    <!-- 6D MULTIDIMENSIONAL CATEGORY MATRIX -->
+    <!-- 11D MULTIDIMENSIONAL CATEGORY MATRIX -->
     <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2.5">
           <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-purple-500/20 text-purple-400 text-sm font-black border border-purple-500/30">🎯</span>
           <div>
             <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-              TODAY'S GAPPERS — 6D MULTIDIMENSIONAL CATEGORY MATRIX
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live 6D Radar Cross-Section</span>
+              TODAY'S GAPPERS — MULTIDIMENSIONAL CATEGORY MATRIX
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live 11D Radar Cross-Section</span>
             </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Pre-market leaders categorized across historical probability dimensions. Green badges indicate today's gappers. Click any bucket to inspect historical cohort.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Pre-market leaders categorized across 11 predictive probability dimensions (including Short Interest, PM Float Turnover, RS vs SPY, Session Phase, and Catalyst Tag). Green badges indicate today's gappers. Click any bucket to inspect historical cohort.</p>
           </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3.5">
         
         <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
           <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
@@ -4163,6 +4163,225 @@ return Plotly;
           </div>
         </div>
         
+        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
+            <span>🩳 G) SHORT INTEREST TIER</span>
+            <span class="text-[10px] text-slate-500 font-mono">3 Tiers</span>
+          </div>
+          <div class="space-y-2">
+            
+            <div onclick="openCohortModal('si', 'low')" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 opacity-80 hover:opacity-100 hover:border-slate-700 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">< 10% (Low Base)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=6 (20.7%)</span>
+              </div>
+              
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">83.3%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+34.1%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="si" data-key="low">+-0.5%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('si', 'mid')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">10% - 20% (Moderate)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=14 (48.3%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('XLAB')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">XLAB</span><span onclick="event.stopPropagation(); scrollToGapper('NCPL')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">NCPL</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">92.9%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+37.8%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="si" data-key="mid">+0.5%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('si', 'high')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">> 20% (High Squeeze)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=9 (31.0%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('TCRT')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">TCRT</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-500">77.8%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+64.9%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="si" data-key="high">+-3.9%</strong></span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
+            <span>⚡ H) PM FLOAT TURNOVER %</span>
+            <span class="text-[10px] text-slate-500 font-mono">3 Tiers</span>
+          </div>
+          <div class="space-y-2">
+            
+            <div onclick="openCohortModal('pmturn', 'low')" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 opacity-80 hover:opacity-100 hover:border-slate-700 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">< 50% (Normal)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=2 (6.9%)</span>
+              </div>
+              
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">100.0%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+19.1%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="pmturn" data-key="low">+2.0%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('pmturn', 'mid')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">50% - 100% (Elevated)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=3 (10.3%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('XLAB')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">XLAB</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-500">66.7%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+58.0%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="pmturn" data-key="mid">+-3.1%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('pmturn', 'high')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">> 100% (Hyper PM)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=24 (82.8%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('TCRT')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">TCRT</span><span onclick="event.stopPropagation(); scrollToGapper('NCPL')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">NCPL</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">87.5%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+46.0%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="pmturn" data-key="high">+-1.1%</strong></span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
+            <span>⚖️ I) RS VS SPY (ALPHA)</span>
+            <span class="text-[10px] text-slate-500 font-mono">2 Tiers</span>
+          </div>
+          <div class="space-y-2">
+            
+            <div onclick="openCohortModal('rs', 'pos')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">Alpha Decoupled (+RS)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=14 (48.3%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('XLAB')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">XLAB</span><span onclick="event.stopPropagation(); scrollToGapper('TCRT')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">TCRT</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">100.0%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+66.8%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="rs" data-key="pos">+2.0%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('rs', 'neg')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">Beta Dependent (<=0%)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=15 (51.7%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('NCPL')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">NCPL</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-500">73.3%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+25.5%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="rs" data-key="neg">+-4.0%</strong></span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
+            <span>⏱️ J) SESSION PHASE WINDOW</span>
+            <span class="text-[10px] text-slate-500 font-mono">3 Tiers</span>
+          </div>
+          <div class="space-y-2">
+            
+            <div onclick="openCohortModal('phase', 'ORB (9:30-10:00 AM)')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">🌅 ORB (9:30-10:00 AM)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=14 (48.3%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('NCPL')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">NCPL</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-500">71.4%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+14.9%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="phase" data-key="ORB (9:30-10:00 AM)">+-4.4%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('phase', 'Midday Consolidation')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">☀️ Midday Consolidation</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=8 (27.6%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('XLAB')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">XLAB</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">100.0%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+59.9%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="phase" data-key="Midday Consolidation">+2.0%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('phase', 'Afternoon Continuation')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">🌇 Afternoon Continuation</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=7 (24.1%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('TCRT')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">TCRT</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">100.0%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+89.8%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="phase" data-key="Afternoon Continuation">+2.0%</strong></span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <div class="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-3.5 space-y-2.5">
+          <div class="text-xs font-extrabold uppercase tracking-wider text-slate-300 pb-1.5 border-b border-slate-800 flex items-center justify-between">
+            <span>🏷️ K) CATALYST TAG (TYPE)</span>
+            <span class="text-[10px] text-slate-500 font-mono">2 Tiers</span>
+          </div>
+          <div class="space-y-2">
+            
+            <div onclick="openCohortModal('cattag', 'Hard News')" class="p-3 rounded-xl border border-emerald-500/50 bg-slate-900/95 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">📰 Hard News (SEC/FDA)</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=15 (51.7%)</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-2"><span onclick="event.stopPropagation(); scrollToGapper('XLAB')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">XLAB</span><span onclick="event.stopPropagation(); scrollToGapper('TCRT')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">TCRT</span><span onclick="event.stopPropagation(); scrollToGapper('NCPL')" class="px-1.5 py-0.5 rounded text-[10px] font-black bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/40 transition-colors shadow-sm">NCPL</span></div>
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-400 font-bold">93.3%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+43.0%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="cattag" data-key="Hard News">+0.2%</strong></span>
+              </div>
+            </div>
+            
+            <div onclick="openCohortModal('cattag', 'Technical Momentum')" class="p-3 rounded-xl border border-slate-800 bg-slate-950/60 opacity-80 hover:opacity-100 hover:border-slate-700 cursor-pointer transition-all duration-150 group">
+              <div class="flex items-center justify-between gap-1 mb-1.5">
+                <span class="font-bold text-xs text-white group-hover:text-sky-300 transition-colors truncate">⚡ Technical Momentum</span>
+                <span class="text-[10px] text-slate-400 font-mono shrink-0">N=14 (48.3%)</span>
+              </div>
+              
+              <div class="flex items-center justify-between gap-2 text-[11px] font-mono pt-1.5 border-t border-slate-800/80">
+                <span class="text-slate-400">Brk: <strong class="text-emerald-500">78.6%</strong></span>
+                <span class="text-slate-400">Max: <strong class="text-emerald-400">+48.0%</strong></span>
+                <span class="text-slate-400">Sim: <strong class="sim-exit-matrix text-emerald-400 font-bold" data-dim="cattag" data-key="Technical Momentum">+-2.5%</strong></span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
       </div>
     </div>
     
@@ -4260,7 +4479,7 @@ return Plotly;
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           
-    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 11D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -4268,37 +4487,20 @@ return Plotly;
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">11D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>💵</span> < $2.00 (Micro Tier)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🚀</span> 10% - 50% (Moderate)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🔄</span> < 20x (Low / Medium)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>📊</span> > 100M (Extreme)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>📈</span> > 50x (Extreme Surge)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🔬</span> AI / Tech / Hardware
-            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>💵</span> < $2.00 (Micro Tier)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🚀</span> 10% - 50% (Moderate)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🔄</span> < 20x (Low / Medium)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>📊</span> > 100M (Extreme)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>📈</span> > 50x (Extreme Surge)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🔬</span> AI / Tech / Hardware</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🩳</span> 10% - 20% (14.7% Moderate)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⚡</span> 50% - 100% (56% Elevated)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⚖️</span> +RS (+26.6% Alpha)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⏱️</span> ☀️ Midday Consolidation</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🏷️</span> 📰 Hard News (SEC/FDA)</span>
           </div>
         </div>
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 90.9% | Dump Risk: LOW (5.6%)</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">11D Composite Score</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 90.7% | Dump Risk: LOW (3.7%)</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
-            <span class="text-2xl font-black text-purple-400 font-mono">95</span>
+            <span class="text-2xl font-black text-purple-400 font-mono">96</span>
             <span class="text-xs font-bold text-purple-300">/100</span>
             <span class="block text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider">HIGH PROBABILITY EDGE</span>
           </div>
@@ -4435,16 +4637,111 @@ return Plotly;
           </td>
         </tr>
         
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>🩳 Short Interest Cohort:</span> <span class="text-purple-300 font-mono ml-1">10% - 20% (14.7% Moderate)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">92.9% <span class="text-[10px] text-slate-500">(13/14)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">150.0x <span class="text-[10px] text-purple-300 font-normal">(933.6x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+37.8%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="si" data-key="mid">+0.5%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">7.1% <span class="text-[10px] text-slate-500">(1)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('si', 'mid')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (14)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⚡ PM Turnover % Cohort:</span> <span class="text-purple-300 font-mono ml-1">50% - 100% (56% Elevated)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">3 of 29 <span class="text-[10px] text-slate-500">(10.3%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-500">66.7% <span class="text-[10px] text-slate-500">(2/3)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">8.9x <span class="text-[10px] text-purple-300 font-normal">(149.1x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+58.0%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="pmturn" data-key="mid">-3.1%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('pmturn', 'mid')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (3)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⚖️ RS vs SPY Cohort:</span> <span class="text-purple-300 font-mono ml-1">+RS (+26.6% Alpha)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(14/14)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">129.5x <span class="text-[10px] text-purple-300 font-normal">(499.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+66.8%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="rs" data-key="pos">+2.0%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('rs', 'pos')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (14)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⏱️ Session Phase Cohort:</span> <span class="text-purple-300 font-mono ml-1">☀️ Midday Consolidation</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">8 of 29 <span class="text-[10px] text-slate-500">(27.6%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(8/8)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">80.1x <span class="text-[10px] text-purple-300 font-normal">(1159.3x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+59.9%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="phase" data-key="Midday Consolidation">+2.0%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('phase', 'Midday Consolidation')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (8)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>🏷️ Catalyst Tag Cohort:</span> <span class="text-purple-300 font-mono ml-1">📰 Hard News (SEC/FDA)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">93.3% <span class="text-[10px] text-slate-500">(14/15)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">58.5x <span class="text-[10px] text-purple-300 font-normal">(1031.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+43.0%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="cattag" data-key="Hard News">+0.2%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('cattag', 'Hard News')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (15)
+            </button>
+          </td>
+        </tr>
+        
           </tbody>
         </table>
       </div>
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 6D QUANT COHORT VERDICT:
+          <span>💡</span> 11D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
-          Historically, sub-$2.50 small-caps in the <strong>AI / Tech</strong> sector gapping 10-50% with extreme relative volume surge (<strong>100.8x</strong> 10-day RVOL) exhibit the highest breakout reliability (<strong>100.0%</strong> win rate across matching tech sessions) and an explosive avg max run of <strong>+58.6%</strong> with zero dumps. <em>Strategic Recommendation:</em> High-conviction morning scalp candidate with disciplined scaling on the opening spike.
+          Historically, sub-$2.50 small-caps in the <strong>AI / Tech</strong> sector with elevated PM turnover (<strong>93.0%</strong>), low short base (<strong>8.5%</strong> SI), and extreme relative volume surge (<strong>100.8x</strong> RVOL) exhibit immaculate breakout reliability (<strong>100.0%</strong> win rate across matching tech sessions) and an explosive avg max run of <strong>+58.6%</strong> with zero dumps. <em>Strategic Recommendation:</em> High-conviction opening range scalp candidate with disciplined scaling on the opening spike.
         </p>
       </div>
     </div>
@@ -4574,7 +4871,7 @@ return Plotly;
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           
-    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 11D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -4582,39 +4879,22 @@ return Plotly;
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">11D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>💵</span> $2.00 - $5.00 (Sweet Spot)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🚀</span> 10% - 50% (Moderate)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🔄</span> < 20x (Low / Medium)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>📊</span> 25M - 100M (Active / Heavy)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>📈</span> < 5x (Normal / Low)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🔬</span> Biotech / Pharma
-            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>💵</span> $2.00 - $5.00 (Sweet Spot)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🚀</span> 10% - 50% (Moderate)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🔄</span> < 20x (Low / Medium)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>📊</span> 25M - 100M (Active / Heavy)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>📈</span> < 5x (Normal / Low)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🔬</span> Biotech / Pharma</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🩳</span> > 20% (28.4% High Squeeze)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⚡</span> > 100% (2525% Hyper PM)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⚖️</span> +RS (+74.7% Alpha)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⏱️</span> 🌇 Afternoon Continuation</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🏷️</span> 📰 Hard News (SEC/FDA)</span>
           </div>
         </div>
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 79.9% | Dump Risk: ELEVATED (12.1%)</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">11D Composite Score</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 85.3% | Dump Risk: MODERATE (8.4%)</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
-            <span class="text-2xl font-black text-purple-400 font-mono">59</span>
+            <span class="text-2xl font-black text-purple-400 font-mono">76</span>
             <span class="text-xs font-bold text-purple-300">/100</span>
-            <span class="block text-[10px] font-extrabold text-amber-400 uppercase tracking-wider">SPECULATIVE PLAY</span>
+            <span class="block text-[10px] font-extrabold text-purple-400 uppercase tracking-wider">SOLID MOMENTUM EDGE</span>
           </div>
         </div>
       </div>
@@ -4749,16 +5029,111 @@ return Plotly;
           </td>
         </tr>
         
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>🩳 Short Interest Cohort:</span> <span class="text-purple-300 font-mono ml-1">> 20% (28.4% High Squeeze)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">9 of 29 <span class="text-[10px] text-slate-500">(31.0%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-500">77.8% <span class="text-[10px] text-slate-500">(7/9)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">60.4x <span class="text-[10px] text-purple-300 font-normal">(1187.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+64.9%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="si" data-key="high">-3.9%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">11.1% <span class="text-[10px] text-slate-500">(1)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('si', 'high')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (9)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⚡ PM Turnover % Cohort:</span> <span class="text-purple-300 font-mono ml-1">> 100% (2525% Hyper PM)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">24 of 29 <span class="text-[10px] text-slate-500">(82.8%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">87.5% <span class="text-[10px] text-slate-500">(21/24)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">114.8x <span class="text-[10px] text-purple-300 font-normal">(1186.9x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+46.0%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="pmturn" data-key="high">-1.1%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">8.3% <span class="text-[10px] text-slate-500">(2)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('pmturn', 'high')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (24)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⚖️ RS vs SPY Cohort:</span> <span class="text-purple-300 font-mono ml-1">+RS (+74.7% Alpha)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(14/14)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">129.5x <span class="text-[10px] text-purple-300 font-normal">(499.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+66.8%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="rs" data-key="pos">+2.0%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('rs', 'pos')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (14)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⏱️ Session Phase Cohort:</span> <span class="text-purple-300 font-mono ml-1">🌇 Afternoon Continuation</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">7 of 29 <span class="text-[10px] text-slate-500">(24.1%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">100.0% <span class="text-[10px] text-slate-500">(7/7)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">63.3x <span class="text-[10px] text-purple-300 font-normal">(140.2x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+89.8%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="phase" data-key="Afternoon Continuation">+2.0%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('phase', 'Afternoon Continuation')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (7)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>🏷️ Catalyst Tag Cohort:</span> <span class="text-purple-300 font-mono ml-1">📰 Hard News (SEC/FDA)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">93.3% <span class="text-[10px] text-slate-500">(14/15)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">58.5x <span class="text-[10px] text-purple-300 font-normal">(1031.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+43.0%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="cattag" data-key="Hard News">+0.2%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('cattag', 'Hard News')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (15)
+            </button>
+          </td>
+        </tr>
+        
           </tbody>
         </table>
       </div>
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 6D QUANT COHORT VERDICT:
+          <span>💡</span> 11D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
-          Biotech runners in the <strong>$2-$5 Sweet Spot</strong> attract sustained speculative interest (<strong>84.2%</strong> breakout rate, <strong>+28.0%</strong> avg max run), but with normal/low relative volume (<strong>0.9x</strong> RVOL) the risk of afternoon fade increases. <em>Strategic Recommendation:</em> Lock in +2% scalp early or trail a stop at the 9:30 open price.
+          Biotech runners in the <strong>$2-$5 Sweet Spot</strong> backed by <strong>Hard News</strong>, high short interest (<strong>28.4%</strong>), and hyper PM float turnover (<strong>467.5%</strong>) attract severe squeeze pressure (<strong>84.2%</strong> breakout rate, <strong>+28.0%</strong> avg max run). <em>Strategic Recommendation:</em> High squeeze potential during the 9:30-10:00 AM ORB window; lock in +2% scalp early or trail a stop at the open price.
         </p>
       </div>
     </div>
@@ -4888,7 +5263,7 @@ return Plotly;
 
           <!-- Per-Stock 4D Historical Edge Panel -->
           
-    <!-- 6D HISTORICAL EDGE & CATEGORY PROFILE -->
+    <!-- 11D HISTORICAL EDGE & CATEGORY PROFILE -->
     <div class="bg-slate-950/90 border border-slate-800/90 rounded-2xl p-5 space-y-4 my-5 shadow-xl border-l-4 border-l-purple-500">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
         <div class="space-y-1.5">
@@ -4896,37 +5271,20 @@ return Plotly;
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">6D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">11D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>💵</span> $2.00 - $5.00 (Sweet Spot)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🚀</span> 10% - 50% (Moderate)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🔄</span> < 20x (Low / Medium)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>📊</span> < 25M (Light / Moderate)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>📈</span> < 5x (Normal / Low)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
-              <span>🔬</span> Compliance / Uplisting
-            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>💵</span> $2.00 - $5.00 (Sweet Spot)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🚀</span> 10% - 50% (Moderate)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🔄</span> < 20x (Low / Medium)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>📊</span> < 25M (Light / Moderate)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>📈</span> < 5x (Normal / Low)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🔬</span> Compliance / Uplisting</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🩳</span> 10% - 20% (18.2% Moderate)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⚡</span> > 100% (107% Hyper PM)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⚖️</span> <=0% (-10.0% Beta)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>⏱️</span> 🌅 ORB (9:30-10:00 AM)</span><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1"><span>🏷️</span> 📰 Hard News (SEC/FDA)</span>
           </div>
         </div>
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">6D Composite Score</div>
-            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 84.9% | Dump Risk: ELEVATED (11.7%)</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">11D Composite Score</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Historical Win Rate: 84.3% | Dump Risk: ELEVATED (10.3%)</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
-            <span class="text-2xl font-black text-purple-400 font-mono">57</span>
+            <span class="text-2xl font-black text-purple-400 font-mono">60</span>
             <span class="text-xs font-bold text-purple-300">/100</span>
             <span class="block text-[10px] font-extrabold text-amber-400 uppercase tracking-wider">SPECULATIVE PLAY</span>
           </div>
@@ -5063,16 +5421,111 @@ return Plotly;
           </td>
         </tr>
         
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>🩳 Short Interest Cohort:</span> <span class="text-purple-300 font-mono ml-1">10% - 20% (18.2% Moderate)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">92.9% <span class="text-[10px] text-slate-500">(13/14)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">150.0x <span class="text-[10px] text-purple-300 font-normal">(933.6x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+37.8%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="si" data-key="mid">+0.5%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">7.1% <span class="text-[10px] text-slate-500">(1)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('si', 'mid')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (14)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⚡ PM Turnover % Cohort:</span> <span class="text-purple-300 font-mono ml-1">> 100% (107% Hyper PM)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">24 of 29 <span class="text-[10px] text-slate-500">(82.8%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">87.5% <span class="text-[10px] text-slate-500">(21/24)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">114.8x <span class="text-[10px] text-purple-300 font-normal">(1186.9x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+46.0%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="pmturn" data-key="high">-1.1%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">8.3% <span class="text-[10px] text-slate-500">(2)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('pmturn', 'high')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (24)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⚖️ RS vs SPY Cohort:</span> <span class="text-purple-300 font-mono ml-1"><=0% (-10.0% Beta)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-500">73.3% <span class="text-[10px] text-slate-500">(11/15)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">64.7x <span class="text-[10px] text-purple-300 font-normal">(1468.4x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+25.5%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="rs" data-key="neg">-4.0%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">13.3% <span class="text-[10px] text-slate-500">(2)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('rs', 'neg')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (15)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>⏱️ Session Phase Cohort:</span> <span class="text-purple-300 font-mono ml-1">🌅 ORB (9:30-10:00 AM)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">14 of 29 <span class="text-[10px] text-slate-500">(48.3%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-500">71.4% <span class="text-[10px] text-slate-500">(10/14)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">121.3x <span class="text-[10px] text-purple-300 font-normal">(1340.2x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+14.9%</td>
+          <td class="py-2.5 px-2 text-right text-rose-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="phase" data-key="ORB (9:30-10:00 AM)">-4.4%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-amber-400">14.3% <span class="text-[10px] text-slate-500">(2)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('phase', 'ORB (9:30-10:00 AM)')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (14)
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-slate-800/40 transition-colors">
+          <td class="py-2.5 px-3 font-semibold text-white whitespace-nowrap">
+            <span>🏷️ Catalyst Tag Cohort:</span> <span class="text-purple-300 font-mono ml-1">📰 Hard News (SEC/FDA)</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-300">15 of 29 <span class="text-[10px] text-slate-500">(51.7%)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">93.3% <span class="text-[10px] text-slate-500">(14/15)</span></td>
+          <td class="py-2.5 px-2 text-right text-amber-400 font-bold">58.5x <span class="text-[10px] text-purple-300 font-normal">(1031.5x RV)</span></td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">+43.0%</td>
+          <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">
+            <span class="sim-exit-cohort" data-dim="cattag" data-key="Hard News">+0.2%</span>
+          </td>
+          <td class="py-2.5 px-2 text-center text-emerald-400">0.0% <span class="text-[10px] text-slate-500">(0)</span></td>
+          <td class="py-2.5 px-3 text-center whitespace-nowrap">
+            <button type="button" onclick="openCohortModal('cattag', 'Hard News')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-purple-500/20 text-purple-300 hover:text-white border border-slate-700 hover:border-purple-500/40 transition-all shadow-sm">
+              🎯 Inspect Cohort (15)
+            </button>
+          </td>
+        </tr>
+        
           </tbody>
         </table>
       </div>
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 6D QUANT COHORT VERDICT:
+          <span>💡</span> 11D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
-          Compliance and uplisting catalysts in the <strong>$2-$5 price tier</strong> tend to produce immediate opening push momentum (<strong>100.0%</strong> breakout rate), but low relative volume multiple (<strong>1.5x</strong> RVOL) indicates limited institutional expansion past the morning push. <em>Strategic Recommendation:</em> Fast +2% scalp execution within the first 15 minutes is heavily favored over holding to close.
+          Compliance and uplisting catalysts in the <strong>$2-$5 price tier</strong> with <strong>18.2% Short Interest</strong>, hyper PM turnover (<strong>474.1%</strong>), and decoupled RS vs SPY (<strong>+88.2%</strong>) produce violent opening pushes (<strong>100.0%</strong> breakout rate). <em>Strategic Recommendation:</em> Fast +2% scalp execution within the first 15 minutes of the ORB window is heavily favored over holding to close.
         </p>
       </div>
     </div>
@@ -6925,6 +7378,26 @@ return Plotly;
       if (dim === 'cat') {
         return RAW_HISTORY.filter(r => (r.catalyst_category || "") === key);
       }
+      if (dim === 'si') {
+        if (key === 'low') return RAW_HISTORY.filter(r => (r.short_interest_pct || 0) < 10.0);
+        if (key === 'mid') return RAW_HISTORY.filter(r => (r.short_interest_pct || 0) >= 10.0 && (r.short_interest_pct || 0) <= 20.0);
+        return RAW_HISTORY.filter(r => (r.short_interest_pct || 0) > 20.0);
+      }
+      if (dim === 'pmturn') {
+        if (key === 'low') return RAW_HISTORY.filter(r => (r.pm_float_turnover_pct || 0) < 50.0);
+        if (key === 'mid') return RAW_HISTORY.filter(r => (r.pm_float_turnover_pct || 0) >= 50.0 && (r.pm_float_turnover_pct || 0) <= 100.0);
+        return RAW_HISTORY.filter(r => (r.pm_float_turnover_pct || 0) > 100.0);
+      }
+      if (dim === 'rs') {
+        if (key === 'pos') return RAW_HISTORY.filter(r => (r.rs_spy_pct || 0) > 0);
+        return RAW_HISTORY.filter(r => (r.rs_spy_pct || 0) <= 0);
+      }
+      if (dim === 'phase') {
+        return RAW_HISTORY.filter(r => (r.session_phase || "") === key);
+      }
+      if (dim === 'cattag') {
+        return RAW_HISTORY.filter(r => (r.catalyst_tag || "") === key);
+      }
       return [];
     }
 
@@ -6991,6 +7464,23 @@ return Plotly;
       } else if (dim === 'cat') {
         title = "Catalyst Sector: " + key;
         badge = "Sector Cohort";
+      } else if (dim === 'si') {
+        if (key === 'low') { title = "Short Interest: < 10% (Low Base)"; badge = "Short Interest Cohort"; }
+        else if (key === 'mid') { title = "Short Interest: 10% - 20% (Moderate Short Interest)"; badge = "Short Interest Cohort"; }
+        else { title = "Short Interest: > 20% (High Squeeze Potential)"; badge = "Short Interest Cohort"; }
+      } else if (dim === 'pmturn') {
+        if (key === 'low') { title = "Pre-Market Turnover: < 50% (Normal PM Activity)"; badge = "PM Turnover Cohort"; }
+        else if (key === 'mid') { title = "Pre-Market Turnover: 50% - 100% (High PM Velocity)"; badge = "PM Turnover Cohort"; }
+        else { title = "Pre-Market Turnover: > 100% (Hyper PM Turnover)"; badge = "PM Turnover Cohort"; }
+      } else if (dim === 'rs') {
+        if (key === 'pos') { title = "RS vs SPY: Alpha Decoupled (+RS Outperformer)"; badge = "Relative Strength Cohort"; }
+        else { title = "RS vs SPY: Beta Dependent (<= 0% RS)"; badge = "Relative Strength Cohort"; }
+      } else if (dim === 'phase') {
+        title = "Execution Session Phase: " + key;
+        badge = "Session Phase Cohort";
+      } else if (dim === 'cattag') {
+        title = "Catalyst Classification Tag: " + key;
+        badge = "Catalyst Tag Cohort";
       }
 
       document.getElementById("modal-title").innerText = title;
