@@ -528,6 +528,9 @@ def compute_4d_cohort_stats(history_records):
         ("turn", "low"): lambda r: (r.get("float_turnover_x") or 0) < 20.0,
         ("turn", "mid"): lambda r: 20.0 <= (r.get("float_turnover_x") or 0) <= 100.0,
         ("turn", "high"): lambda r: (r.get("float_turnover_x") or 0) > 100.0,
+        ("vol", "low"): lambda r: (r.get("day_volume") or 0) < 25_000_000,
+        ("vol", "mid"): lambda r: 25_000_000 <= (r.get("day_volume") or 0) <= 100_000_000,
+        ("vol", "high"): lambda r: (r.get("day_volume") or 0) > 100_000_000,
         ("cat", "AI / Tech / Hardware"): lambda r: r.get("catalyst_category") == "AI / Tech / Hardware",
         ("cat", "Biotech / Pharma"): lambda r: r.get("catalyst_category") == "Biotech / Pharma",
         ("cat", "Compliance / Uplisting"): lambda r: r.get("catalyst_category") == "Compliance / Uplisting",
@@ -603,6 +606,15 @@ def get_stock_assigned_cohorts(item, cat_category):
     else:
         t_key, t_name = "high", "> 100x (Hyper-Rotated)"
 
+    # Day Volume Tier
+    vol = item.get("volume") or pm_vol
+    if vol < 25_000_000:
+        v_key, v_name = "low", "< 25M (Light / Moderate)"
+    elif vol <= 100_000_000:
+        v_key, v_name = "mid", "25M - 100M (Active / Heavy)"
+    else:
+        v_key, v_name = "high", "> 100M (Extreme)"
+
     # Catalyst Sector
     c_key, c_name = cat_category, cat_category
 
@@ -610,6 +622,7 @@ def get_stock_assigned_cohorts(item, cat_category):
         "price": (p_key, p_name),
         "gap": (g_key, g_name),
         "turn": (t_key, t_name),
+        "vol": (v_key, v_name),
         "cat": (c_key, c_name)
     }
 
@@ -651,7 +664,12 @@ def build_4d_category_matrix_html(records, history_records, stats):
             ("mid", "20x - 100x (Intense)"),
             ("high", "> 100x (Hyper-Rotated)")
         ]),
-        ("🔬 D) CATALYST SECTOR", "cat", [
+        ("📊 D) DAY VOLUME TIER", "vol", [
+            ("low", "< 25M (Light / Moderate)"),
+            ("mid", "25M - 100M (Active / Heavy)"),
+            ("high", "> 100M (Extreme)")
+        ]),
+        ("🔬 E) CATALYST SECTOR", "cat", [
             ("AI / Tech / Hardware", "AI / Tech / Hardware"),
             ("Biotech / Pharma", "Biotech / Pharma"),
             ("Compliance / Uplisting", "Compliance / Uplisting"),
@@ -706,14 +724,14 @@ def build_4d_category_matrix_html(records, history_records, stats):
         cols_html.append(col_block)
 
     matrix_container = f"""
-    <!-- 4D MULTIDIMENSIONAL CATEGORY MATRIX -->
+    <!-- 5D MULTIDIMENSIONAL CATEGORY MATRIX -->
     <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800">
         <div class="flex items-center gap-2.5">
           <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-purple-500/20 text-purple-400 text-sm font-black border border-purple-500/30">🎯</span>
           <div>
             <h2 class="text-lg md:text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
-              TODAY'S GAPPERS — 4D MULTIDIMENSIONAL CATEGORY MATRIX
+              TODAY'S GAPPERS — 5D MULTIDIMENSIONAL CATEGORY MATRIX
               <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Live Radar Cross-Section</span>
             </h2>
             <p class="text-xs text-slate-400 mt-0.5">Pre-market leaders categorized across historical probability dimensions. Green badges indicate today's gappers. Click any bucket to inspect historical cohort.</p>
@@ -721,7 +739,7 @@ def build_4d_category_matrix_html(records, history_records, stats):
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
         {''.join(cols_html)}
       </div>
     </div>
@@ -738,18 +756,20 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
         ("💵 Share Price Cohort", "price", assigned["price"][0], assigned["price"][1]),
         ("🚀 Pre-Market Gap Cohort", "gap", assigned["gap"][0], assigned["gap"][1]),
         ("🔄 Float Turnover Cohort", "turn", assigned["turn"][0], assigned["turn"][1]),
+        ("📊 Day Volume Cohort", "vol", assigned["vol"][0], assigned["vol"][1]),
         ("🔬 Catalyst Sector Cohort", "cat", assigned["cat"][0], assigned["cat"][1])
     ]
 
-    # Calculate 4D Composite Score
+    # Calculate 5D Composite Score
     p_m = stats.get(("price", assigned["price"][0]), {})
     g_m = stats.get(("gap", assigned["gap"][0]), {})
     t_m = stats.get(("turn", assigned["turn"][0]), {})
+    v_m = stats.get(("vol", assigned["vol"][0]), {})
     c_m = stats.get(("cat", assigned["cat"][0]), {})
 
-    avg_win = (p_m.get("win_rate", 0) + g_m.get("win_rate", 0) + t_m.get("win_rate", 0) + c_m.get("win_rate", 0)) / 4.0
-    avg_run = (p_m.get("avg_run", 0) + g_m.get("avg_run", 0) + t_m.get("avg_run", 0) + c_m.get("avg_run", 0)) / 4.0
-    avg_dump = (p_m.get("dump_rate", 0) + g_m.get("dump_rate", 0) + t_m.get("dump_rate", 0) + c_m.get("dump_rate", 0)) / 4.0
+    avg_win = (p_m.get("win_rate", 0) + g_m.get("win_rate", 0) + t_m.get("win_rate", 0) + v_m.get("win_rate", 0) + c_m.get("win_rate", 0)) / 5.0
+    avg_run = (p_m.get("avg_run", 0) + g_m.get("avg_run", 0) + t_m.get("avg_run", 0) + v_m.get("avg_run", 0) + c_m.get("avg_run", 0)) / 5.0
+    avg_dump = (p_m.get("dump_rate", 0) + g_m.get("dump_rate", 0) + t_m.get("dump_rate", 0) + v_m.get("dump_rate", 0) + c_m.get("dump_rate", 0)) / 5.0
 
     raw_score = (avg_win * 0.45) + min(35.0, (avg_run / 60.0) * 35.0) + max(0.0, (20.0 - avg_dump * 1.5))
     if cat_category == "AI / Tech / Hardware": raw_score += 8.0
@@ -817,7 +837,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
             <span class="text-base font-extrabold text-white flex items-center gap-1.5">
               <span>🎯</span> Multidimensional Category Profile & Historical Edge
             </span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">4D Cohort Analysis</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">5D Cohort Analysis</span>
           </div>
           <div class="flex flex-wrap items-center gap-1.5 pt-1">
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
@@ -830,6 +850,9 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
               <span>🔄</span> {assigned['turn'][1]}
             </span>
             <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
+              <span>📊</span> {assigned['vol'][1]}
+            </span>
+            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 border border-slate-700 text-slate-200 flex items-center gap-1">
               <span>🔬</span> {assigned['cat'][1]}
             </span>
           </div>
@@ -837,7 +860,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
 
         <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/30 rounded-xl p-3 flex items-center gap-4 shrink-0 shadow">
           <div>
-            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">4D Composite Score</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-purple-300">5D Composite Score</div>
             <div class="text-[11px] text-slate-400 mt-0.5">{score_sub}</div>
           </div>
           <div class="text-right pl-3 border-l border-slate-800">
@@ -870,7 +893,7 @@ def build_stock_4d_edge_panel_html(item, cat_category, history_records, stats):
 
       <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3.5 space-y-1">
         <div class="text-xs font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
-          <span>💡</span> 4D QUANT COHORT VERDICT:
+          <span>💡</span> 5D QUANT COHORT VERDICT:
         </div>
         <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
           {verdict}
@@ -2514,6 +2537,11 @@ def run_scanner():
         if (key === 'mid') return RAW_HISTORY.filter(r => r.float_turnover_x >= 20.0 && r.float_turnover_x <= 100.0);
         return RAW_HISTORY.filter(r => r.float_turnover_x > 100.0);
       }}
+      if (dim === 'vol') {{
+        if (key === 'low') return RAW_HISTORY.filter(r => (r.day_volume || 0) < 25000000);
+        if (key === 'mid') return RAW_HISTORY.filter(r => (r.day_volume || 0) >= 25000000 && (r.day_volume || 0) <= 100000000);
+        return RAW_HISTORY.filter(r => (r.day_volume || 0) > 100000000);
+      }}
       if (dim === 'cat') {{
         return RAW_HISTORY.filter(r => (r.catalyst_category || "") === key);
       }}
@@ -2572,6 +2600,10 @@ def run_scanner():
         if (key === 'low') {{ title = "Float Turnover: < 20x (Low / Medium Velocity)"; badge = "Turnover Cohort"; }}
         else if (key === 'mid') {{ title = "Float Turnover: 20x - 100x (Intense Liquidity)"; badge = "Turnover Cohort"; }}
         else {{ title = "Float Turnover: > 100x (Hyper-Rotated Runners)"; badge = "Turnover Cohort"; }}
+      }} else if (dim === 'vol') {{
+        if (key === 'low') {{ title = "Day Volume: < 25M (Light / Moderate Volume)"; badge = "Volume Cohort"; }}
+        else if (key === 'mid') {{ title = "Day Volume: 25M - 100M (Active / Heavy Liquidity)"; badge = "Volume Cohort"; }}
+        else {{ title = "Day Volume: > 100M (Extreme / Hyper-Volume)"; badge = "Volume Cohort"; }}
       }} else if (dim === 'cat') {{
         title = "Catalyst Sector: " + key;
         badge = "Sector Cohort";
