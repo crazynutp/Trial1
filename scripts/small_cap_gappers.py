@@ -1603,14 +1603,22 @@ def run_scanner():
         </div>
       </div>
 
-      <!-- Tab Switcher -->
-      <div class="flex items-center gap-1.5 p-1.5 bg-slate-900 border border-slate-800 rounded-xl shadow-inner">
-        <button id="tab-btn-radar" onclick="switchTab('radar')" class="px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2">
-          <span>⚡</span> Pre-Market Radar
-        </button>
-        <button id="tab-btn-history" onclick="switchTab('history')" class="px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2">
-          <span>📈</span> Follow-Through History
-        </button>
+      <!-- 3-Way Master Switcher Hub -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center gap-1.5 p-1.5 bg-slate-900 border border-slate-800 rounded-xl shadow-inner">
+          <button id="tab-btn-radar" onclick="switchTab('radar')" class="px-4 md:px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2">
+            <span>⚡</span> Pre-Market Radar
+          </button>
+          <button id="tab-btn-history" onclick="switchTab('history')" class="px-4 md:px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2">
+            <span>📈</span> Follow-Through History
+          </button>
+          <button id="tab-btn-metals" onclick="switchTab('metals')" class="px-4 md:px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-amber-400/90 hover:text-amber-300 hover:bg-amber-500/10 flex items-center gap-2">
+            <span>🪙</span> Gold & Silver
+          </button>
+        </div>
+        <a href="metals.html" target="_blank" title="Open Standalone Metals Terminal" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-amber-400 border border-slate-800 transition-all text-xs font-bold flex items-center gap-1 shadow">
+          <span>↗ Standalone</span>
+        </a>
       </div>
     </div>
 
@@ -2393,17 +2401,22 @@ def run_scanner():
     function switchTab(tab) {{
       const radarBtn = document.getElementById("tab-btn-radar");
       const historyBtn = document.getElementById("tab-btn-history");
+      const metalsBtn = document.getElementById("tab-btn-metals");
       const radarContent = document.getElementById("tab-content-radar");
       const historyContent = document.getElementById("tab-content-history");
+      const metalsContent = document.getElementById("tab-content-metals");
 
-      const activeClass = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2";
-      const inactiveClass = "px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2";
+      const activeClass = "px-4 md:px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow flex items-center gap-2";
+      const activeMetalsClass = "px-4 md:px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-lg shadow-amber-500/10 flex items-center gap-2";
+      const inactiveClass = "px-4 md:px-5 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white flex items-center gap-2";
 
       if (radarBtn) radarBtn.className = inactiveClass;
       if (historyBtn) historyBtn.className = inactiveClass;
+      if (metalsBtn) metalsBtn.className = inactiveClass;
 
       if (radarContent) radarContent.classList.add("hidden");
       if (historyContent) historyContent.classList.add("hidden");
+      if (metalsContent) metalsContent.classList.add("hidden");
 
       if (tab === 'radar') {{
         if (radarBtn) radarBtn.className = activeClass;
@@ -2417,6 +2430,13 @@ def run_scanner():
             Plotly.Plots.resize('scatter-chart-container');
           }}
         }}, 50);
+      }} else if (tab === 'metals') {{
+        if (metalsBtn) metalsBtn.className = activeMetalsClass;
+        if (metalsContent) metalsContent.classList.remove("hidden");
+        if (typeof initTradingViewWidget !== 'undefined') {{
+          const sym = (typeof state !== 'undefined' && state.currentMetal === 'silver') ? "OANDA:XAGUSD" : ((typeof state !== 'undefined' && state.currentMetal === 'gsr') ? "TVC:GOLDSILVER" : "OANDA:XAUUSD");
+          initTradingViewWidget(sym, (typeof state !== 'undefined' && state.chartInterval) ? state.chartInterval : "D");
+        }}
       }}
     }}
 

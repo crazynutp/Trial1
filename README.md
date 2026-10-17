@@ -57,11 +57,17 @@ cp .env.example .env
   ```
   *Evaluates the day's open-to-high performance, detects +2% breakouts and critical dumps, updates `data/gappers_history.csv`, and sends the market-close scorecard.*
 
+* **Generate Gold & Silver Analysis & Chart Terminal:**
+  ```bash
+  python scripts/generate_metals_terminal.py
+  ```
+  *Queries live spot and futures feeds for Gold (XAU/USD) & Silver (XAG/USD), calculates moving averages, RSI, MACD, Pivot Points (R1-R3, S1-S3), DXY macro correlation, and outputs standalone `./metals.html` and `./reports/metals.html`.*
+
 * **Launch Interactive Streamlit Dashboard:**
   ```bash
   streamlit run dashboard.py
   ```
-  *Opens the interactive historical data grid with bright-red dump warnings and sidebar filters at `http://localhost:8501`.*
+  *Opens the unified trading control center with sidebar toggle between Small-Cap Equities Tracker and the Gold & Silver Terminal at `http://localhost:8501`.*
 
 ---
 

@@ -31,6 +31,7 @@ reports/*.png
 # Scratch & temporary test images
 test_*.png
 *.log
+scratch/
 
 # Keep historical tracking dataset
 !data/

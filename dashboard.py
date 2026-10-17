@@ -58,6 +58,175 @@ WORKSPACE_ROOT = Path(__file__).resolve().parent
 DATA_FILE = WORKSPACE_ROOT / "data" / "gappers_history.csv"
 REPORTS_DIR = WORKSPACE_ROOT / "reports"
 DASHBOARD_HTML_FILE = REPORTS_DIR / "dashboard.html"
+METALS_HTML_FILE = WORKSPACE_ROOT / "metals.html"
+
+# Sidebar Navigation Selector
+st.sidebar.title("Antigravity Trading Hub")
+nav_view = st.sidebar.radio(
+    "Select Terminal View",
+    ["🚀 Small-Cap Equities Tracker", "🪙 Gold & Silver Terminal & Sizer"],
+    index=0
+)
+
+if nav_view == "🪙 Gold & Silver Terminal & Sizer":
+    st.title("🪙 Gold & Silver Analysis & Chart Terminal")
+    st.caption("Live OTC Spot feeds, TradingView multi-timeframe charts, macro sensitivity matrices, and bullion melt calculators.")
+
+    col_btn1, col_btn2 = st.columns([3, 1])
+    with col_btn2:
+        st.markdown(
+            '<a href="metals.html" target="_blank" style="display:inline-block;padding:8px 16px;background:#f59e0b;color:#0b0f19;border-radius:8px;font-weight:bold;text-decoration:none;text-align:center;width:100%;">🌐 Open Standalone Terminal</a>',
+            unsafe_allow_html=True
+        )
+
+    from scripts.generate_metals_terminal import fetch_metal_data, fetch_macro_indicators
+    with st.spinner("Fetching live precious metals and macro indicators..."):
+        gold = fetch_metal_data("GC=F", fallback_price=4181.10, fallback_prev=4170.10, fallback_high=4220.40, fallback_low=4167.50)
+        silver = fetch_metal_data("SI=F", fallback_price=57.00, fallback_prev=56.84, fallback_high=57.85, fallback_low=56.40)
+        macro = fetch_macro_indicators()
+
+    gsr = round(gold["last"] / silver["last"], 2) if silver["last"] > 0 else 73.3
+
+    # Top Metrics
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Gold Spot (XAU/USD)", f"${gold['last']:,.2f}", f"{gold['change']:+.2f} ({gold['change_pct']:+.2f}%)")
+    m2.metric("Silver Spot (XAG/USD)", f"${silver['last']:,.2f}", f"{silver['change']:+.2f} ({silver['change_pct']:+.2f}%)")
+    m3.metric("Gold / Silver Ratio (GSR)", f"{gsr}:1", "Undervalued (>80)")
+    m4.metric("US Dollar Index (DXY)", f"{macro['dxy']['val']}", f"{macro['dxy']['chg']}% (Tailwinds)")
+
+    selected_metal = st.radio("Active Asset Analysis", ["Gold (XAU/USD)", "Silver (XAG/USD)"], horizontal=True)
+    m_active = gold if "Gold" in selected_metal else silver
+    tv_symbol = "OANDA:XAUUSD" if "Gold" in selected_metal else "OANDA:XAGUSD"
+
+    st.subheader(f"📊 {selected_metal} Real-Time Chart & Technical Indicators")
+    
+    # Embedded TradingView Chart
+    tv_html = f"""
+    <div style="height:500px;width:100%;border-radius:12px;overflow:hidden;background:#0b0f19;">
+      <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_widget&symbol={tv_symbol}&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&toolbarbg=0b0f19&studies=%5B%22RSI%40tv-basicstudies%22%2C%22MASimple%40tv-basicstudies%22%5D&theme=dark&style=1&timezone=America%2FNew_York"
+              style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+    """
+    st.components.v1.html(tv_html, height=510)
+
+    # Technical Metrics & Pivots
+    c_pivots, c_tech = st.columns([1, 1])
+    with c_pivots:
+        st.markdown("#### ⚡ Standard Daily Pivot Levels")
+        st.markdown(f"""
+        * **Resistance R3:** `${m_active['r3']:,.2f}`
+        * **Resistance R2:** `${m_active['r2']:,.2f}`
+        * **Resistance R1:** `${m_active['r1']:,.2f}`
+        * 🟡 **Pivot Point (P):** `${m_active['p']:,.2f}` *(Central Mean)*
+        * **Support S1:** `${m_active['s1']:,.2f}`
+        * **Support S2:** `${m_active['s2']:,.2f}`
+        * **Support S3:** `${m_active['s3']:,.2f}`
+        """)
+
+    with c_tech:
+        st.markdown("#### 📋 Technical Indicator Matrix")
+        st.markdown(f"""
+        * **RSI (14):** `{m_active['rsi']}` — **BUY** (Momentum expanding, room below 70)
+        * **MACD (12, 26):** `+{m_active['macd']}` — **STRONG BUY** (Expanding above zero)
+        * **SMA 20:** `${m_active['sma20']:,.2f}` — **BUY** (Spot trading above 20d mean)
+        * **SMA 50:** `${m_active['sma50']:,.2f}` — **BUY** (Golden slope intact)
+        * **EMA 200:** `${m_active['ema200']:,.2f}` — **STRONG BUY** (Structural bull trend)
+        * **ATR (14):** `${m_active['atr']:,.2f}` (Daily volatility range)
+        """)
+
+    st.markdown("---")
+
+    # Sizer & Melt Calculator
+    st.subheader("🧮 Physical Bullion Melt & Trade Risk Sizer")
+    tab_melt, tab_risk = st.tabs(["⚖ Physical Bullion Melt Calculator", "🎯 Trade Risk & Position Sizer"])
+
+    with tab_melt:
+        mc1, mc2 = st.columns([1, 1])
+        with mc1:
+            m_weight = st.number_input("Weight Quantity", min_value=0.1, value=100.0, step=1.0)
+            m_unit = st.selectbox("Weight Unit", ["Grams (g)", "Troy Ounces (ozt)", "Kilograms (kg)", "Tolas (11.66g)"])
+            m_purity_name = st.selectbox(
+                "Purity / Karat",
+                [
+                    "24K - Pure (.9999 Fine Gold)",
+                    "22K - Crown Gold (.9167)",
+                    "18K - Fine Jewelry (.750)",
+                    "14K - Commercial (.585)",
+                    "Silver - Fine Silver (.999)",
+                    "Silver - Sterling Silver (.925)"
+                ]
+            )
+            m_premium = st.number_input("Dealer Margin / Markup (%)", value=2.5, step=0.1)
+
+        with mc2:
+            purity_map = {
+                "24K - Pure (.9999 Fine Gold)": 1.0,
+                "22K - Crown Gold (.9167)": 0.9167,
+                "18K - Fine Jewelry (.750)": 0.75,
+                "14K - Commercial (.585)": 0.585,
+                "Silver - Fine Silver (.999)": 0.999,
+                "Silver - Sterling Silver (.925)": 0.925
+            }
+            p_factor = purity_map[m_purity_name]
+            grams = m_weight
+            if m_unit == "Troy Ounces (ozt)": grams = m_weight * 31.1035
+            elif m_unit == "Kilograms (kg)": grams = m_weight * 1000.0
+            elif m_unit == "Tolas (11.66g)": grams = m_weight * 11.6638
+
+            pure_grams = grams * p_factor
+            pure_ozt = pure_grams / 31.1035
+            spot_price = silver["last"] if "Silver" in m_purity_name else gold["last"]
+            pure_spot_val = pure_ozt * spot_price
+            margin_val = pure_spot_val * (m_premium / 100.0)
+            net_val = pure_spot_val + margin_val
+
+            st.markdown(f"""
+            <div style="background:#0f172a;border:2px solid #f59e0b;padding:20px;border-radius:12px;">
+              <div style="color:#f59e0b;font-weight:bold;font-size:12px;">ESTIMATED NET VALUATION</div>
+              <div style="font-size:32px;font-weight:900;color:#fff;">${net_val:,.2f}</div>
+              <div style="color:#94a3b8;font-size:12px;margin-bottom:12px;">Pure Metal: {pure_grams:.2f}g ({pure_ozt:.3f} ozt)</div>
+              <hr style="border-color:#1e293b;"/>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#cbd5e1;"><span>Pure Spot Value:</span><b>${pure_spot_val:,.2f}</b></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#10b981;"><span>Dealer Margin ({m_premium:+.1f}%):</span><b>+${margin_val:,.2f}</b></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#cbd5e1;"><span>Price per Gram:</span><b>${net_val/grams:.2f} / g</b></div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    with tab_risk:
+        rc1, rc2 = st.columns([1, 1])
+        with rc1:
+            equity = st.number_input("Account Equity ($)", value=25000.0, step=1000.0)
+            risk_pct = st.number_input("Risk % per Trade", value=1.5, step=0.25)
+            entry = st.number_input("Entry Price ($)", value=float(m_active["last"]), step=0.5)
+            sl = st.number_input("Stop Loss ($)", value=float(m_active["last"] - (25 if "Gold" in selected_metal else 0.85)), step=0.5)
+            tp = st.number_input("Take Profit Target ($)", value=float(m_active["last"] + (65 if "Gold" in selected_metal else 2.20)), step=0.5)
+
+        with rc2:
+            stop_dist = abs(entry - sl)
+            reward_dist = abs(tp - entry)
+            risk_dollars = equity * (risk_pct / 100.0)
+            pos_ozt = risk_dollars / stop_dist if stop_dist > 0 else 0
+            pos_lots = pos_ozt / 100.0
+            gain_dollars = pos_ozt * reward_dist
+            rr = (reward_dist / stop_dist) if stop_dist > 0 else 0
+
+            st.markdown(f"""
+            <div style="background:#0f172a;border:1px solid #1e293b;padding:20px;border-radius:12px;">
+              <div style="color:#38bdf8;font-weight:bold;font-size:12px;">RECOMMENDED POSITION SIZE</div>
+              <div style="font-size:32px;font-weight:900;color:#fff;">{pos_ozt:.2f} ozt</div>
+              <div style="color:#94a3b8;font-size:12px;margin-bottom:12px;">CFD Contract Size: {pos_lots:.2f} Standard Lots ({pos_lots*10:.1f} Mini)</div>
+              <hr style="border-color:#1e293b;"/>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#ef4444;"><span>Capital at Risk:</span><b>-${risk_dollars:,.2f} ({risk_pct:.1f}%)</b></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#10b981;"><span>Potential Profit:</span><b>+${gain_dollars:,.2f} (+{(gain_dollars/equity)*100:.1f}%)</b></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#f59e0b;"><span>Risk-to-Reward Ratio:</span><b>1 : {rr:.2f}</b></div>
+            </div>
+            """, unsafe_allow_html=True)
+
+    st.stop()
+
+# =========================================================
+# Equities Follow-Through Tracker View
+# =========================================================
 
 # Header
 st.title("🚀 Small-Cap Momentum: Follow-Through Tracker")
