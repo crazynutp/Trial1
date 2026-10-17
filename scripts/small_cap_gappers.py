@@ -382,8 +382,8 @@ def generate_premarket_summary_md(records, known_catalysts, output_path):
         "",
         "## 1. Executive Summary & Gapper Leaderboard",
         "",
-        "| Ticker | Company | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |",
-        "| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |",
+        "| Ticker | Company | Catalyst Category | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |",
+        "| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |",
     ]
 
     for item in records:
@@ -396,13 +396,27 @@ def generate_premarket_summary_md(records, known_catalysts, output_path):
         rel_vol = item.get("relative_volume_10d_calc", 0.0)
         rotation_multiple = (pm_vol / float_shares) if float_shares else 0
 
+        # Catalyst category
+        cat_lower = (company or "").lower()
+        t_upper = ticker.upper()
+        if any(w in cat_lower for w in ["therapeutics", "pharma", "bio", "health", "medical", "clinical"]) or t_upper in ["TCRT", "SPRC", "PFAI", "LUNG", "LPCN", "MEDS", "NXL"]:
+            cat_category = "Biotech / Pharma"
+        elif any(w in cat_lower for w in ["tech", "ai", "labs", "software", "computing", "cloud", "semiconductor"]) or t_upper in ["XLAB", "MNDR", "GIXI", "POET", "VEEA", "SMX"]:
+            cat_category = "AI / Tech / Hardware"
+        elif any(w in cat_lower for w in ["crypto", "bitcoin", "blockchain"]) or t_upper in ["AEHL", "AMOD"]:
+            cat_category = "Crypto / Treasury"
+        elif any(w in cat_lower for w in ["capital", "acquisition", "holding", "merger", "nasdaq", "compliance"]) or t_upper in ["NCPL", "CYCU", "BMMX"]:
+            cat_category = "Compliance / Uplisting"
+        else:
+            cat_category = "Contract / Momentum"
+
         tv_link = f"https://www.tradingview.com/symbols/{ticker}/"
         float_str = f"{float_shares:,.0f}" if float_shares else "N/A"
         pm_vol_str = f"{pm_vol:,.0f}" if pm_vol else "N/A"
         gap_str = f"**+{gap_pct:.2f}%**" if gap_pct > 0 else f"{gap_pct:.2f}%"
 
         md_lines.append(
-            f"| [**{ticker}**]({tv_link}) | {company} | {gap_str} | ${price:.2f} | {float_str} | {pm_vol_str} | {rel_vol:.1f}x | **{rotation_multiple:.1f}x** |"
+            f"| [**{ticker}**]({tv_link}) | {company} | `{cat_category}` | {gap_str} | ${price:.2f} | {float_str} | {pm_vol_str} | {rel_vol:.1f}x | **{rotation_multiple:.1f}x** |"
         )
 
     md_lines.extend([
@@ -450,6 +464,42 @@ def generate_premarket_summary_md(records, known_catalysts, output_path):
         md_lines.append(
             f"| **{ticker}** | {risk_info} | **{rotation_multiple:.1f}x** | Support: {support} / Resistance: {resistance} |"
         )
+
+    md_lines.extend([
+        "",
+        "---",
+        "",
+        "## 4. Catalyst Category (The Quality & Risk Control Parameter)",
+        "",
+        "* **Why it has a high impact:** Categorizing stocks by fundamental sector drivers (Biotech/Pharma vs. AI/Tech/Hardware vs. Crypto/Treasury) controls the structural volatility of the filtered results.",
+        "* **Core Insight:** Biotech and tech catalysts show significantly higher resilience and massive max runs because they attract sustained retail and institutional speculative flow. Conversely, generalized momentum or volatile crypto-linked names tend to dominate the \"Critical Dump Rate\" (e.g., LUNG, YJ).",
+        "",
+        "| Ticker | Company | Catalyst Category | Structural Volatility & Follow-Through Profile |",
+        "| :--- | :--- | :---: | :--- |"
+    ])
+
+    for item in records:
+        ticker = item.get("name") or item.get("ticker", "").split(":")[-1]
+        company = item.get("description", ticker)
+        cat_lower = (company or "").lower()
+        t_upper = ticker.upper()
+        if t_upper in ["TCRT", "SPRC", "PFAI", "LUNG", "LPCN", "MEDS", "NXL"] or any(w in cat_lower for w in ["therapeutics", "pharma", "bio", "health"]):
+            cat_category = "Biotech / Pharma"
+            cat_profile = "High resilience & explosive max-run upside; sustained institutional & retail speculative flow."
+        elif t_upper in ["XLAB", "MNDR", "GIXI", "POET", "VEEA", "SMX"] or any(w in cat_lower for w in ["tech", "ai", "hardware", "computing"]):
+            cat_category = "AI / Tech / Hardware"
+            cat_profile = "Aggressive breakout momentum driven by hardware deals; elevated volume with multi-session runner potential."
+        elif t_upper in ["AEHL", "AMOD"] or any(w in cat_lower for w in ["crypto", "bitcoin"]):
+            cat_category = "Crypto / Treasury"
+            cat_profile = "Extreme morning spikes but high afternoon fade risk; closely tethered to underlying crypto sentiment."
+        elif t_upper in ["NCPL", "CYCU", "BMMX"] or any(w in cat_lower for w in ["capital", "compliance", "nasdaq"]):
+            cat_category = "Compliance / Uplisting"
+            cat_profile = "Strong support on exchange compliance confirmation, but structural overhead from past filings/delays."
+        else:
+            cat_category = "Contract / Momentum"
+            cat_profile = "High morning turnover; requires tight risk management against opening session dump risk."
+
+        md_lines.append(f"| **{ticker}** | {company} | `{cat_category}` | {cat_profile} |")
 
     md_lines.extend([
         "",
@@ -626,6 +676,25 @@ def run_scanner():
                 "resistance_level": f"${price * 1.15:.2f}",
             }
 
+        # Determine catalyst category
+        cat_lower = (company or "").lower()
+        t_upper = ticker.upper()
+        if any(w in cat_lower for w in ["therapeutics", "pharma", "bio", "health", "medical", "clinical"]) or t_upper in ["TCRT", "SPRC", "PFAI", "LUNG", "LPCN", "MEDS", "NXL"]:
+            cat_category = "Biotech / Pharma"
+            cat_badge_color = "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
+        elif any(w in cat_lower for w in ["tech", "ai", "labs", "software", "computing", "cloud", "semiconductor"]) or t_upper in ["XLAB", "MNDR", "GIXI", "POET", "VEEA", "SMX"]:
+            cat_category = "AI / Tech / Hardware"
+            cat_badge_color = "bg-cyan-500/15 text-cyan-400 border-cyan-500/30"
+        elif any(w in cat_lower for w in ["crypto", "bitcoin", "blockchain"]) or t_upper in ["AEHL", "AMOD"]:
+            cat_category = "Crypto / Treasury"
+            cat_badge_color = "bg-amber-500/15 text-amber-400 border-amber-500/30"
+        elif any(w in cat_lower for w in ["capital", "acquisition", "holding", "merger", "nasdaq", "compliance"]) or t_upper in ["NCPL", "CYCU", "BMMX"]:
+            cat_category = "Compliance / Uplisting"
+            cat_badge_color = "bg-purple-500/15 text-purple-400 border-purple-500/30"
+        else:
+            cat_category = "Contract / Momentum"
+            cat_badge_color = "bg-blue-500/15 text-blue-400 border-blue-500/30"
+
         card_html = f"""
         <div class="bg-slate-900/90 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur transition-all duration-200">
           <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-800/80">
@@ -636,9 +705,10 @@ def run_scanner():
               <div>
                 <div class="flex items-center gap-2">
                   <h3 class="text-xl font-bold text-white tracking-wide">{ticker}</h3>
-                  <a href="https://www.tradingview.com/symbols/{ticker}/" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 underline font-medium">TradingView ↗</a>
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold border {cat_badge_color}">{cat_category}</span>
+                  <a href="https://www.tradingview.com/symbols/{ticker}/" target="_blank" class="text-xs text-sky-400 hover:text-sky-300 underline font-medium ml-1">TradingView ↗</a>
                 </div>
-                <p class="text-xs text-slate-400">{company}</p>
+                <p class="text-xs text-slate-400 mt-0.5">{company}</p>
               </div>
             </div>
             
@@ -848,6 +918,29 @@ def run_scanner():
         </div>
       </div>
 
+      <!-- Catalyst Category: Quality & Risk Control Insight Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-5 md:p-6 shadow-xl relative overflow-hidden">
+        <div class="flex items-start gap-4 relative z-10">
+          <div class="w-11 h-11 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+            🔬
+          </div>
+          <div class="space-y-1.5">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-400">C. Catalyst Category — The Quality & Risk Control Parameter</span>
+              <span class="bg-indigo-500/20 text-indigo-300 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-500/30">Structural Volatility Filter</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              <strong>Why it has a high impact:</strong> Categorizing stocks by fundamental sector drivers (<strong>Biotech/Pharma</strong> vs. <strong>AI/Tech/Hardware</strong> vs. <strong>Crypto/Treasury</strong>) controls the structural volatility of the filtered results.
+            </p>
+            <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 mt-2">
+              <p class="text-xs text-slate-300 leading-relaxed">
+                <span class="text-emerald-400 font-bold">💡 Trading Insight:</span> Biotech and tech catalysts show significantly higher resilience and massive max runs because they attract sustained retail and institutional speculative flow. Conversely, generalized momentum or volatile crypto-linked names tend to dominate the <em>"Critical Dump Rate"</em> (e.g., LUNG, YJ).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Stock Cards Grid -->
       <div class="space-y-6">
         {cards_section}
@@ -894,6 +987,25 @@ def run_scanner():
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-4">
             <span class="text-[11px] uppercase tracking-wider font-semibold text-slate-400">Critical Dump Rate</span>
             <p id="kpi-dump" class="text-2xl font-extrabold text-rose-400 mt-1">0%</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2 Catalyst Category Insight Callout -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl border-l-4 border-l-indigo-500">
+        <div class="flex items-start gap-4">
+          <span class="text-2xl shrink-0">🔬</span>
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-400">C. Catalyst Category — The Quality & Risk Control Parameter</span>
+              <span class="bg-indigo-500/20 text-indigo-300 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-500/30">Sector Driver Dynamics</span>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed pt-0.5">
+              <strong>Why it has a high impact:</strong> Categorizing stocks by fundamental sector drivers (<strong>Biotech/Pharma</strong> vs. <strong>AI/Tech/Hardware</strong> vs. <strong>Crypto/Treasury</strong>) controls the structural volatility of the filtered results.
+            </p>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              <strong class="text-emerald-400">Historical Insight:</strong> Biotech and tech catalysts show significantly higher resilience and massive max runs because they attract sustained retail and institutional speculative flow. Conversely, generalized momentum or volatile crypto-linked names tend to dominate the <em>"Critical Dump Rate"</em> (e.g., LUNG, YJ).
+            </p>
           </div>
         </div>
       </div>

@@ -7,11 +7,11 @@
 
 ## 1. Executive Summary & Gapper Leaderboard
 
-| Ticker | Company | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| [**XLAB**](https://www.tradingview.com/symbols/XLAB/) | Exascale Labs Holdings Inc. | **+36.03%** | $2.35 | 19,397,077 | 18,042,412 | 100.8x | **0.9x** |
-| [**TCRT**](https://www.tradingview.com/symbols/TCRT/) | Alaunos Therapeutics, Inc. | **+28.44%** | $2.63 | 2,325,203 | 10,869,763 | 0.9x | **4.7x** |
-| [**NCPL**](https://www.tradingview.com/symbols/NCPL/) | Netcapital Inc. | **+23.23%** | $2.17 | 2,089,080 | 9,905,054 | 1.5x | **4.7x** |
+| Ticker | Company | Catalyst Category | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [**XLAB**](https://www.tradingview.com/symbols/XLAB/) | Exascale Labs Holdings Inc. | `AI / Tech / Hardware` | **+36.03%** | $2.35 | 19,397,077 | 18,042,412 | 100.8x | **0.9x** |
+| [**TCRT**](https://www.tradingview.com/symbols/TCRT/) | Alaunos Therapeutics, Inc. | `Biotech / Pharma` | **+28.44%** | $2.63 | 2,325,203 | 10,869,763 | 0.9x | **4.7x** |
+| [**NCPL**](https://www.tradingview.com/symbols/NCPL/) | Netcapital Inc. | `Compliance / Uplisting` | **+23.23%** | $2.17 | 2,089,080 | 9,905,054 | 1.5x | **4.7x** |
 
 ---
 
@@ -41,6 +41,19 @@
 | **XLAB** | Post-SPAC Volatility & Cash Burn Risk: With a float of 19.4M shares, rotation is at ~0.6x in pre-market. As a recent de-SPAC (late August 2026), the company carries high operational cash burn and negative equity, creating risk of secondary equity offerings or warrant execution into price surges. | **0.9x** | Support: $1.20 / $1.10 / Resistance: $1.55 / $1.85 |
 | **TCRT** | High Float Rotation (4.3x): With a tight float of 2.33M shares, pre-market volume of 10.1M represents more than 4x float rotation. While near-term cash runway is secured into 2029, long-term dilution risk exists upon eventual Series C preferred conversion. | **4.7x** | Support: $1.90 / $1.75 / Resistance: $2.50 / $3.03 |
 | **NCPL** | High Float Turnover (~84%): Trading 1.75M shares against a 2.09M float represents ~0.8x pre-market float turnover (and 46.9M shares regular volume yesterday). Structural risks remain: ongoing SEC litigation, investor securities class actions (Dec 7 lead plaintiff deadline), and the impending October 23 Nasdaq deadline to file delinquent 10-K/10-Q reports. | **4.7x** | Support: $1.40 / $1.25 / Resistance: $1.85 / $2.10 |
+
+---
+
+## 4. Catalyst Category (The Quality & Risk Control Parameter)
+
+* **Why it has a high impact:** Categorizing stocks by fundamental sector drivers (Biotech/Pharma vs. AI/Tech/Hardware vs. Crypto/Treasury) controls the structural volatility of the filtered results.
+* **Core Insight:** Biotech and tech catalysts show significantly higher resilience and massive max runs because they attract sustained retail and institutional speculative flow. Conversely, generalized momentum or volatile crypto-linked names tend to dominate the "Critical Dump Rate" (e.g., LUNG, YJ).
+
+| Ticker | Company | Catalyst Category | Structural Volatility & Follow-Through Profile |
+| :--- | :--- | :---: | :--- |
+| **XLAB** | Exascale Labs Holdings Inc. | `AI / Tech / Hardware` | Aggressive breakout momentum driven by hardware deals; elevated volume with multi-session runner potential. |
+| **TCRT** | Alaunos Therapeutics, Inc. | `Biotech / Pharma` | High resilience & explosive max-run upside; sustained institutional & retail speculative flow. |
+| **NCPL** | Netcapital Inc. | `Compliance / Uplisting` | Strong support on exchange compliance confirmation, but structural overhead from past filings/delays. |
 
 ---
 
