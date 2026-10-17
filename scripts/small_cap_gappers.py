@@ -1215,6 +1215,61 @@ def run_scanner():
       color: #f59e0b;
       font-weight: 600;
     }}
+    /* Custom Range Sliders */
+    input[type=range] {{
+      -webkit-appearance: none;
+      background: transparent;
+    }}
+    input[type=range]::-webkit-slider-runnable-track {{
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: #1e293b;
+      border-radius: 9999px;
+      border: 1px solid #334155;
+    }}
+    input[type=range]::-webkit-slider-thumb {{
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #10b981;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+      border: 2px solid #0f172a;
+      transition: transform 0.1s ease, background-color 0.1s ease;
+    }}
+    input[type=range]::-webkit-slider-thumb:hover {{
+      transform: scale(1.15);
+      background: #34d399;
+    }}
+    #slider-time::-webkit-slider-thumb {{
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }}
+    #slider-time::-webkit-slider-thumb:hover {{
+      background: #7dd3fc;
+    }}
+    input[type=range]::-moz-range-track {{
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: #1e293b;
+      border-radius: 9999px;
+      border: 1px solid #334155;
+    }}
+    input[type=range]::-moz-range-thumb {{
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #10b981;
+      cursor: pointer;
+      border: 2px solid #0f172a;
+    }}
+    #slider-time::-moz-range-thumb {{
+      background: #38bdf8;
+    }}
   </style>
 </head>
 <body class="p-4 md:p-8 antialiased min-h-screen">
@@ -1373,35 +1428,131 @@ def run_scanner():
           </div>
         </div>
 
-        <!-- 2. Simulated Exit Strategy Switcher (Feature 2) -->
+        <!-- 2. Dual-Slider Simulated Exit Strategy Engine -->
         <div class="mt-6 pt-5 border-t border-slate-800">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 mb-4">
             <div>
               <div class="flex items-center gap-2">
                 <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black">⚡</span>
-                <span class="text-xs font-extrabold uppercase tracking-wider text-white">Simulated Exit Strategy</span>
-                <span id="strategy-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">Actual Close</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-white">Dual-Slider Simulated Exit Strategy</span>
+                <span id="strategy-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">🎯 TP: +2.0% | ⏱️ 16:00 Close</span>
               </div>
-              <p id="strategy-desc" class="text-xs text-slate-400 mt-1">Evaluates performance holding open position directly to 16:00 regular market close.</p>
+              <p id="strategy-desc" class="text-xs text-slate-400 mt-1">Simulates taking profit at +2.0% if reached, otherwise liquidating position at 16:00 Close.</p>
             </div>
             
-            <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-950/90 border border-slate-800 rounded-xl" id="strategy-btn-group">
-              <button type="button" onclick="setExitStrategy('close')" id="strat-btn-close" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow">
-                Hold to 16:00 Close (Actual)
+            <!-- Quick Strategy Presets -->
+            <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-950/90 border border-slate-800 rounded-xl" id="strat-presets">
+              <span class="text-[10px] uppercase font-bold text-slate-500 px-2 hidden sm:inline">Presets:</span>
+              <button type="button" onclick="applyStrategyPreset(0, 390)" id="preset-close" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Hold to Close
               </button>
-              <button type="button" onclick="setExitStrategy('scalp2')" id="strat-btn-scalp2" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
-                Take Profit @ +2% (Scalp)
+              <button type="button" onclick="applyStrategyPreset(2, 390)" id="preset-scalp2" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow">
+                +2% Scalp
               </button>
-              <button type="button" onclick="setExitStrategy('m30')" id="strat-btn-m30" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
-                Exit @ 30-Min Mark
+              <button type="button" onclick="applyStrategyPreset(0, 30)" id="preset-m30" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Exit @ 30-Min
               </button>
-              <button type="button" onclick="setExitStrategy('tp25')" id="strat-btn-tp25" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+              <button type="button" onclick="applyStrategyPreset(25, 390)" id="preset-tp25" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
                 Take Profit @ +25%
               </button>
-              <button type="button" onclick="setExitStrategy('tp50')" id="strat-btn-tp50" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+              <button type="button" onclick="applyStrategyPreset(50, 390)" id="preset-tp50" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
                 Take Profit @ +50%
               </button>
             </div>
+          </div>
+
+          <!-- Two Interactive Sliders Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950/70 border border-slate-800/90 rounded-2xl p-4 sm:p-5">
+            <!-- Slider 1: Take Profit Target % -->
+            <div class="space-y-3 bg-slate-900/80 border border-slate-800/80 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">🎯</span>
+                  <label for="slider-tp" class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                    Take Profit Target %
+                  </label>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span id="slider-tp-display" class="px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    +2.0%
+                  </span>
+                  <span id="slider-tp-status" class="text-[10px] text-emerald-400 font-semibold">(Scalp Target)</span>
+                </div>
+              </div>
+              
+              <!-- Range Slider 1 -->
+              <div class="space-y-1">
+                <input type="range" id="slider-tp" min="0" max="100" step="1" value="2" 
+                  oninput="onSliderTPInput(this.value)" 
+                  class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400 hover:accent-emerald-300 transition-all">
+                <div class="flex justify-between text-[10px] text-slate-500 font-mono px-0.5">
+                  <span>0% (Off)</span>
+                  <span>+25%</span>
+                  <span>+50%</span>
+                  <span>+75%</span>
+                  <span>+100%</span>
+                </div>
+              </div>
+
+              <!-- Quick Ticks for Slider 1 -->
+              <div class="flex flex-wrap items-center gap-1 pt-1">
+                <button type="button" onclick="setSliderTP(0)" data-val="0" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">Off</button>
+                <button type="button" onclick="setSliderTP(2)" data-val="2" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow transition-all">+2% Scalp</button>
+                <button type="button" onclick="setSliderTP(5)" data-val="5" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+5%</button>
+                <button type="button" onclick="setSliderTP(10)" data-val="10" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+10%</button>
+                <button type="button" onclick="setSliderTP(20)" data-val="20" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+20%</button>
+                <button type="button" onclick="setSliderTP(25)" data-val="25" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+25%</button>
+                <button type="button" onclick="setSliderTP(50)" data-val="50" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+50%</button>
+                <button type="button" onclick="setSliderTP(100)" data-val="100" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+100%</button>
+              </div>
+            </div>
+
+            <!-- Slider 2: Exit Time / Holding Window -->
+            <div class="space-y-3 bg-slate-900/80 border border-slate-800/80 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">⏱️</span>
+                  <label for="slider-time" class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                    Exit Time / Holding Window
+                  </label>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span id="slider-time-display" class="px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                    16:00 Close
+                  </span>
+                  <span id="slider-time-status" class="text-[10px] text-sky-400 font-semibold">(390 mins)</span>
+                </div>
+              </div>
+              
+              <!-- Range Slider 2 -->
+              <div class="space-y-1">
+                <input type="range" id="slider-time" min="15" max="390" step="15" value="390" 
+                  oninput="onSliderTimeInput(this.value)" 
+                  class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400 hover:accent-sky-300 transition-all">
+                <div class="flex justify-between text-[10px] text-slate-500 font-mono px-0.5">
+                  <span>09:45 (15m)</span>
+                  <span>10:30 (60m)</span>
+                  <span>11:30 (120m)</span>
+                  <span>13:30 (240m)</span>
+                  <span>16:00 (Close)</span>
+                </div>
+              </div>
+
+              <!-- Quick Ticks for Slider 2 -->
+              <div class="flex flex-wrap items-center gap-1 pt-1">
+                <button type="button" onclick="setSliderTime(15)" data-val="15" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">15m (09:45)</button>
+                <button type="button" onclick="setSliderTime(30)" data-val="30" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">30m (10:00)</button>
+                <button type="button" onclick="setSliderTime(60)" data-val="60" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">60m (10:30)</button>
+                <button type="button" onclick="setSliderTime(120)" data-val="120" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">120m (11:30)</button>
+                <button type="button" onclick="setSliderTime(240)" data-val="240" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">240m (13:30)</button>
+                <button type="button" onclick="setSliderTime(390)" data-val="390" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow transition-all">16:00 Close</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-time Simulation Status Readout Banner -->
+          <div id="sim-status-banner" class="mt-3 px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <!-- Dynamically populated in renderHistoryTable -->
           </div>
         </div>
       </div>
@@ -1814,7 +1965,9 @@ def run_scanner():
     const RAW_HISTORY = {history_json_str};
     let currentSortCol = 'date';
     let sortAsc = false;
-    let currentExitStrategy = 'close'; // 'close', 'scalp2', 'm30', 'tp25', 'tp50'
+    let currentTPTarget = 2; // Default to +2% Scalp target
+    let currentExitMinutes = 390; // Default to 16:00 Close
+    let currentExitStrategy = 'scalp2'; // Active strategy preset or 'custom'
     let currentPivotDim = 'price'; // 'price', 'gap', 'turnover', 'volume', 'catalyst', 'timing'
     let timingFilterFn = null;
 
@@ -1851,67 +2004,271 @@ def run_scanner():
       }}
     }}
 
-    function getSimExitReturn(row, strategy) {{
-      const strat = strategy || currentExitStrategy;
+    function formatMinutesToTime(mins) {{
+      if (mins >= 390) return "16:00 Close";
+      const startHour = 9;
+      const startMin = 30;
+      const totalMins = startHour * 60 + startMin + mins;
+      const hour = Math.floor(totalMins / 60);
+      const min = totalMins % 60;
+      const hStr = hour < 10 ? '0' + hour : '' + hour;
+      const mStr = min < 10 ? '0' + min : '' + min;
+      return `${{hStr}}:${{mStr}} (${{mins}}m)`;
+    }}
+
+    function getSimExitDetails(row, tp, time) {{
+      const tpTarget = tp !== undefined ? tp : currentTPTarget;
+      const exitMins = time !== undefined ? time : currentExitMinutes;
+
       const actualDayRet = (row.day_return_pct !== null && row.day_return_pct !== undefined) 
         ? row.day_return_pct 
         : ((row.close_price - row.open_price) / row.open_price * 100);
+
       const mg = (row.max_gain_pct !== null && row.max_gain_pct !== undefined) 
         ? row.max_gain_pct 
         : ((row.day_high - row.open_price) / row.open_price * 100);
 
-      if (strat === 'scalp2') {{
-        return mg >= 2.0 ? 2.0 : actualDayRet;
+      const peakMin = (row.minutes_to_day_high !== null && row.minutes_to_day_high !== undefined) 
+        ? row.minutes_to_day_high 
+        : 0;
+
+      const m30Ret = (row.first_30m_change_pct !== null && row.first_30m_change_pct !== undefined) 
+        ? row.first_30m_change_pct 
+        : actualDayRet;
+
+      // Check if Take Profit was reached before or at exitMins
+      let hitTP = false;
+      if (tpTarget > 0 && mg >= tpTarget) {{
+        if (peakMin <= exitMins) {{
+          hitTP = true;
+        }} else if (tpTarget <= 2.0 && row.hit_plus_2pct === "Yes") {{
+          hitTP = true;
+        }} else if (exitMins >= 30 && m30Ret >= tpTarget) {{
+          hitTP = true;
+        }} else {{
+          // Monotonic progression towards peak
+          const estRunAtExit = peakMin > 0 ? (mg * (exitMins / peakMin)) : mg;
+          if (estRunAtExit >= tpTarget) {{
+            hitTP = true;
+          }}
+        }}
       }}
-      if (strat === 'm30') {{
-        return (row.first_30m_change_pct !== null && row.first_30m_change_pct !== undefined) 
-          ? row.first_30m_change_pct 
-          : actualDayRet;
+
+      if (hitTP) {{
+        return {{
+          returnPct: tpTarget,
+          hitTP: true,
+          exitReason: 'TP_HIT',
+          badgeText: `🎯 +${{tpTarget.toFixed(1)}}%`,
+          exitTimeStr: (peakMin > 0 && peakMin <= exitMins) ? formatMinutesToTime(peakMin) : formatMinutesToTime(exitMins)
+        }};
       }}
-      if (strat === 'tp25') {{
-        return mg >= 25.0 ? 25.0 : actualDayRet;
+
+      // Liquidate at exitMins
+      let realizedReturn = actualDayRet;
+      if (exitMins >= 390) {{
+        realizedReturn = actualDayRet;
+      }} else if (exitMins === 30) {{
+        realizedReturn = m30Ret;
+      }} else if (exitMins < 30) {{
+        if (peakMin <= exitMins) {{
+          if (30 - peakMin > 0) {{
+            realizedReturn = mg + (exitMins - peakMin) / (30 - peakMin) * (m30Ret - mg);
+          }} else {{
+            realizedReturn = m30Ret;
+          }}
+        }} else {{
+          const anchorMin = Math.min(peakMin, 30);
+          const anchorVal = anchorMin === peakMin ? mg : m30Ret;
+          realizedReturn = anchorMin > 0 ? (anchorVal * (exitMins / anchorMin)) : 0;
+        }}
+      }} else {{
+        // exitMins between 30 and 390
+        if (peakMin > 30) {{
+          if (exitMins <= peakMin) {{
+            if (peakMin - 30 > 0) {{
+              realizedReturn = m30Ret + (exitMins - 30) / (peakMin - 30) * (mg - m30Ret);
+            }} else {{
+              realizedReturn = mg;
+            }}
+          }} else {{
+            if (390 - peakMin > 0) {{
+              realizedReturn = mg + (exitMins - peakMin) / (390 - peakMin) * (actualDayRet - mg);
+            }} else {{
+              realizedReturn = actualDayRet;
+            }}
+          }}
+        }} else {{
+          realizedReturn = m30Ret + (exitMins - 30) / (390 - 30) * (actualDayRet - m30Ret);
+        }}
       }}
-      if (strat === 'tp50') {{
-        return mg >= 50.0 ? 50.0 : actualDayRet;
+
+      return {{
+        returnPct: realizedReturn,
+        hitTP: false,
+        exitReason: 'TIME_EXIT',
+        badgeText: `⏱️ ${{realizedReturn >= 0 ? '+' : ''}}${{realizedReturn.toFixed(1)}}%`,
+        exitTimeStr: formatMinutesToTime(exitMins)
+      }};
+    }}
+
+    function getSimExitReturn(row, tp, time) {{
+      return getSimExitDetails(row, tp, time).returnPct;
+    }}
+
+    function updateSlidersUI() {{
+      // 1. Update TP display & status
+      const tpDisplay = document.getElementById("slider-tp-display");
+      const tpStatus = document.getElementById("slider-tp-status");
+      if (tpDisplay) {{
+        if (currentTPTarget === 0) {{
+          tpDisplay.innerText = "Off (0%)";
+          tpDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-slate-800 text-slate-400 border border-slate-700";
+          if (tpStatus) tpStatus.innerText = "(Pure Time Exit)";
+        }} else {{
+          tpDisplay.innerText = "+" + currentTPTarget.toFixed(1) + "%";
+          tpDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+          if (tpStatus) {{
+            if (currentTPTarget === 2) tpStatus.innerText = "(Scalp Target)";
+            else if (currentTPTarget >= 50) tpStatus.innerText = "(Super-Runner)";
+            else tpStatus.innerText = "(Target Profit)";
+          }}
+        }}
       }}
-      return actualDayRet; // 'close'
+
+      // Update TP tick buttons
+      document.querySelectorAll(".tp-tick-btn").forEach(btn => {{
+        const val = parseFloat(btn.getAttribute("data-val"));
+        if (val === currentTPTarget) {{
+          btn.className = "tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow transition-all";
+        }} else {{
+          btn.className = "tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all";
+        }}
+      }});
+
+      // 2. Update Time display & status
+      const timeDisplay = document.getElementById("slider-time-display");
+      const timeStatus = document.getElementById("slider-time-status");
+      if (timeDisplay) {{
+        timeDisplay.innerText = formatMinutesToTime(currentExitMinutes);
+        if (currentExitMinutes >= 390) {{
+          timeDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30";
+          if (timeStatus) timeStatus.innerText = "(Full Day Hold)";
+        }} else if (currentExitMinutes <= 30) {{
+          timeDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30";
+          if (timeStatus) timeStatus.innerText = "(Morning Scalp)";
+        }} else {{
+          timeDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30";
+          if (timeStatus) timeStatus.innerText = "(" + currentExitMinutes + " mins)";
+        }}
+      }}
+
+      // Update Time tick buttons
+      document.querySelectorAll(".time-tick-btn").forEach(btn => {{
+        const val = parseInt(btn.getAttribute("data-val"), 10);
+        if (val === currentExitMinutes) {{
+          btn.className = "time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow transition-all";
+        }} else {{
+          btn.className = "time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all";
+        }}
+      }});
+
+      // 3. Update preset buttons
+      const isClose = currentTPTarget === 0 && currentExitMinutes === 390;
+      const isScalp2 = currentTPTarget === 2 && currentExitMinutes === 390;
+      const isM30 = currentTPTarget === 0 && currentExitMinutes === 30;
+      const isTP25 = currentTPTarget === 25 && currentExitMinutes === 390;
+      const isTP50 = currentTPTarget === 50 && currentExitMinutes === 390;
+
+      document.querySelectorAll(".strat-preset-btn").forEach(btn => {{
+        btn.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent";
+      }});
+
+      if (isClose) {{
+        currentExitStrategy = 'close';
+        const b = document.getElementById("preset-close");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      }} else if (isScalp2) {{
+        currentExitStrategy = 'scalp2';
+        const b = document.getElementById("preset-scalp2");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      }} else if (isM30) {{
+        currentExitStrategy = 'm30';
+        const b = document.getElementById("preset-m30");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      }} else if (isTP25) {{
+        currentExitStrategy = 'tp25';
+        const b = document.getElementById("preset-tp25");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      }} else if (isTP50) {{
+        currentExitStrategy = 'tp50';
+        const b = document.getElementById("preset-tp50");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      }} else {{
+        currentExitStrategy = 'custom';
+      }}
+
+      // 4. Update Header Badges & Description
+      const badgeEl = document.getElementById("strategy-badge");
+      const descEl = document.getElementById("strategy-desc");
+      if (badgeEl) {{
+        const tpStr = currentTPTarget > 0 ? `🎯 TP: +${{currentTPTarget.toFixed(1)}}%` : `🎯 TP: Off`;
+        const timeStr = `⏱️ ${{formatMinutesToTime(currentExitMinutes)}}`;
+        badgeEl.innerText = `${{tpStr}} | ${{timeStr}}`;
+      }}
+      if (descEl) {{
+        if (currentTPTarget > 0) {{
+          descEl.innerText = `Simulates taking profit at +${{currentTPTarget.toFixed(1)}}% if reached, otherwise liquidating position at ${{formatMinutesToTime(currentExitMinutes)}}.`;
+        }} else {{
+          descEl.innerText = `Pure time-based exit: holds open position directly to ${{formatMinutesToTime(currentExitMinutes)}} without profit target.`;
+        }}
+      }}
+    }}
+
+    function onSliderTPInput(val) {{
+      currentTPTarget = parseFloat(val);
+      updateSlidersUI();
+      renderHistoryTable();
+      updateCohortSimReturns();
+    }}
+
+    function setSliderTP(val) {{
+      const el = document.getElementById("slider-tp");
+      if (el) el.value = val;
+      onSliderTPInput(val);
+    }}
+
+    function onSliderTimeInput(val) {{
+      currentExitMinutes = parseInt(val, 10);
+      updateSlidersUI();
+      renderHistoryTable();
+      updateCohortSimReturns();
+    }}
+
+    function setSliderTime(val) {{
+      const el = document.getElementById("slider-time");
+      if (el) el.value = val;
+      onSliderTimeInput(val);
+    }}
+
+    function applyStrategyPreset(tp, mins) {{
+      currentTPTarget = tp;
+      currentExitMinutes = mins;
+      const tpEl = document.getElementById("slider-tp");
+      if (tpEl) tpEl.value = tp;
+      const timeEl = document.getElementById("slider-time");
+      if (timeEl) timeEl.value = mins;
+      updateSlidersUI();
+      renderHistoryTable();
+      updateCohortSimReturns();
     }}
 
     function setExitStrategy(strat) {{
-      currentExitStrategy = strat;
-      
-      const badgeEl = document.getElementById("strategy-badge");
-      const descEl = document.getElementById("strategy-desc");
-      const btnGroup = document.querySelectorAll(".strat-btn");
-
-      btnGroup.forEach(btn => {{
-        btn.className = "strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent";
-      }});
-
-      const activeBtn = document.getElementById("strat-btn-" + strat);
-      if (activeBtn) {{
-        activeBtn.className = "strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
-      }}
-
-      if (strat === 'close') {{
-        if (badgeEl) badgeEl.innerText = "Actual Close";
-        if (descEl) descEl.innerText = "Evaluates performance holding open position directly to 16:00 regular market close.";
-      }} else if (strat === 'scalp2') {{
-        if (badgeEl) badgeEl.innerText = "+2% Scalp Target";
-        if (descEl) descEl.innerText = "Directly tests our 86.2% breakout rate: Realizes +2.0% if Max Run >= +2.0%, otherwise falls back to 16:00 close.";
-      }} else if (strat === 'm30') {{
-        if (badgeEl) badgeEl.innerText = "30-Min Exit";
-        if (descEl) descEl.innerText = "Realizes return at the 10:00 AM mark (30M % column), locking in the initial morning push.";
-      }} else if (strat === 'tp25') {{
-        if (badgeEl) badgeEl.innerText = "Take Profit @ +25%";
-        if (descEl) descEl.innerText = "Locks in +25.0% return on strong runners, otherwise falls back to 16:00 close.";
-      }} else if (strat === 'tp50') {{
-        if (badgeEl) badgeEl.innerText = "Take Profit @ +50%";
-        if (descEl) descEl.innerText = "Locks in +50.0% return on super-runners, otherwise falls back to 16:00 close.";
-      }}
-
-      renderHistoryTable();
-      updateCohortSimReturns();
+      if (strat === 'close') applyStrategyPreset(0, 390);
+      else if (strat === 'scalp2') applyStrategyPreset(2, 390);
+      else if (strat === 'm30') applyStrategyPreset(0, 30);
+      else if (strat === 'tp25') applyStrategyPreset(25, 390);
+      else if (strat === 'tp50') applyStrategyPreset(50, 390);
     }}
 
     function setTierFilter(type, preset) {{
@@ -2116,15 +2473,57 @@ def run_scanner():
       if (document.getElementById("kpi-maxrun")) document.getElementById("kpi-maxrun").innerText = (avgMaxRun > 0 ? "+" : "") + avgMaxRun + "%";
       if (document.getElementById("kpi-turnover")) document.getElementById("kpi-turnover").innerText = avgTurnover + "x";
 
-      if (currentExitStrategy === 'close') {{
+      // Compute simulation outcome counts
+      let tpHits = 0;
+      let timeExits = 0;
+      filtered.forEach(r => {{
+        const d = getSimExitDetails(r);
+        if (d.hitTP) tpHits++;
+        else timeExits++;
+      }});
+      const tpHitRate = total > 0 ? (tpHits / total * 100).toFixed(1) : "0.0";
+      const timeExitRate = total > 0 ? (timeExits / total * 100).toFixed(1) : "0.0";
+      const alphaVal = (parseFloat(avgSimRet) - parseFloat(avgActualRet)).toFixed(1);
+
+      const simBanner = document.getElementById("sim-status-banner");
+      if (simBanner) {{
+        simBanner.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full ${{currentTPTarget > 0 ? 'bg-emerald-400 animate-pulse' : 'bg-sky-400'}}"></span>
+              Simulation Outcome (${{total}} Stocks):
+            </span>
+            ${{currentTPTarget > 0 ? `
+              <span class="px-2 py-0.5 rounded font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px]">
+                🎯 TP Hit: ${{tpHits}}/${{total}} (${{tpHitRate}}%)
+              </span>
+              <span class="px-2 py-0.5 rounded font-mono font-semibold bg-slate-800 text-slate-300 border border-slate-700 text-[11px]">
+                ⏱️ Time Stop: ${{timeExits}}/${{total}} (${{timeExitRate}}%)
+              </span>
+            ` : `
+              <span class="px-2 py-0.5 rounded font-mono font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[11px]">
+                ⏱️ All Liquidated at ${{formatMinutesToTime(currentExitMinutes)}}
+              </span>
+            `}}
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-slate-400">Avg Realized: <strong class="font-mono ${{parseFloat(avgSimRet) >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{parseFloat(avgSimRet) >= 0 ? '+' : ''}}${{avgSimRet}}%</strong></span>
+            <span class="text-slate-600">|</span>
+            <span class="text-slate-400">Alpha vs Close: <strong class="font-mono ${{parseFloat(alphaVal) >= 0 ? 'text-emerald-400' : 'text-rose-400'}}">${{parseFloat(alphaVal) >= 0 ? '+' : ''}}${{alphaVal}}%</strong></span>
+          </div>
+        `;
+      }}
+
+      if (currentTPTarget === 0 && currentExitMinutes >= 390) {{
         document.getElementById("kpi-dayreturn-title").innerText = "Avg Day Return";
         document.getElementById("kpi-dayreturn").innerText = (avgActualRet > 0 ? "+" : "") + avgActualRet + "%";
         document.getElementById("kpi-dayreturn-sub").innerText = "Hold to 16:00 Close";
       }} else {{
-        const stratMap = {{ scalp2: "+2% Scalp", m30: "30-Min Exit", tp25: "+25% TP", tp50: "+50% TP" }};
+        const tpLabel = currentTPTarget > 0 ? `TP +${{currentTPTarget.toFixed(1)}}%` : `No TP`;
+        const timeLabel = formatMinutesToTime(currentExitMinutes);
         document.getElementById("kpi-dayreturn-title").innerText = "Avg Sim Realized %";
         document.getElementById("kpi-dayreturn").innerText = (avgSimRet > 0 ? "+" : "") + avgSimRet + "%";
-        document.getElementById("kpi-dayreturn-sub").innerText = "vs Close: " + (avgActualRet > 0 ? "+" : "") + avgActualRet + "% (" + stratMap[currentExitStrategy] + ")";
+        document.getElementById("kpi-dayreturn-sub").innerText = `vs Close: ${{avgActualRet > 0 ? "+" : ""}}${{avgActualRet}}% (${{tpLabel}} @ ${{timeLabel}})`;
       }}
       document.getElementById("kpi-dump").innerText = dumpRate + "% (" + dumpCount + ")";
 
@@ -2169,32 +2568,15 @@ def run_scanner():
           const fadeClass = fade <= -40 ? 'text-rose-400 font-bold' : (fade <= -20 ? 'text-amber-400' : 'text-slate-300');
 
           // Simulated Exit Indicator
-          const simRet = getSimExitReturn(r);
+          const simDetails = getSimExitDetails(r);
+          const simRet = simDetails.returnPct;
           let simBadge = '';
-          if (currentExitStrategy === 'scalp2') {{
-            if (mg >= 2.0) {{
-              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +2.0%</span>';
-            }} else {{
-              simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
-            }}
-          }} else if (currentExitStrategy === 'm30') {{
-            const m30Val = r.first_30m_change_pct !== null ? r.first_30m_change_pct : dayRet;
-            const m30Class = m30Val >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold';
-            simBadge = `<span class="${{m30Class}} text-[11px]">⏱️ ${{m30Val >= 0 ? '+' : ''}}${{m30Val.toFixed(1)}}%</span>`;
-          }} else if (currentExitStrategy === 'tp25') {{
-            if (mg >= 25.0) {{
-              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +25.0%</span>';
-            }} else {{
-              simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
-            }}
-          }} else if (currentExitStrategy === 'tp50') {{
-            if (mg >= 50.0) {{
-              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +50.0%</span>';
-            }} else {{
-              simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
-            }}
+          if (simDetails.hitTP) {{
+            simBadge = `<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] whitespace-nowrap" title="Target Hit at ${{simDetails.exitTimeStr}}">${{simDetails.badgeText}}</span>`;
           }} else {{
-            simBadge = `<span class="${{dayRetClass}} font-medium">${{dayRet >= 0 ? '+' : ''}}${{dayRet.toFixed(1)}}%</span>`;
+            const isPos = simRet >= 0;
+            const colClass = isPos ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold';
+            simBadge = `<span class="${{colClass}} text-[11px] whitespace-nowrap" title="Liquidated at ${{simDetails.exitTimeStr}}">${{simDetails.badgeText}}</span>`;
           }}
 
           return `
@@ -2359,8 +2741,9 @@ def run_scanner():
       }}).join("");
 
       document.getElementById("pivot-total-badge").innerText = total + " Stocks";
-      const stratLabels = {{ close: "Hold Close", scalp2: "+2% Scalp", m30: "30-Min Exit", tp25: "+25% TP", tp50: "+50% TP" }};
-      document.getElementById("pivot-footer-strat").innerText = "Strategy: " + stratLabels[currentExitStrategy];
+      const pTpStr = currentTPTarget > 0 ? `TP +${{currentTPTarget.toFixed(1)}}%` : `No TP`;
+      const pTimeStr = formatMinutesToTime(currentExitMinutes);
+      document.getElementById("pivot-footer-strat").innerText = `Strategy: ${{pTpStr}} | Exit: ${{pTimeStr}}`;
     }}
 
     function isolateBucket(dim, key) {{
@@ -2453,7 +2836,9 @@ def run_scanner():
           const simRet = getSimExitReturn(r);
           const xStr = typeof xVal === 'number' ? xVal.toFixed(2) : xVal;
           const yStr = typeof yVal === 'number' ? yVal.toFixed(1) : yVal;
-          return `<b>${{r.ticker}}</b> (${{r.date}})<br>${{r.company || ''}}<br>Category: ${{r.catalyst_category || 'Momentum'}}<br>${{xLabels[xKey]}}: ${{xStr}}<br>${{yLabels[yKey]}}: ${{yStr}}%<br>Max Run: +${{(r.max_gain_pct||0).toFixed(1)}}% | Close Ret: ${{(r.day_return_pct||0).toFixed(1)}}%<br>Sim Realized (${{currentExitStrategy}}): ${{simRet >= 0 ? '+' : ''}}${{simRet.toFixed(1)}}%`;
+          const sTpStr = currentTPTarget > 0 ? `TP +${{currentTPTarget.toFixed(1)}}%` : `TP Off`;
+          const sTimeStr = formatMinutesToTime(currentExitMinutes);
+          return `<b>${{r.ticker}}</b> (${{r.date}})<br>${{r.company || ''}}<br>Category: ${{r.catalyst_category || 'Momentum'}}<br>${{xLabels[xKey]}}: ${{xStr}}<br>${{yLabels[yKey]}}: ${{yStr}}%<br>Max Run: +${{(r.max_gain_pct||0).toFixed(1)}}% | Close Ret: ${{(r.day_return_pct||0).toFixed(1)}}%<br>Sim Realized (${{sTpStr}} / ${{sTimeStr}}): ${{simRet >= 0 ? '+' : ''}}${{simRet.toFixed(1)}}%`;
         }});
       }}
 
@@ -2529,10 +2914,10 @@ def run_scanner():
 
       const keys = Object.keys(filtered[0]);
       const csvRows = [];
-      csvRows.push(keys.join(",") + ",sim_exit_return_pct,exit_strategy_used");
+      csvRows.push(keys.join(",") + ",sim_exit_return_pct,tp_target_pct,exit_minutes_used,exit_reason");
       filtered.forEach(row => {{
-        const simRet = getSimExitReturn(row);
-        const line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "," + simRet.toFixed(2) + ',"' + currentExitStrategy + '"';
+        const sim = getSimExitDetails(row);
+        const line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "," + sim.returnPct.toFixed(2) + "," + currentTPTarget + "," + currentExitMinutes + ',"' + sim.exitReason + '"';
         csvRows.push(line);
       }});
 
@@ -2541,7 +2926,7 @@ def run_scanner():
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
-      a.setAttribute('download', 'filtered_gappers_' + currentExitStrategy + '.csv');
+      a.setAttribute('download', 'filtered_gappers_tp' + currentTPTarget + '_t' + currentExitMinutes + 'm.csv');
       a.click();
     }}
 
@@ -2949,6 +3334,7 @@ def run_scanner():
         countdownEl.className = "text-2xl font-black text-slate-400 mt-1 font-mono";
       }}
     }}
+    updateSlidersUI();
     initTradingViewCharts();
     updateCountdown();
     setInterval(updateCountdown, 1000);

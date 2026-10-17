@@ -3669,6 +3669,61 @@ return Plotly;
       color: #f59e0b;
       font-weight: 600;
     }
+    /* Custom Range Sliders */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: #1e293b;
+      border-radius: 9999px;
+      border: 1px solid #334155;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #10b981;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+      border: 2px solid #0f172a;
+      transition: transform 0.1s ease, background-color 0.1s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+      background: #34d399;
+    }
+    #slider-time::-webkit-slider-thumb {
+      background: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+    #slider-time::-webkit-slider-thumb:hover {
+      background: #7dd3fc;
+    }
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+      background: #1e293b;
+      border-radius: 9999px;
+      border: 1px solid #334155;
+    }
+    input[type=range]::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #10b981;
+      cursor: pointer;
+      border: 2px solid #0f172a;
+    }
+    #slider-time::-moz-range-thumb {
+      background: #38bdf8;
+    }
   </style>
 </head>
 <body class="p-4 md:p-8 antialiased min-h-screen">
@@ -3740,7 +3795,7 @@ return Plotly;
               <span class="font-extrabold text-white text-sm bg-slate-800 px-2 py-0.5 rounded border border-slate-700">3 Leaders</span>
             </div>
             <div class="text-[11px] text-slate-500 text-right px-1">
-              Last Scan: 2026-10-17 16:07:49 UTC
+              Last Scan: 2026-10-17 16:30:23 UTC
             </div>
           </div>
         </div>
@@ -5108,35 +5163,131 @@ return Plotly;
           </div>
         </div>
 
-        <!-- 2. Simulated Exit Strategy Switcher (Feature 2) -->
+        <!-- 2. Dual-Slider Simulated Exit Strategy Engine -->
         <div class="mt-6 pt-5 border-t border-slate-800">
-          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 mb-4">
             <div>
               <div class="flex items-center gap-2">
                 <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-black">⚡</span>
-                <span class="text-xs font-extrabold uppercase tracking-wider text-white">Simulated Exit Strategy</span>
-                <span id="strategy-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300 border border-slate-700">Actual Close</span>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-white">Dual-Slider Simulated Exit Strategy</span>
+                <span id="strategy-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">🎯 TP: +2.0% | ⏱️ 16:00 Close</span>
               </div>
-              <p id="strategy-desc" class="text-xs text-slate-400 mt-1">Evaluates performance holding open position directly to 16:00 regular market close.</p>
+              <p id="strategy-desc" class="text-xs text-slate-400 mt-1">Simulates taking profit at +2.0% if reached, otherwise liquidating position at 16:00 Close.</p>
             </div>
             
-            <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-950/90 border border-slate-800 rounded-xl" id="strategy-btn-group">
-              <button type="button" onclick="setExitStrategy('close')" id="strat-btn-close" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow">
-                Hold to 16:00 Close (Actual)
+            <!-- Quick Strategy Presets -->
+            <div class="flex flex-wrap items-center gap-1.5 p-1 bg-slate-950/90 border border-slate-800 rounded-xl" id="strat-presets">
+              <span class="text-[10px] uppercase font-bold text-slate-500 px-2 hidden sm:inline">Presets:</span>
+              <button type="button" onclick="applyStrategyPreset(0, 390)" id="preset-close" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Hold to Close
               </button>
-              <button type="button" onclick="setExitStrategy('scalp2')" id="strat-btn-scalp2" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
-                Take Profit @ +2% (Scalp)
+              <button type="button" onclick="applyStrategyPreset(2, 390)" id="preset-scalp2" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow">
+                +2% Scalp
               </button>
-              <button type="button" onclick="setExitStrategy('m30')" id="strat-btn-m30" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
-                Exit @ 30-Min Mark
+              <button type="button" onclick="applyStrategyPreset(0, 30)" id="preset-m30" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+                Exit @ 30-Min
               </button>
-              <button type="button" onclick="setExitStrategy('tp25')" id="strat-btn-tp25" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+              <button type="button" onclick="applyStrategyPreset(25, 390)" id="preset-tp25" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
                 Take Profit @ +25%
               </button>
-              <button type="button" onclick="setExitStrategy('tp50')" id="strat-btn-tp50" class="strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
+              <button type="button" onclick="applyStrategyPreset(50, 390)" id="preset-tp50" class="strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent">
                 Take Profit @ +50%
               </button>
             </div>
+          </div>
+
+          <!-- Two Interactive Sliders Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950/70 border border-slate-800/90 rounded-2xl p-4 sm:p-5">
+            <!-- Slider 1: Take Profit Target % -->
+            <div class="space-y-3 bg-slate-900/80 border border-slate-800/80 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">🎯</span>
+                  <label for="slider-tp" class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                    Take Profit Target %
+                  </label>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span id="slider-tp-display" class="px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    +2.0%
+                  </span>
+                  <span id="slider-tp-status" class="text-[10px] text-emerald-400 font-semibold">(Scalp Target)</span>
+                </div>
+              </div>
+              
+              <!-- Range Slider 1 -->
+              <div class="space-y-1">
+                <input type="range" id="slider-tp" min="0" max="100" step="1" value="2" 
+                  oninput="onSliderTPInput(this.value)" 
+                  class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-400 hover:accent-emerald-300 transition-all">
+                <div class="flex justify-between text-[10px] text-slate-500 font-mono px-0.5">
+                  <span>0% (Off)</span>
+                  <span>+25%</span>
+                  <span>+50%</span>
+                  <span>+75%</span>
+                  <span>+100%</span>
+                </div>
+              </div>
+
+              <!-- Quick Ticks for Slider 1 -->
+              <div class="flex flex-wrap items-center gap-1 pt-1">
+                <button type="button" onclick="setSliderTP(0)" data-val="0" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">Off</button>
+                <button type="button" onclick="setSliderTP(2)" data-val="2" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow transition-all">+2% Scalp</button>
+                <button type="button" onclick="setSliderTP(5)" data-val="5" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+5%</button>
+                <button type="button" onclick="setSliderTP(10)" data-val="10" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+10%</button>
+                <button type="button" onclick="setSliderTP(20)" data-val="20" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+20%</button>
+                <button type="button" onclick="setSliderTP(25)" data-val="25" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+25%</button>
+                <button type="button" onclick="setSliderTP(50)" data-val="50" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+50%</button>
+                <button type="button" onclick="setSliderTP(100)" data-val="100" class="tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">+100%</button>
+              </div>
+            </div>
+
+            <!-- Slider 2: Exit Time / Holding Window -->
+            <div class="space-y-3 bg-slate-900/80 border border-slate-800/80 rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm">⏱️</span>
+                  <label for="slider-time" class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                    Exit Time / Holding Window
+                  </label>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span id="slider-time-display" class="px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30">
+                    16:00 Close
+                  </span>
+                  <span id="slider-time-status" class="text-[10px] text-sky-400 font-semibold">(390 mins)</span>
+                </div>
+              </div>
+              
+              <!-- Range Slider 2 -->
+              <div class="space-y-1">
+                <input type="range" id="slider-time" min="15" max="390" step="15" value="390" 
+                  oninput="onSliderTimeInput(this.value)" 
+                  class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-sky-400 hover:accent-sky-300 transition-all">
+                <div class="flex justify-between text-[10px] text-slate-500 font-mono px-0.5">
+                  <span>09:45 (15m)</span>
+                  <span>10:30 (60m)</span>
+                  <span>11:30 (120m)</span>
+                  <span>13:30 (240m)</span>
+                  <span>16:00 (Close)</span>
+                </div>
+              </div>
+
+              <!-- Quick Ticks for Slider 2 -->
+              <div class="flex flex-wrap items-center gap-1 pt-1">
+                <button type="button" onclick="setSliderTime(15)" data-val="15" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">15m (09:45)</button>
+                <button type="button" onclick="setSliderTime(30)" data-val="30" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">30m (10:00)</button>
+                <button type="button" onclick="setSliderTime(60)" data-val="60" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">60m (10:30)</button>
+                <button type="button" onclick="setSliderTime(120)" data-val="120" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">120m (11:30)</button>
+                <button type="button" onclick="setSliderTime(240)" data-val="240" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all">240m (13:30)</button>
+                <button type="button" onclick="setSliderTime(390)" data-val="390" class="time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow transition-all">16:00 Close</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real-time Simulation Status Readout Banner -->
+          <div id="sim-status-banner" class="mt-3 px-4 py-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <!-- Dynamically populated in renderHistoryTable -->
           </div>
         </div>
       </div>
@@ -5549,7 +5700,9 @@ return Plotly;
     const RAW_HISTORY = [{"date": "2026-10-16", "ticker": "NCPL", "company": "Netcapital Inc.", "catalyst_category": "Compliance / Uplisting", "premarket_gap_pct": 32.27, "premarket_volume": 2233296, "float_shares": 2089079, "open_price": 2.4, "day_high": 2.4799, "day_low": 2.02, "close_price": 2.15, "max_gain_pct": 3.33, "day_return_pct": -10.42, "fade_from_high_pct": -13.3, "day_range_pct": 22.77, "day_volume": 24010000, "float_turnover_x": 11.5, "first_30m_change_pct": -12.5, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 1.5}, {"date": "2026-10-16", "ticker": "TCRT", "company": "Alaunos Therapeutics, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 31.65, "premarket_volume": 10120703, "float_shares": 2325202, "open_price": 2.81, "day_high": 2.99, "day_low": 2.31, "close_price": 2.62, "max_gain_pct": 6.41, "day_return_pct": -6.76, "fade_from_high_pct": -12.37, "day_range_pct": 29.44, "day_volume": 32042200, "float_turnover_x": 13.8, "first_30m_change_pct": -6.94, "hit_plus_2pct": "Yes", "minutes_to_day_high": 12, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 0.9}, {"date": "2026-10-16", "ticker": "XLAB", "company": "Exascale Labs Holdings Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 20.22, "premarket_volume": 10844742, "float_shares": 19397076, "open_price": 1.85, "day_high": 3.8399, "day_low": 1.75, "close_price": 2.335, "max_gain_pct": 107.56, "day_return_pct": 26.22, "fade_from_high_pct": -39.19, "day_range_pct": 119.42, "day_volume": 170455200, "float_turnover_x": 8.8, "first_30m_change_pct": 19.19, "hit_plus_2pct": "Yes", "minutes_to_day_high": 44, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 100.2}, {"date": "2026-10-15", "ticker": "SPRC", "company": "SciSparc Ltd.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 16.0, "premarket_volume": 14850000, "float_shares": 562600, "open_price": 4.2, "day_high": 5.3299, "day_low": 1.63, "close_price": 2.0, "max_gain_pct": 26.9, "day_return_pct": -52.38, "fade_from_high_pct": -62.48, "day_range_pct": 226.99, "day_volume": 34767400, "float_turnover_x": 61.8, "first_30m_change_pct": 6.67, "hit_plus_2pct": "Yes", "minutes_to_day_high": 15, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 2863.9}, {"date": "2026-10-14", "ticker": "AEHL", "company": "Antelope Enterprise Holdings Limited", "catalyst_category": "Crypto / Treasury", "premarket_gap_pct": 183.04, "premarket_volume": 1268519, "float_shares": 16457836, "open_price": 24.11, "day_high": 30.6, "day_low": 11.6, "close_price": 11.98, "max_gain_pct": 26.92, "day_return_pct": -50.31, "fade_from_high_pct": -60.85, "day_range_pct": 163.79, "day_volume": 12982000, "float_turnover_x": 0.8, "first_30m_change_pct": 1.74, "hit_plus_2pct": "Yes", "minutes_to_day_high": 172, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 32.8}, {"date": "2026-10-14", "ticker": "GRML", "company": "Greenland Mines Ltd", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 35.38, "premarket_volume": 9166266, "float_shares": 12072721, "open_price": 7.51, "day_high": 7.53, "day_low": 6.35, "close_price": 6.5198, "max_gain_pct": 0.27, "day_return_pct": -13.19, "fade_from_high_pct": -13.42, "day_range_pct": 18.58, "day_volume": 27862500, "float_turnover_x": 2.3, "first_30m_change_pct": -1.26, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 6.5}, {"date": "2026-10-13", "ticker": "PFAI", "company": "Pinnacle Food Group Limited", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 129.5, "premarket_volume": 11950000, "float_shares": 3590000, "open_price": 5.95, "day_high": 6.01, "day_low": 3.97, "close_price": 4.4501, "max_gain_pct": 1.01, "day_return_pct": -25.21, "fade_from_high_pct": -25.96, "day_range_pct": 51.39, "day_volume": 38390800, "float_turnover_x": 10.7, "first_30m_change_pct": -20.96, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 12.0}, {"date": "2026-10-13", "ticker": "TCRT", "company": "Alaunos Therapeutics, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 64.8, "premarket_volume": 61360000, "float_shares": 2430000, "open_price": 1.74, "day_high": 4.32, "day_low": 1.51, "close_price": 3.03, "max_gain_pct": 148.28, "day_return_pct": 74.14, "fade_from_high_pct": -29.86, "day_range_pct": 186.09, "day_volume": 256847300, "float_turnover_x": 105.7, "first_30m_change_pct": 2.3, "hit_plus_2pct": "Yes", "minutes_to_day_high": 165, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 586.0}, {"date": "2026-10-13", "ticker": "YJ", "company": "Yunji Inc. - American Depository Shares", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 37.0, "premarket_volume": 16489999, "float_shares": 2550000, "open_price": 2.5797, "day_high": 2.5797, "day_low": 1.8301, "close_price": 2.075, "max_gain_pct": 0.0, "day_return_pct": -19.56, "fade_from_high_pct": -19.56, "day_range_pct": 40.96, "day_volume": 25137900, "float_turnover_x": 9.9, "first_30m_change_pct": -18.98, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "CRITICAL DUMP", "relative_volume_10d_calc": 503.7}, {"date": "2026-10-12", "ticker": "MNDR", "company": "Mobile-health Network Solutions", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 204.7, "premarket_volume": 48970000, "float_shares": 428800, "open_price": 2.585, "day_high": 5.67, "day_low": 2.3, "close_price": 3.025, "max_gain_pct": 119.34, "day_return_pct": 17.02, "fade_from_high_pct": -46.65, "day_range_pct": 146.52, "day_volume": 192512600, "float_turnover_x": 449.0, "first_30m_change_pct": 27.85, "hit_plus_2pct": "Yes", "minutes_to_day_high": 105, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 488.9}, {"date": "2026-10-12", "ticker": "YMAT", "company": "J-Star Holding Co., Ltd.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 101.6, "premarket_volume": 30890000, "float_shares": 1580000, "open_price": 2.58, "day_high": 4.49, "day_low": 1.95, "close_price": 2.875, "max_gain_pct": 74.03, "day_return_pct": 11.43, "fade_from_high_pct": -35.97, "day_range_pct": 130.26, "day_volume": 85404400, "float_turnover_x": 54.1, "first_30m_change_pct": -18.61, "hit_plus_2pct": "Yes", "minutes_to_day_high": 80, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 27.0}, {"date": "2026-10-12", "ticker": "GIXI", "company": "Gix Internet Ltd.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 53.0, "premarket_volume": 7810000, "float_shares": 2490000, "open_price": 6.25, "day_high": 8.34, "day_low": 4.2, "close_price": 4.68, "max_gain_pct": 33.44, "day_return_pct": -25.12, "fade_from_high_pct": -43.88, "day_range_pct": 98.57, "day_volume": 38928500, "float_turnover_x": 15.6, "first_30m_change_pct": -6.56, "hit_plus_2pct": "Yes", "minutes_to_day_high": 50, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 4046.6}, {"date": "2026-10-12", "ticker": "CLWT", "company": "Euro Tech Holdings Company Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 45.6, "premarket_volume": 34350000, "float_shares": 3080000, "open_price": 1.99, "day_high": 2.34, "day_low": 1.63, "close_price": 2.15, "max_gain_pct": 17.59, "day_return_pct": 8.04, "fade_from_high_pct": -8.12, "day_range_pct": 43.56, "day_volume": 71134400, "float_turnover_x": 23.1, "first_30m_change_pct": 3.51, "hit_plus_2pct": "Yes", "minutes_to_day_high": 5, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 4793.4}, {"date": "2026-10-12", "ticker": "LNKS", "company": "Linkers Industries Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 34.4, "premarket_volume": 17130000, "float_shares": 1500000, "open_price": 1.285, "day_high": 3.49, "day_low": 1.23, "close_price": 2.2501, "max_gain_pct": 171.6, "day_return_pct": 75.11, "fade_from_high_pct": -35.53, "day_range_pct": 183.74, "day_volume": 150137700, "float_turnover_x": 100.1, "first_30m_change_pct": 6.61, "hit_plus_2pct": "Yes", "minutes_to_day_high": 305, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 119.9}, {"date": "2026-10-08", "ticker": "FLYE", "company": "Fly-E Group, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 149.6, "premarket_volume": 60370000, "float_shares": 1560000, "open_price": 3.17, "day_high": 3.47, "day_low": 1.95, "close_price": 2.32, "max_gain_pct": 9.46, "day_return_pct": -26.81, "fade_from_high_pct": -33.14, "day_range_pct": 77.95, "day_volume": 133012600, "float_turnover_x": 85.3, "first_30m_change_pct": -18.29, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 7328.5}, {"date": "2026-10-07", "ticker": "SXTC", "company": "China SXT Pharmaceuticals, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 156.0, "premarket_volume": 30950000, "float_shares": 1030000, "open_price": 3.21, "day_high": 9.59, "day_low": 1.87, "close_price": 2.83, "max_gain_pct": 198.75, "day_return_pct": -11.84, "fade_from_high_pct": -70.49, "day_range_pct": 412.83, "day_volume": 146566900, "float_turnover_x": 142.3, "first_30m_change_pct": -27.12, "hit_plus_2pct": "Yes", "minutes_to_day_high": 270, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 114.5}, {"date": "2026-10-07", "ticker": "BIYA", "company": "Baiya International Group Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 56.8, "premarket_volume": 57770000, "float_shares": 2700000, "open_price": 2.14, "day_high": 2.89, "day_low": 1.78, "close_price": 2.285, "max_gain_pct": 35.05, "day_return_pct": 6.78, "fade_from_high_pct": -20.93, "day_range_pct": 62.36, "day_volume": 116012100, "float_turnover_x": 43.0, "first_30m_change_pct": 3.97, "hit_plus_2pct": "Yes", "minutes_to_day_high": 250, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 39.4}, {"date": "2026-10-07", "ticker": "LPCN", "company": "Lipocine Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 40.0, "premarket_volume": 67330000, "float_shares": 7860000, "open_price": 2.9599, "day_high": 3.14, "day_low": 2.07, "close_price": 2.19, "max_gain_pct": 6.08, "day_return_pct": -26.01, "fade_from_high_pct": -30.25, "day_range_pct": 51.69, "day_volume": 105835900, "float_turnover_x": 13.5, "first_30m_change_pct": -10.98, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 2720.0}, {"date": "2026-10-07", "ticker": "LGCL", "company": "Lucas GC Limited", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 10.6, "premarket_volume": 8199999, "float_shares": 48700, "open_price": 2.49, "day_high": 4.53, "day_low": 2.41, "close_price": 2.84, "max_gain_pct": 81.93, "day_return_pct": 14.06, "fade_from_high_pct": -37.31, "day_range_pct": 87.97, "day_volume": 45645000, "float_turnover_x": 937.3, "first_30m_change_pct": 30.12, "hit_plus_2pct": "Yes", "minutes_to_day_high": 10, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 401.7}, {"date": "2026-10-07", "ticker": "SPAI", "company": "Safe Pro Group Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 5.1, "premarket_volume": 3560000, "float_shares": 10230000, "open_price": 4.32, "day_high": 4.81, "day_low": 3.8501, "close_price": 4.7011, "max_gain_pct": 11.34, "day_return_pct": 8.82, "fade_from_high_pct": -2.26, "day_range_pct": 24.93, "day_volume": 5705600, "float_turnover_x": 0.6, "first_30m_change_pct": -3.24, "hit_plus_2pct": "Yes", "minutes_to_day_high": 380, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 53.8}, {"date": "2026-10-06", "ticker": "IPDN", "company": "Professional Diversity Network, Inc.", "catalyst_category": "Contract / Momentum", "premarket_gap_pct": 102.6, "premarket_volume": 30690000, "float_shares": 475700, "open_price": 6.31, "day_high": 6.78, "day_low": 4.09, "close_price": 4.585, "max_gain_pct": 7.45, "day_return_pct": -27.34, "fade_from_high_pct": -32.37, "day_range_pct": 65.77, "day_volume": 70599400, "float_turnover_x": 148.4, "first_30m_change_pct": -10.06, "hit_plus_2pct": "Yes", "minutes_to_day_high": 0, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 15.8}, {"date": "2026-10-02", "ticker": "AMOD", "company": "Alpha Modus Holdings, Inc.", "catalyst_category": "Crypto / Treasury", "premarket_gap_pct": 197.44, "premarket_volume": 78074895, "float_shares": 542550, "open_price": 3.4703, "day_high": 4.77, "day_low": 3.08, "close_price": 3.485, "max_gain_pct": 37.45, "day_return_pct": 0.42, "fade_from_high_pct": -26.94, "day_range_pct": 54.87, "day_volume": 194457300, "float_turnover_x": 358.4, "first_30m_change_pct": 12.65, "hit_plus_2pct": "Yes", "minutes_to_day_high": 17, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 109.0}, {"date": "2026-10-02", "ticker": "CYCU", "company": "Cycurion, Inc.", "catalyst_category": "Compliance / Uplisting", "premarket_gap_pct": 11.52, "premarket_volume": 3058165, "float_shares": 3137181, "open_price": 2.98, "day_high": 4.95, "day_low": 2.6401, "close_price": 3.81, "max_gain_pct": 66.11, "day_return_pct": 27.85, "fade_from_high_pct": -23.03, "day_range_pct": 87.49, "day_volume": 49204600, "float_turnover_x": 15.7, "first_30m_change_pct": -6.25, "hit_plus_2pct": "Yes", "minutes_to_day_high": 78, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 340.6}, {"date": "2026-10-01", "ticker": "NXL", "company": "Nexalin Technology, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 104.91, "premarket_volume": 14092562, "float_shares": 652226, "open_price": 8.8, "day_high": 10.9745, "day_low": 6.8, "close_price": 7.5299, "max_gain_pct": 24.71, "day_return_pct": -14.43, "fade_from_high_pct": -31.39, "day_range_pct": 61.39, "day_volume": 62336600, "float_turnover_x": 95.6, "first_30m_change_pct": 12.5, "hit_plus_2pct": "Yes", "minutes_to_day_high": 36, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 4269.6}, {"date": "2026-10-01", "ticker": "VEEA", "company": "Veea Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 36.87, "premarket_volume": 24840842, "float_shares": 1594437, "open_price": 2.98, "day_high": 4.08, "day_low": 2.92, "close_price": 3.48, "max_gain_pct": 36.91, "day_return_pct": 16.78, "fade_from_high_pct": -14.71, "day_range_pct": 39.73, "day_volume": 80637800, "float_turnover_x": 50.6, "first_30m_change_pct": 9.23, "hit_plus_2pct": "Yes", "minutes_to_day_high": 356, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 34.7}, {"date": "2026-10-01", "ticker": "MEDS", "company": "DataMeds AI, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 22.71, "premarket_volume": 18666771, "float_shares": 1535288, "open_price": 3.92, "day_high": 4.35, "day_low": 3.63, "close_price": 4.04, "max_gain_pct": 10.97, "day_return_pct": 3.06, "fade_from_high_pct": -7.13, "day_range_pct": 19.83, "day_volume": 34897600, "float_turnover_x": 22.7, "first_30m_change_pct": 4.78, "hit_plus_2pct": "Yes", "minutes_to_day_high": 20, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 5.4}, {"date": "2026-09-30", "ticker": "SMX", "company": "SMX Security Matters Ltd", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 68.2, "premarket_volume": 19500000, "float_shares": 890000, "open_price": 3.4, "day_high": 4.6, "day_low": 3.1, "close_price": 3.85, "max_gain_pct": 35.29, "day_return_pct": 13.24, "fade_from_high_pct": -16.3, "day_range_pct": 48.39, "day_volume": 58100, "float_turnover_x": 0.1, "first_30m_change_pct": 14.71, "hit_plus_2pct": "Yes", "minutes_to_day_high": 45, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 0.7}, {"date": "2026-09-30", "ticker": "LUNG", "company": "LungLife AI, Inc.", "catalyst_category": "Biotech / Pharma", "premarket_gap_pct": 42.5, "premarket_volume": 11200000, "float_shares": 1200000, "open_price": 5.2, "day_high": 5.2, "day_low": 3.85, "close_price": 3.95, "max_gain_pct": 0.0, "day_return_pct": -24.04, "fade_from_high_pct": -24.04, "day_range_pct": 35.06, "day_volume": 250900, "float_turnover_x": 0.2, "first_30m_change_pct": -18.27, "hit_plus_2pct": "No", "minutes_to_day_high": 0, "dump_warning": "CRITICAL DUMP", "relative_volume_10d_calc": 1.0}, {"date": "2026-09-29", "ticker": "POET", "company": "POET Technologies Inc.", "catalyst_category": "AI / Tech / Hardware", "premarket_gap_pct": 28.4, "premarket_volume": 8400000, "float_shares": 3400000, "open_price": 4.1, "day_high": 4.88, "day_low": 3.95, "close_price": 4.52, "max_gain_pct": 19.02, "day_return_pct": 10.24, "fade_from_high_pct": -7.38, "day_range_pct": 23.54, "day_volume": 6907600, "float_turnover_x": 2.0, "first_30m_change_pct": 8.54, "hit_plus_2pct": "Yes", "minutes_to_day_high": 72, "dump_warning": "Held/Pushed", "relative_volume_10d_calc": 0.9}];
     let currentSortCol = 'date';
     let sortAsc = false;
-    let currentExitStrategy = 'close'; // 'close', 'scalp2', 'm30', 'tp25', 'tp50'
+    let currentTPTarget = 2; // Default to +2% Scalp target
+    let currentExitMinutes = 390; // Default to 16:00 Close
+    let currentExitStrategy = 'scalp2'; // Active strategy preset or 'custom'
     let currentPivotDim = 'price'; // 'price', 'gap', 'turnover', 'volume', 'catalyst', 'timing'
     let timingFilterFn = null;
 
@@ -5586,67 +5739,271 @@ return Plotly;
       }
     }
 
-    function getSimExitReturn(row, strategy) {
-      const strat = strategy || currentExitStrategy;
+    function formatMinutesToTime(mins) {
+      if (mins >= 390) return "16:00 Close";
+      const startHour = 9;
+      const startMin = 30;
+      const totalMins = startHour * 60 + startMin + mins;
+      const hour = Math.floor(totalMins / 60);
+      const min = totalMins % 60;
+      const hStr = hour < 10 ? '0' + hour : '' + hour;
+      const mStr = min < 10 ? '0' + min : '' + min;
+      return `${hStr}:${mStr} (${mins}m)`;
+    }
+
+    function getSimExitDetails(row, tp, time) {
+      const tpTarget = tp !== undefined ? tp : currentTPTarget;
+      const exitMins = time !== undefined ? time : currentExitMinutes;
+
       const actualDayRet = (row.day_return_pct !== null && row.day_return_pct !== undefined) 
         ? row.day_return_pct 
         : ((row.close_price - row.open_price) / row.open_price * 100);
+
       const mg = (row.max_gain_pct !== null && row.max_gain_pct !== undefined) 
         ? row.max_gain_pct 
         : ((row.day_high - row.open_price) / row.open_price * 100);
 
-      if (strat === 'scalp2') {
-        return mg >= 2.0 ? 2.0 : actualDayRet;
+      const peakMin = (row.minutes_to_day_high !== null && row.minutes_to_day_high !== undefined) 
+        ? row.minutes_to_day_high 
+        : 0;
+
+      const m30Ret = (row.first_30m_change_pct !== null && row.first_30m_change_pct !== undefined) 
+        ? row.first_30m_change_pct 
+        : actualDayRet;
+
+      // Check if Take Profit was reached before or at exitMins
+      let hitTP = false;
+      if (tpTarget > 0 && mg >= tpTarget) {
+        if (peakMin <= exitMins) {
+          hitTP = true;
+        } else if (tpTarget <= 2.0 && row.hit_plus_2pct === "Yes") {
+          hitTP = true;
+        } else if (exitMins >= 30 && m30Ret >= tpTarget) {
+          hitTP = true;
+        } else {
+          // Monotonic progression towards peak
+          const estRunAtExit = peakMin > 0 ? (mg * (exitMins / peakMin)) : mg;
+          if (estRunAtExit >= tpTarget) {
+            hitTP = true;
+          }
+        }
       }
-      if (strat === 'm30') {
-        return (row.first_30m_change_pct !== null && row.first_30m_change_pct !== undefined) 
-          ? row.first_30m_change_pct 
-          : actualDayRet;
+
+      if (hitTP) {
+        return {
+          returnPct: tpTarget,
+          hitTP: true,
+          exitReason: 'TP_HIT',
+          badgeText: `🎯 +${tpTarget.toFixed(1)}%`,
+          exitTimeStr: (peakMin > 0 && peakMin <= exitMins) ? formatMinutesToTime(peakMin) : formatMinutesToTime(exitMins)
+        };
       }
-      if (strat === 'tp25') {
-        return mg >= 25.0 ? 25.0 : actualDayRet;
+
+      // Liquidate at exitMins
+      let realizedReturn = actualDayRet;
+      if (exitMins >= 390) {
+        realizedReturn = actualDayRet;
+      } else if (exitMins === 30) {
+        realizedReturn = m30Ret;
+      } else if (exitMins < 30) {
+        if (peakMin <= exitMins) {
+          if (30 - peakMin > 0) {
+            realizedReturn = mg + (exitMins - peakMin) / (30 - peakMin) * (m30Ret - mg);
+          } else {
+            realizedReturn = m30Ret;
+          }
+        } else {
+          const anchorMin = Math.min(peakMin, 30);
+          const anchorVal = anchorMin === peakMin ? mg : m30Ret;
+          realizedReturn = anchorMin > 0 ? (anchorVal * (exitMins / anchorMin)) : 0;
+        }
+      } else {
+        // exitMins between 30 and 390
+        if (peakMin > 30) {
+          if (exitMins <= peakMin) {
+            if (peakMin - 30 > 0) {
+              realizedReturn = m30Ret + (exitMins - 30) / (peakMin - 30) * (mg - m30Ret);
+            } else {
+              realizedReturn = mg;
+            }
+          } else {
+            if (390 - peakMin > 0) {
+              realizedReturn = mg + (exitMins - peakMin) / (390 - peakMin) * (actualDayRet - mg);
+            } else {
+              realizedReturn = actualDayRet;
+            }
+          }
+        } else {
+          realizedReturn = m30Ret + (exitMins - 30) / (390 - 30) * (actualDayRet - m30Ret);
+        }
       }
-      if (strat === 'tp50') {
-        return mg >= 50.0 ? 50.0 : actualDayRet;
+
+      return {
+        returnPct: realizedReturn,
+        hitTP: false,
+        exitReason: 'TIME_EXIT',
+        badgeText: `⏱️ ${realizedReturn >= 0 ? '+' : ''}${realizedReturn.toFixed(1)}%`,
+        exitTimeStr: formatMinutesToTime(exitMins)
+      };
+    }
+
+    function getSimExitReturn(row, tp, time) {
+      return getSimExitDetails(row, tp, time).returnPct;
+    }
+
+    function updateSlidersUI() {
+      // 1. Update TP display & status
+      const tpDisplay = document.getElementById("slider-tp-display");
+      const tpStatus = document.getElementById("slider-tp-status");
+      if (tpDisplay) {
+        if (currentTPTarget === 0) {
+          tpDisplay.innerText = "Off (0%)";
+          tpDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-slate-800 text-slate-400 border border-slate-700";
+          if (tpStatus) tpStatus.innerText = "(Pure Time Exit)";
+        } else {
+          tpDisplay.innerText = "+" + currentTPTarget.toFixed(1) + "%";
+          tpDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+          if (tpStatus) {
+            if (currentTPTarget === 2) tpStatus.innerText = "(Scalp Target)";
+            else if (currentTPTarget >= 50) tpStatus.innerText = "(Super-Runner)";
+            else tpStatus.innerText = "(Target Profit)";
+          }
+        }
       }
-      return actualDayRet; // 'close'
+
+      // Update TP tick buttons
+      document.querySelectorAll(".tp-tick-btn").forEach(btn => {
+        const val = parseFloat(btn.getAttribute("data-val"));
+        if (val === currentTPTarget) {
+          btn.className = "tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow transition-all";
+        } else {
+          btn.className = "tp-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all";
+        }
+      });
+
+      // 2. Update Time display & status
+      const timeDisplay = document.getElementById("slider-time-display");
+      const timeStatus = document.getElementById("slider-time-status");
+      if (timeDisplay) {
+        timeDisplay.innerText = formatMinutesToTime(currentExitMinutes);
+        if (currentExitMinutes >= 390) {
+          timeDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30";
+          if (timeStatus) timeStatus.innerText = "(Full Day Hold)";
+        } else if (currentExitMinutes <= 30) {
+          timeDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-amber-500/20 text-amber-300 border border-amber-500/30";
+          if (timeStatus) timeStatus.innerText = "(Morning Scalp)";
+        } else {
+          timeDisplay.className = "px-2.5 py-0.5 rounded-lg text-xs font-black font-mono bg-sky-500/20 text-sky-300 border border-sky-500/30";
+          if (timeStatus) timeStatus.innerText = "(" + currentExitMinutes + " mins)";
+        }
+      }
+
+      // Update Time tick buttons
+      document.querySelectorAll(".time-tick-btn").forEach(btn => {
+        const val = parseInt(btn.getAttribute("data-val"), 10);
+        if (val === currentExitMinutes) {
+          btn.className = "time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/20 text-sky-400 border border-sky-500/40 shadow transition-all";
+        } else {
+          btn.className = "time-tick-btn px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white border border-slate-700 hover:border-slate-600 transition-all";
+        }
+      });
+
+      // 3. Update preset buttons
+      const isClose = currentTPTarget === 0 && currentExitMinutes === 390;
+      const isScalp2 = currentTPTarget === 2 && currentExitMinutes === 390;
+      const isM30 = currentTPTarget === 0 && currentExitMinutes === 30;
+      const isTP25 = currentTPTarget === 25 && currentExitMinutes === 390;
+      const isTP50 = currentTPTarget === 50 && currentExitMinutes === 390;
+
+      document.querySelectorAll(".strat-preset-btn").forEach(btn => {
+        btn.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent";
+      });
+
+      if (isClose) {
+        currentExitStrategy = 'close';
+        const b = document.getElementById("preset-close");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      } else if (isScalp2) {
+        currentExitStrategy = 'scalp2';
+        const b = document.getElementById("preset-scalp2");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      } else if (isM30) {
+        currentExitStrategy = 'm30';
+        const b = document.getElementById("preset-m30");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      } else if (isTP25) {
+        currentExitStrategy = 'tp25';
+        const b = document.getElementById("preset-tp25");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      } else if (isTP50) {
+        currentExitStrategy = 'tp50';
+        const b = document.getElementById("preset-tp50");
+        if (b) b.className = "strat-preset-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
+      } else {
+        currentExitStrategy = 'custom';
+      }
+
+      // 4. Update Header Badges & Description
+      const badgeEl = document.getElementById("strategy-badge");
+      const descEl = document.getElementById("strategy-desc");
+      if (badgeEl) {
+        const tpStr = currentTPTarget > 0 ? `🎯 TP: +${currentTPTarget.toFixed(1)}%` : `🎯 TP: Off`;
+        const timeStr = `⏱️ ${formatMinutesToTime(currentExitMinutes)}`;
+        badgeEl.innerText = `${tpStr} | ${timeStr}`;
+      }
+      if (descEl) {
+        if (currentTPTarget > 0) {
+          descEl.innerText = `Simulates taking profit at +${currentTPTarget.toFixed(1)}% if reached, otherwise liquidating position at ${formatMinutesToTime(currentExitMinutes)}.`;
+        } else {
+          descEl.innerText = `Pure time-based exit: holds open position directly to ${formatMinutesToTime(currentExitMinutes)} without profit target.`;
+        }
+      }
+    }
+
+    function onSliderTPInput(val) {
+      currentTPTarget = parseFloat(val);
+      updateSlidersUI();
+      renderHistoryTable();
+      updateCohortSimReturns();
+    }
+
+    function setSliderTP(val) {
+      const el = document.getElementById("slider-tp");
+      if (el) el.value = val;
+      onSliderTPInput(val);
+    }
+
+    function onSliderTimeInput(val) {
+      currentExitMinutes = parseInt(val, 10);
+      updateSlidersUI();
+      renderHistoryTable();
+      updateCohortSimReturns();
+    }
+
+    function setSliderTime(val) {
+      const el = document.getElementById("slider-time");
+      if (el) el.value = val;
+      onSliderTimeInput(val);
+    }
+
+    function applyStrategyPreset(tp, mins) {
+      currentTPTarget = tp;
+      currentExitMinutes = mins;
+      const tpEl = document.getElementById("slider-tp");
+      if (tpEl) tpEl.value = tp;
+      const timeEl = document.getElementById("slider-time");
+      if (timeEl) timeEl.value = mins;
+      updateSlidersUI();
+      renderHistoryTable();
+      updateCohortSimReturns();
     }
 
     function setExitStrategy(strat) {
-      currentExitStrategy = strat;
-      
-      const badgeEl = document.getElementById("strategy-badge");
-      const descEl = document.getElementById("strategy-desc");
-      const btnGroup = document.querySelectorAll(".strat-btn");
-
-      btnGroup.forEach(btn => {
-        btn.className = "strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white border border-transparent";
-      });
-
-      const activeBtn = document.getElementById("strat-btn-" + strat);
-      if (activeBtn) {
-        activeBtn.className = "strat-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow";
-      }
-
-      if (strat === 'close') {
-        if (badgeEl) badgeEl.innerText = "Actual Close";
-        if (descEl) descEl.innerText = "Evaluates performance holding open position directly to 16:00 regular market close.";
-      } else if (strat === 'scalp2') {
-        if (badgeEl) badgeEl.innerText = "+2% Scalp Target";
-        if (descEl) descEl.innerText = "Directly tests our 86.2% breakout rate: Realizes +2.0% if Max Run >= +2.0%, otherwise falls back to 16:00 close.";
-      } else if (strat === 'm30') {
-        if (badgeEl) badgeEl.innerText = "30-Min Exit";
-        if (descEl) descEl.innerText = "Realizes return at the 10:00 AM mark (30M % column), locking in the initial morning push.";
-      } else if (strat === 'tp25') {
-        if (badgeEl) badgeEl.innerText = "Take Profit @ +25%";
-        if (descEl) descEl.innerText = "Locks in +25.0% return on strong runners, otherwise falls back to 16:00 close.";
-      } else if (strat === 'tp50') {
-        if (badgeEl) badgeEl.innerText = "Take Profit @ +50%";
-        if (descEl) descEl.innerText = "Locks in +50.0% return on super-runners, otherwise falls back to 16:00 close.";
-      }
-
-      renderHistoryTable();
-      updateCohortSimReturns();
+      if (strat === 'close') applyStrategyPreset(0, 390);
+      else if (strat === 'scalp2') applyStrategyPreset(2, 390);
+      else if (strat === 'm30') applyStrategyPreset(0, 30);
+      else if (strat === 'tp25') applyStrategyPreset(25, 390);
+      else if (strat === 'tp50') applyStrategyPreset(50, 390);
     }
 
     function setTierFilter(type, preset) {
@@ -5851,15 +6208,57 @@ return Plotly;
       if (document.getElementById("kpi-maxrun")) document.getElementById("kpi-maxrun").innerText = (avgMaxRun > 0 ? "+" : "") + avgMaxRun + "%";
       if (document.getElementById("kpi-turnover")) document.getElementById("kpi-turnover").innerText = avgTurnover + "x";
 
-      if (currentExitStrategy === 'close') {
+      // Compute simulation outcome counts
+      let tpHits = 0;
+      let timeExits = 0;
+      filtered.forEach(r => {
+        const d = getSimExitDetails(r);
+        if (d.hitTP) tpHits++;
+        else timeExits++;
+      });
+      const tpHitRate = total > 0 ? (tpHits / total * 100).toFixed(1) : "0.0";
+      const timeExitRate = total > 0 ? (timeExits / total * 100).toFixed(1) : "0.0";
+      const alphaVal = (parseFloat(avgSimRet) - parseFloat(avgActualRet)).toFixed(1);
+
+      const simBanner = document.getElementById("sim-status-banner");
+      if (simBanner) {
+        simBanner.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full ${currentTPTarget > 0 ? 'bg-emerald-400 animate-pulse' : 'bg-sky-400'}"></span>
+              Simulation Outcome (${total} Stocks):
+            </span>
+            ${currentTPTarget > 0 ? `
+              <span class="px-2 py-0.5 rounded font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[11px]">
+                🎯 TP Hit: ${tpHits}/${total} (${tpHitRate}%)
+              </span>
+              <span class="px-2 py-0.5 rounded font-mono font-semibold bg-slate-800 text-slate-300 border border-slate-700 text-[11px]">
+                ⏱️ Time Stop: ${timeExits}/${total} (${timeExitRate}%)
+              </span>
+            ` : `
+              <span class="px-2 py-0.5 rounded font-mono font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/30 text-[11px]">
+                ⏱️ All Liquidated at ${formatMinutesToTime(currentExitMinutes)}
+              </span>
+            `}
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-slate-400">Avg Realized: <strong class="font-mono ${parseFloat(avgSimRet) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${parseFloat(avgSimRet) >= 0 ? '+' : ''}${avgSimRet}%</strong></span>
+            <span class="text-slate-600">|</span>
+            <span class="text-slate-400">Alpha vs Close: <strong class="font-mono ${parseFloat(alphaVal) >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${parseFloat(alphaVal) >= 0 ? '+' : ''}${alphaVal}%</strong></span>
+          </div>
+        `;
+      }
+
+      if (currentTPTarget === 0 && currentExitMinutes >= 390) {
         document.getElementById("kpi-dayreturn-title").innerText = "Avg Day Return";
         document.getElementById("kpi-dayreturn").innerText = (avgActualRet > 0 ? "+" : "") + avgActualRet + "%";
         document.getElementById("kpi-dayreturn-sub").innerText = "Hold to 16:00 Close";
       } else {
-        const stratMap = { scalp2: "+2% Scalp", m30: "30-Min Exit", tp25: "+25% TP", tp50: "+50% TP" };
+        const tpLabel = currentTPTarget > 0 ? `TP +${currentTPTarget.toFixed(1)}%` : `No TP`;
+        const timeLabel = formatMinutesToTime(currentExitMinutes);
         document.getElementById("kpi-dayreturn-title").innerText = "Avg Sim Realized %";
         document.getElementById("kpi-dayreturn").innerText = (avgSimRet > 0 ? "+" : "") + avgSimRet + "%";
-        document.getElementById("kpi-dayreturn-sub").innerText = "vs Close: " + (avgActualRet > 0 ? "+" : "") + avgActualRet + "% (" + stratMap[currentExitStrategy] + ")";
+        document.getElementById("kpi-dayreturn-sub").innerText = `vs Close: ${avgActualRet > 0 ? "+" : ""}${avgActualRet}% (${tpLabel} @ ${timeLabel})`;
       }
       document.getElementById("kpi-dump").innerText = dumpRate + "% (" + dumpCount + ")";
 
@@ -5904,32 +6303,15 @@ return Plotly;
           const fadeClass = fade <= -40 ? 'text-rose-400 font-bold' : (fade <= -20 ? 'text-amber-400' : 'text-slate-300');
 
           // Simulated Exit Indicator
-          const simRet = getSimExitReturn(r);
+          const simDetails = getSimExitDetails(r);
+          const simRet = simDetails.returnPct;
           let simBadge = '';
-          if (currentExitStrategy === 'scalp2') {
-            if (mg >= 2.0) {
-              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +2.0%</span>';
-            } else {
-              simBadge = `<span class="${dayRetClass} font-medium">${dayRet >= 0 ? '+' : ''}${dayRet.toFixed(1)}%</span>`;
-            }
-          } else if (currentExitStrategy === 'm30') {
-            const m30Val = r.first_30m_change_pct !== null ? r.first_30m_change_pct : dayRet;
-            const m30Class = m30Val >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold';
-            simBadge = `<span class="${m30Class} text-[11px]">⏱️ ${m30Val >= 0 ? '+' : ''}${m30Val.toFixed(1)}%</span>`;
-          } else if (currentExitStrategy === 'tp25') {
-            if (mg >= 25.0) {
-              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +25.0%</span>';
-            } else {
-              simBadge = `<span class="${dayRetClass} font-medium">${dayRet >= 0 ? '+' : ''}${dayRet.toFixed(1)}%</span>`;
-            }
-          } else if (currentExitStrategy === 'tp50') {
-            if (mg >= 50.0) {
-              simBadge = '<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px]">🎯 +50.0%</span>';
-            } else {
-              simBadge = `<span class="${dayRetClass} font-medium">${dayRet >= 0 ? '+' : ''}${dayRet.toFixed(1)}%</span>`;
-            }
+          if (simDetails.hitTP) {
+            simBadge = `<span class="bg-emerald-500/20 text-emerald-300 font-black px-1.5 py-0.5 rounded border border-emerald-500/40 text-[11px] whitespace-nowrap" title="Target Hit at ${simDetails.exitTimeStr}">${simDetails.badgeText}</span>`;
           } else {
-            simBadge = `<span class="${dayRetClass} font-medium">${dayRet >= 0 ? '+' : ''}${dayRet.toFixed(1)}%</span>`;
+            const isPos = simRet >= 0;
+            const colClass = isPos ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold';
+            simBadge = `<span class="${colClass} text-[11px] whitespace-nowrap" title="Liquidated at ${simDetails.exitTimeStr}">${simDetails.badgeText}</span>`;
           }
 
           return `
@@ -6094,8 +6476,9 @@ return Plotly;
       }).join("");
 
       document.getElementById("pivot-total-badge").innerText = total + " Stocks";
-      const stratLabels = { close: "Hold Close", scalp2: "+2% Scalp", m30: "30-Min Exit", tp25: "+25% TP", tp50: "+50% TP" };
-      document.getElementById("pivot-footer-strat").innerText = "Strategy: " + stratLabels[currentExitStrategy];
+      const pTpStr = currentTPTarget > 0 ? `TP +${currentTPTarget.toFixed(1)}%` : `No TP`;
+      const pTimeStr = formatMinutesToTime(currentExitMinutes);
+      document.getElementById("pivot-footer-strat").innerText = `Strategy: ${pTpStr} | Exit: ${pTimeStr}`;
     }
 
     function isolateBucket(dim, key) {
@@ -6188,7 +6571,9 @@ return Plotly;
           const simRet = getSimExitReturn(r);
           const xStr = typeof xVal === 'number' ? xVal.toFixed(2) : xVal;
           const yStr = typeof yVal === 'number' ? yVal.toFixed(1) : yVal;
-          return `<b>${r.ticker}</b> (${r.date})<br>${r.company || ''}<br>Category: ${r.catalyst_category || 'Momentum'}<br>${xLabels[xKey]}: ${xStr}<br>${yLabels[yKey]}: ${yStr}%<br>Max Run: +${(r.max_gain_pct||0).toFixed(1)}% | Close Ret: ${(r.day_return_pct||0).toFixed(1)}%<br>Sim Realized (${currentExitStrategy}): ${simRet >= 0 ? '+' : ''}${simRet.toFixed(1)}%`;
+          const sTpStr = currentTPTarget > 0 ? `TP +${currentTPTarget.toFixed(1)}%` : `TP Off`;
+          const sTimeStr = formatMinutesToTime(currentExitMinutes);
+          return `<b>${r.ticker}</b> (${r.date})<br>${r.company || ''}<br>Category: ${r.catalyst_category || 'Momentum'}<br>${xLabels[xKey]}: ${xStr}<br>${yLabels[yKey]}: ${yStr}%<br>Max Run: +${(r.max_gain_pct||0).toFixed(1)}% | Close Ret: ${(r.day_return_pct||0).toFixed(1)}%<br>Sim Realized (${sTpStr} / ${sTimeStr}): ${simRet >= 0 ? '+' : ''}${simRet.toFixed(1)}%`;
         });
       }
 
@@ -6264,10 +6649,10 @@ return Plotly;
 
       const keys = Object.keys(filtered[0]);
       const csvRows = [];
-      csvRows.push(keys.join(",") + ",sim_exit_return_pct,exit_strategy_used");
+      csvRows.push(keys.join(",") + ",sim_exit_return_pct,tp_target_pct,exit_minutes_used,exit_reason");
       filtered.forEach(row => {
-        const simRet = getSimExitReturn(row);
-        const line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "," + simRet.toFixed(2) + ',"' + currentExitStrategy + '"';
+        const sim = getSimExitDetails(row);
+        const line = keys.map(k => JSON.stringify(row[k] !== null ? row[k] : "")).join(",") + "," + sim.returnPct.toFixed(2) + "," + currentTPTarget + "," + currentExitMinutes + ',"' + sim.exitReason + '"';
         csvRows.push(line);
       });
 
@@ -6276,7 +6661,7 @@ return Plotly;
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.setAttribute('href', url);
-      a.setAttribute('download', 'filtered_gappers_' + currentExitStrategy + '.csv');
+      a.setAttribute('download', 'filtered_gappers_tp' + currentTPTarget + '_t' + currentExitMinutes + 'm.csv');
       a.click();
     }
 
@@ -6684,6 +7069,7 @@ return Plotly;
         countdownEl.className = "text-2xl font-black text-slate-400 mt-1 font-mono";
       }
     }
+    updateSlidersUI();
     initTradingViewCharts();
     updateCountdown();
     setInterval(updateCountdown, 1000);
