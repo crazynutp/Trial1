@@ -3638,6 +3638,21 @@ return Plotly;
 
   </script>
   <style>
+    /* Price Tick Flash Keyframes */
+    @keyframes flashGreen {
+      0% { background-color: rgba(16, 185, 129, 0.45); color: #34d399; }
+      100% { background-color: transparent; }
+    }
+    @keyframes flashRed {
+      0% { background-color: rgba(239, 68, 68, 0.45); color: #f87171; }
+      100% { background-color: transparent; }
+    }
+    .tick-up {
+      animation: flashGreen 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .tick-down {
+      animation: flashRed 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
     body {
       background-color: #0b0f19;
       color: #f8fafc;
@@ -3761,6 +3776,194 @@ return Plotly;
     <!-- TAB 1: PRE-MARKET MOMENTUM RADAR                           -->
     <!-- ========================================================== -->
     <div id="tab-content-radar" class="space-y-6">
+
+    <!-- ========================================================== -->
+    <!-- INSTITUTIONAL SMALL-CAP LIVE ORDERBOOK & TICKER BOARD      -->
+    <!-- ========================================================== -->
+    <div class="bg-[#0b0f19] border border-emerald-500/30 rounded-2xl p-5 md:p-6 shadow-2xl relative overflow-hidden space-y-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-600 to-cyan-400 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20 font-black text-slate-950">
+            ⚡
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <h2 class="text-base md:text-lg font-black text-white tracking-wide uppercase font-mono">INSTITUTIONAL SMALL-CAP LIVE ORDERBOOK & TICKER BOARD</h2>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-mono">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                ACTIVE CONTINUOUS • LEVEL 1 OTC
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Real-Time Level-1 Orderbook Bids, Asks, Micro-Drift Volatility & Tick Flash Streamer</p>
+          </div>
+        </div>
+
+        <!-- Clocks: EST / UTC & Orderbook Frequency -->
+        <div class="flex flex-wrap items-center gap-2.5 text-xs font-mono">
+          <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-slate-300 flex items-center gap-2">
+            <span class="text-slate-500">EST:</span>
+            <span id="stock-clock-est" class="text-sky-300 font-bold">--:--:--</span>
+          </div>
+          <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-slate-300 flex items-center gap-2">
+            <span class="text-slate-500">UTC:</span>
+            <span id="stock-clock-utc" class="text-amber-300 font-bold">--:--:--</span>
+          </div>
+          <div class="bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-800 text-[11px] text-emerald-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>TICKS: <b class="text-slate-200">1.8s</b></span>
+          </div>
+          <button onclick="manualStockTickSync()" title="Manual Force Sync" class="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800">
+            <svg id="stock-refresh-spinner" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN DUAL-TIER EQUITIES GRID: Rate Matrix (Left 7) + Live Streaming Canvas (Right 5) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- TABLE: Live Stock Rate Matrix (7 Cols) -->
+        <div class="lg:col-span-7 bg-slate-950/70 p-4 rounded-xl border border-slate-800 flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2 font-mono">
+                <span class="text-emerald-400">📊</span> Active Momentum Leaders Matrix
+              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-mono">REAL-TIME EXECUTION</span>
+            </div>
+
+            <div class="overflow-x-auto mt-2">
+              <table class="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr class="text-slate-400 text-[11px] border-b border-slate-800">
+                    <th class="py-2 font-bold uppercase">TICKER</th>
+                    <th class="py-2 text-right font-bold uppercase text-white">PRICE ($)</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-300">BID / ASK</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-400">DAY CHG</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-400">HIGH / LOW</th>
+                    <th class="py-2 text-right font-bold uppercase text-cyan-300">RVOL</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60">
+                  <!-- Row 1: XLAB -->
+                  <tr class="hover:bg-slate-900/40 transition-colors cursor-pointer" onclick="selectStockStreamAsset('XLAB'); scrollToGapper('XLAB');">
+                    <td class="py-2.5 font-black text-emerald-400 flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <div>
+                        <span>XLAB</span>
+                        <span class="block text-[10px] text-slate-400 font-normal">Exascale Labs</span>
+                      </div>
+                    </td>
+                    <td id="cell-stock-XLAB-price" class="py-2.5 text-right font-black text-white text-sm transition-colors duration-200" data-val="2.35">$2.35</td>
+                    <td id="cell-stock-XLAB-bidask" class="py-2.5 text-right text-slate-300 font-bold">$2.34 / $2.36</td>
+                    <td id="cell-stock-XLAB-chg" class="py-2.5 text-right font-black text-emerald-400">+26.2%</td>
+                    <td id="cell-stock-XLAB-range" class="py-2.5 text-right text-slate-400 font-medium">$3.84 / $1.75</td>
+                    <td class="py-2.5 text-right font-black text-cyan-400">100.8x</td>
+                  </tr>
+
+                  <!-- Row 2: TCRT -->
+                  <tr class="hover:bg-slate-900/40 transition-colors cursor-pointer" onclick="selectStockStreamAsset('TCRT'); scrollToGapper('TCRT');">
+                    <td class="py-2.5 font-black text-emerald-400 flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <div>
+                        <span>TCRT</span>
+                        <span class="block text-[10px] text-slate-400 font-normal">Alaunos Ther.</span>
+                      </div>
+                    </td>
+                    <td id="cell-stock-TCRT-price" class="py-2.5 text-right font-black text-white text-sm transition-colors duration-200" data-val="2.63">$2.63</td>
+                    <td id="cell-stock-TCRT-bidask" class="py-2.5 text-right text-slate-300 font-bold">$2.62 / $2.64</td>
+                    <td id="cell-stock-TCRT-chg" class="py-2.5 text-right font-black text-emerald-400">+31.6%</td>
+                    <td id="cell-stock-TCRT-range" class="py-2.5 text-right text-slate-400 font-medium">$2.99 / $2.31</td>
+                    <td class="py-2.5 text-right font-black text-cyan-400">28.4x</td>
+                  </tr>
+
+                  <!-- Row 3: NCPL -->
+                  <tr class="hover:bg-slate-900/40 transition-colors cursor-pointer" onclick="selectStockStreamAsset('NCPL'); scrollToGapper('NCPL');">
+                    <td class="py-2.5 font-black text-emerald-400 flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <div>
+                        <span>NCPL</span>
+                        <span class="block text-[10px] text-slate-400 font-normal">Netcapital Inc.</span>
+                      </div>
+                    </td>
+                    <td id="cell-stock-NCPL-price" class="py-2.5 text-right font-black text-white text-sm transition-colors duration-200" data-val="2.17">$2.17</td>
+                    <td id="cell-stock-NCPL-bidask" class="py-2.5 text-right text-slate-300 font-bold">$2.16 / $2.18</td>
+                    <td id="cell-stock-NCPL-chg" class="py-2.5 text-right font-black text-emerald-400">+32.3%</td>
+                    <td id="cell-stock-NCPL-range" class="py-2.5 text-right text-slate-400 font-medium">$2.48 / $2.02</td>
+                    <td class="py-2.5 text-right font-black text-cyan-400">18.2x</td>
+                  </tr>
+
+                  <!-- Row 4: SPRC -->
+                  <tr class="hover:bg-slate-900/40 transition-colors cursor-pointer" onclick="selectStockStreamAsset('SPRC');">
+                    <td class="py-2.5 font-black text-sky-400 flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                      <div>
+                        <span>SPRC</span>
+                        <span class="block text-[10px] text-slate-400 font-normal">SciSparc Ltd.</span>
+                      </div>
+                    </td>
+                    <td id="cell-stock-SPRC-price" class="py-2.5 text-right font-black text-white text-sm transition-colors duration-200" data-val="2.00">$2.00</td>
+                    <td id="cell-stock-SPRC-bidask" class="py-2.5 text-right text-slate-300 font-bold">$1.99 / $2.01</td>
+                    <td id="cell-stock-SPRC-chg" class="py-2.5 text-right font-black text-rose-400">-52.4%</td>
+                    <td id="cell-stock-SPRC-range" class="py-2.5 text-right text-slate-400 font-medium">$5.33 / $1.63</td>
+                    <td class="py-2.5 text-right font-black text-cyan-400">32.1x</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between font-mono">
+            <span>Tick Engine: <b class="text-slate-200">Brownian Drift (±0.08%)</b></span>
+            <span class="text-emerald-400 font-bold">● Synchronized across all cards & charts</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Multi-Stock Live Streaming Canvas Chart (5 Cols) -->
+        <div class="lg:col-span-5 bg-slate-950/70 p-4 rounded-xl border border-slate-800 flex flex-col justify-between space-y-3">
+          <div>
+            <!-- Asset Switcher Tabs -->
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5 font-mono">
+                <span class="text-sky-400">📈</span> Live Tick Streamer
+              </span>
+              <div class="flex items-center gap-1 font-mono text-[11px]">
+                <button id="btn-stock-tab-XLAB" onclick="selectStockStreamAsset('XLAB')" class="px-2.5 py-1 rounded-md font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">XLAB</button>
+                <button id="btn-stock-tab-TCRT" onclick="selectStockStreamAsset('TCRT')" class="px-2.5 py-1 rounded-md font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800">TCRT</button>
+                <button id="btn-stock-tab-NCPL" onclick="selectStockStreamAsset('NCPL')" class="px-2.5 py-1 rounded-md font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800">NCPL</button>
+                <button id="btn-stock-tab-SPRC" onclick="selectStockStreamAsset('SPRC')" class="px-2.5 py-1 rounded-md font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800">SPRC</button>
+              </div>
+            </div>
+
+            <!-- Stock Streamer Live HUD -->
+            <div class="flex items-center justify-between bg-slate-900/80 px-3 py-2 rounded-lg border border-slate-800 mt-2 font-mono">
+              <div class="flex items-baseline gap-2">
+                <span id="stock-hud-ticker" class="text-sm font-black text-white">XLAB</span>
+                <span id="stock-hud-price" class="text-xl font-black text-white">$2.35</span>
+                <span id="stock-hud-change" class="text-xs font-bold text-emerald-400">+0.04 (+1.7%)</span>
+              </div>
+              <div class="text-[11px] text-slate-400">
+                <span>Fast MA(9): <b id="stock-hud-ma9" class="text-sky-400">$2.34</b></span>
+              </div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="w-full h-[220px] bg-slate-950 rounded-xl overflow-hidden relative border border-slate-800/80 mt-2">
+              <canvas id="stockStreamerCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+            <span>Slow MA (21): <b id="stock-hud-ma21" class="text-amber-400">$2.32</b></span>
+            <span>Range: <b id="stock-hud-range" class="text-slate-200">$2.28 - $2.39</b></span>
+            <span>Ticks: <b id="stock-hud-ticks" class="text-slate-300">54</b>/60</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
       <!-- Header Summary Banner -->
       <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
         <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -4412,10 +4615,14 @@ return Plotly;
             
             <div class="flex items-center gap-3">
               <div class="text-right">
-                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Live Price</div>
-                <div class="text-2xl font-black text-white">$2.35</div>
+                <div class="flex items-center justify-end gap-1.5 text-xs text-slate-400 uppercase tracking-wider font-semibold font-mono">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Live Price</span>
+                </div>
+                <div id="card-live-price-XLAB" class="text-2xl font-black text-white font-mono tracking-tight transition-colors duration-200" data-val="2.35">$2.35</div>
+                <div id="card-live-bidask-XLAB" class="text-[10px] text-slate-400 font-mono">Bid: $2.34 / Ask: $2.36</div>
               </div>
-              <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm">
+              <span id="card-live-gap-XLAB" class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm font-mono">
                 +36.0% GAP
               </span>
             </div>
@@ -4856,10 +5063,14 @@ return Plotly;
             
             <div class="flex items-center gap-3">
               <div class="text-right">
-                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Live Price</div>
-                <div class="text-2xl font-black text-white">$2.63</div>
+                <div class="flex items-center justify-end gap-1.5 text-xs text-slate-400 uppercase tracking-wider font-semibold font-mono">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Live Price</span>
+                </div>
+                <div id="card-live-price-TCRT" class="text-2xl font-black text-white font-mono tracking-tight transition-colors duration-200" data-val="2.63">$2.63</div>
+                <div id="card-live-bidask-TCRT" class="text-[10px] text-slate-400 font-mono">Bid: $2.62 / Ask: $2.64</div>
               </div>
-              <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm">
+              <span id="card-live-gap-TCRT" class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm font-mono">
                 +28.4% GAP
               </span>
             </div>
@@ -5300,10 +5511,14 @@ return Plotly;
             
             <div class="flex items-center gap-3">
               <div class="text-right">
-                <div class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Live Price</div>
-                <div class="text-2xl font-black text-white">$2.17</div>
+                <div class="flex items-center justify-end gap-1.5 text-xs text-slate-400 uppercase tracking-wider font-semibold font-mono">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Live Price</span>
+                </div>
+                <div id="card-live-price-NCPL" class="text-2xl font-black text-white font-mono tracking-tight transition-colors duration-200" data-val="2.17">$2.17</div>
+                <div id="card-live-bidask-NCPL" class="text-[10px] text-slate-400 font-mono">Bid: $2.16 / Ask: $2.18</div>
               </div>
-              <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm">
+              <span id="card-live-gap-NCPL" class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-sm font-mono">
                 +23.2% GAP
               </span>
             </div>
@@ -9404,13 +9619,438 @@ Terminal: Small-Cap & Commodities Intelligence Hub`;
       }, 600);
     }
 
-    // Initial on-load setup
-    window.addEventListener('DOMContentLoaded', () => {
-      initTradingViewWidget("OANDA:XAUUSD", "D");
-      calculateMelt();
-      calculateRisk();
-    });
+// ==========================================================
+// INSTITUTIONAL STOCK TICK ENGINE & REAL-TIME STREAMER
+// ==========================================================
+const stockEngineState = {
+  activeStock: 'XLAB',
+  stocks: {
+    XLAB: {
+      ticker: 'XLAB',
+      name: 'Exascale Labs',
+      price: 2.35,
+      open: 1.85,
+      prevClose: 1.72,
+      high: 3.84,
+      low: 1.75,
+      bid: 2.34,
+      ask: 2.36,
+      chg: 0.63,
+      chgPct: 36.6,
+      rvol: '100.8x'
+    },
+    TCRT: {
+      ticker: 'TCRT',
+      name: 'Alaunos Ther.',
+      price: 2.63,
+      open: 2.81,
+      prevClose: 2.00,
+      high: 2.99,
+      low: 2.31,
+      bid: 2.62,
+      ask: 2.64,
+      chg: 0.63,
+      chgPct: 31.5,
+      rvol: '28.4x'
+    },
+    NCPL: {
+      ticker: 'NCPL',
+      name: 'Netcapital Inc.',
+      price: 2.17,
+      open: 2.40,
+      prevClose: 1.64,
+      high: 2.48,
+      low: 2.02,
+      bid: 2.16,
+      ask: 2.18,
+      chg: 0.53,
+      chgPct: 32.3,
+      rvol: '18.2x'
+    },
+    SPRC: {
+      ticker: 'SPRC',
+      name: 'SciSparc Ltd.',
+      price: 2.00,
+      open: 4.20,
+      prevClose: 4.20,
+      high: 5.33,
+      low: 1.63,
+      bid: 1.99,
+      ask: 2.01,
+      chg: -2.20,
+      chgPct: -52.4,
+      rvol: '32.1x'
+    }
+  },
+  streams: {
+    XLAB: [],
+    TCRT: [],
+    NCPL: [],
+    SPRC: []
+  }
+};
+
+let stockCanvasAnimId = null;
+let stockPulsePhase = 0;
+
+function updateCellWithFlash(elementId, newFormattedValue, numericVal) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const oldVal = parseFloat(el.getAttribute('data-val')) || numericVal;
+  el.setAttribute('data-val', numericVal);
+
+  if (numericVal > oldVal) {
+    el.classList.remove('tick-up', 'tick-down');
+    void el.offsetWidth;
+    el.classList.add('tick-up');
+  } else if (numericVal < oldVal) {
+    el.classList.remove('tick-up', 'tick-down');
+    void el.offsetWidth;
+    el.classList.add('tick-down');
+  }
+  el.textContent = newFormattedValue;
+}
+
+function initializeStockStreams() {
+  const now = Date.now();
+  const points = 54;
+
+  for (const [ticker, s] of Object.entries(stockEngineState.stocks)) {
+    let cur = s.price * 0.992;
+    const list = [];
+    for (let i = points; i >= 0; i--) {
+      const time = new Date(now - i * 1800);
+      const noise = cur * (Math.random() - 0.495) * 0.0012;
+      cur += noise;
+      list.push({ time, price: cur });
+    }
+    computeStockMAs(list);
+    stockEngineState.streams[ticker] = list;
+  }
+}
+
+function computeStockMAs(list) {
+  for (let i = 0; i < list.length; i++) {
+    const s9 = list.slice(Math.max(0, i - 8), i + 1);
+    list[i].fastMA = s9.reduce((a, b) => a + b.price, 0) / s9.length;
+
+    const s21 = list.slice(Math.max(0, i - 20), i + 1);
+    list[i].slowMA = s21.reduce((a, b) => a + b.price, 0) / s21.length;
+  }
+}
+
+function executeStockTick() {
+  const now = new Date();
+
+  for (const [ticker, s] of Object.entries(stockEngineState.stocks)) {
+    // Small-cap high-beta drift: ±0.06% to ±0.15%
+    const drift = s.price * (Math.random() - 0.492) * 0.0016;
+    s.price = +(s.price + drift).toFixed(2);
+    if (s.price < 0.05) s.price = 0.05;
+
+    s.bid = +(s.price - 0.01).toFixed(2);
+    s.ask = +(s.price + 0.01).toFixed(2);
+
+    if (s.price > s.high) s.high = s.price;
+    if (s.price < s.low) s.low = s.price;
+
+    s.chg = +(s.price - s.prevClose).toFixed(2);
+    s.chgPct = +((s.chg / s.prevClose) * 100).toFixed(1);
+
+    // 1. Update Board row cells with smooth green/red flash
+    updateCellWithFlash(`cell-stock-${ticker}-price`, `$${s.price.toFixed(2)}`, s.price);
+    const bidAskEl = document.getElementById(`cell-stock-${ticker}-bidask`);
+    if (bidAskEl) bidAskEl.textContent = `$${s.bid.toFixed(2)} / $${s.ask.toFixed(2)}`;
+
+    const chgEl = document.getElementById(`cell-stock-${ticker}-chg`);
+    if (chgEl) {
+      chgEl.textContent = `${s.chg >= 0 ? '+' : ''}${s.chgPct.toFixed(1)}%`;
+      chgEl.className = `py-2.5 text-right font-black ${s.chg >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+    }
+
+    const rangeEl = document.getElementById(`cell-stock-${ticker}-range`);
+    if (rangeEl) rangeEl.textContent = `$${s.high.toFixed(2)} / $${s.low.toFixed(2)}`;
+
+    // 2. Update Gapper Card Live Price & Badge
+    updateCellWithFlash(`card-live-price-${ticker}`, `$${s.price.toFixed(2)}`, s.price);
+    const cardBidAsk = document.getElementById(`card-live-bidask-${ticker}`);
+    if (cardBidAsk) cardBidAsk.textContent = `Bid: $${s.bid.toFixed(2)} / Ask: $${s.ask.toFixed(2)}`;
+
+    const cardGap = document.getElementById(`card-live-gap-${ticker}`);
+    if (cardGap) {
+      cardGap.textContent = `${s.chg >= 0 ? '+' : ''}${s.chgPct.toFixed(1)}% GAP`;
+      cardGap.className = `inline-flex items-center px-3 py-1.5 rounded-full text-sm font-extrabold ${s.chg >= 0 ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'} shadow-sm font-mono`;
+    }
+
+    // 3. Update rolling stream queue
+    const queue = stockEngineState.streams[ticker];
+    if (queue) {
+      queue.push({ time: now, price: s.price });
+      if (queue.length > 58) queue.shift();
+      computeStockMAs(queue);
+    }
+  }
+
+  updateStockStreamerHUD();
+}
+
+function selectStockStreamAsset(ticker) {
+  stockEngineState.activeStock = ticker;
+
+  ['XLAB', 'TCRT', 'NCPL', 'SPRC'].forEach(t => {
+    const btn = document.getElementById(`btn-stock-tab-${t}`);
+    if (!btn) return;
+    if (t === ticker) {
+      btn.className = "px-2.5 py-1 rounded-md font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 shadow";
+    } else {
+      btn.className = "px-2.5 py-1 rounded-md font-bold text-slate-400 hover:text-white bg-slate-900 border border-slate-800";
+    }
+  });
+
+  updateStockStreamerHUD();
+}
+
+function updateStockStreamerHUD() {
+  const ticker = stockEngineState.activeStock;
+  const s = stockEngineState.stocks[ticker];
+  const queue = stockEngineState.streams[ticker] || [];
+  if (!s || queue.length === 0) return;
+
+  const lastPt = queue[queue.length - 1];
+  const firstPt = queue[0];
+  const diff = lastPt.price - firstPt.price;
+  const diffPct = (diff / firstPt.price) * 100;
+
+  document.getElementById('stock-hud-ticker').textContent = ticker;
+  document.getElementById('stock-hud-price').textContent = `$${lastPt.price.toFixed(2)}`;
   
+  const chgEl = document.getElementById('stock-hud-change');
+  if (chgEl) {
+    chgEl.innerHTML = `<span class="mr-1">${diff >= 0 ? '▲' : '▼'}</span> ${diff >= 0 ? '+' : ''}$${diff.toFixed(2)} (${diffPct >= 0 ? '+' : ''}${diffPct.toFixed(1)}%)`;
+    chgEl.className = `text-xs font-bold ${diff >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+  }
+
+  const ma9El = document.getElementById('stock-hud-ma9');
+  if (ma9El) ma9El.textContent = `$${lastPt.fastMA.toFixed(2)}`;
+  const ma21El = document.getElementById('stock-hud-ma21');
+  if (ma21El) ma21El.textContent = `$${lastPt.slowMA.toFixed(2)}`;
+  const ticksEl = document.getElementById('stock-hud-ticks');
+  if (ticksEl) ticksEl.textContent = queue.length;
+
+  const minP = Math.min(...queue.map(q => q.price));
+  const maxP = Math.max(...queue.map(q => q.price));
+  const rangeEl = document.getElementById('stock-hud-range');
+  if (rangeEl) rangeEl.textContent = `$${minP.toFixed(2)} - $${maxP.toFixed(2)}`;
+}
+
+function renderStockCanvas() {
+  const canvas = document.getElementById('stockStreamerCanvas');
+  if (!canvas) return;
+
+  const container = canvas.parentElement;
+  if (!container) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+
+  if (w <= 0 || h <= 0) return;
+
+  if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+  }
+
+  const ctx = canvas.getContext('2d');
+  ctx.resetTransform();
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+
+  const ticker = stockEngineState.activeStock;
+  const queue = stockEngineState.streams[ticker] || [];
+  if (queue.length < 2) return;
+
+  const prices = queue.map(q => q.price);
+  let minP = Math.min(...prices);
+  let maxP = Math.max(...prices);
+  const span = maxP - minP || 0.05;
+  minP -= span * 0.12;
+  maxP += span * 0.12;
+
+  const paddingLeft = 12;
+  const paddingRight = 54;
+  const paddingTop = 20;
+  const paddingBottom = 24;
+
+  const chartW = w - paddingLeft - paddingRight;
+  const chartH = h - paddingTop - paddingBottom;
+
+  const getX = (idx) => paddingLeft + (idx / (queue.length - 1)) * chartW;
+  const getY = (val) => paddingTop + chartH - ((val - minP) / (maxP - minP)) * chartH;
+
+  // Grid
+  ctx.strokeStyle = '#1e293b';
+  ctx.lineWidth = 1;
+  ctx.fillStyle = '#64748b';
+  ctx.font = '10px ui-monospace, SFMono-Regular, monospace';
+
+  for (let i = 0; i <= 3; i++) {
+    const yVal = minP + (i / 3) * (maxP - minP);
+    const yPos = getY(yVal);
+    ctx.beginPath();
+    ctx.moveTo(paddingLeft, yPos);
+    ctx.lineTo(paddingLeft + chartW, yPos);
+    ctx.stroke();
+    ctx.fillText(`$${yVal.toFixed(2)}`, paddingLeft + chartW + 6, yPos + 3);
+  }
+
+  const firstPrice = queue[0].price;
+  const latestPrice = queue[queue.length - 1].price;
+  const isPositive = latestPrice >= firstPrice;
+  const trendColor = isPositive ? '#10b981' : '#f43f5e';
+
+  // Points & Bézier
+  const points = queue.map((pt, idx) => ({ x: getX(idx), y: getY(pt.price) }));
+
+  // Soft gradient
+  const gradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartH);
+  if (isPositive) {
+    gradient.addColorStop(0, 'rgba(16, 185, 129, 0.28)');
+    gradient.addColorStop(1, 'rgba(16, 185, 129, 0.00)');
+  } else {
+    gradient.addColorStop(0, 'rgba(244, 63, 94, 0.28)');
+    gradient.addColorStop(1, 'rgba(244, 63, 94, 0.00)');
+  }
+
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 0; i < points.length - 1; i++) {
+    const xc = (points[i].x + points[i + 1].x) / 2;
+    const yc = (points[i].y + points[i + 1].y) / 2;
+    ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+  }
+  ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+  ctx.lineTo(points[points.length - 1].x, paddingTop + chartH);
+  ctx.lineTo(points[0].x, paddingTop + chartH);
+  ctx.closePath();
+  ctx.fillStyle = gradient;
+  ctx.fill();
+
+  // Price line
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, points[0].y);
+  for (let i = 0; i < points.length - 1; i++) {
+    const xc = (points[i].x + points[i + 1].x) / 2;
+    const yc = (points[i].y + points[i + 1].y) / 2;
+    ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+  }
+  ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+  ctx.strokeStyle = trendColor;
+  ctx.lineWidth = 2.2;
+  ctx.shadowColor = trendColor;
+  ctx.shadowBlur = 8;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Fast MA 9 (Sky)
+  ctx.beginPath();
+  for (let i = 0; i < queue.length; i++) {
+    const x = getX(i);
+    const y = getY(queue[i].fastMA);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = '#38bdf8';
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  // Slow MA 21 (Amber)
+  ctx.beginPath();
+  for (let i = 0; i < queue.length; i++) {
+    const x = getX(i);
+    const y = getY(queue[i].slowMA);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = '#f59e0b';
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  // Pulsing head
+  const lastPoint = points[points.length - 1];
+  stockPulsePhase += 0.05;
+  const pulseRadius = 4 + (Math.sin(stockPulsePhase) + 1) * 3.5;
+  const pulseAlpha = 0.8 - (Math.sin(stockPulsePhase) + 1) * 0.35;
+
+  ctx.beginPath();
+  ctx.arc(lastPoint.x, lastPoint.y, pulseRadius, 0, Math.PI * 2);
+  ctx.fillStyle = isPositive ? `rgba(52, 211, 153, ${pulseAlpha})` : `rgba(251, 113, 133, ${pulseAlpha})`;
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(lastPoint.x, lastPoint.y, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffffff';
+  ctx.fill();
+  ctx.strokeStyle = trendColor;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+}
+
+function startStockCanvasAnimationLoop() {
+  function loop() {
+    renderStockCanvas();
+    stockCanvasAnimId = requestAnimationFrame(loop);
+  }
+  if (!stockCanvasAnimId) {
+    stockCanvasAnimId = requestAnimationFrame(loop);
+  }
+}
+
+function startStockClocks() {
+  function update() {
+    const now = new Date();
+    // UTC
+    const utcStr = now.toUTCString().split(' ')[4] + ' UTC';
+    const clockUtc = document.getElementById('stock-clock-utc');
+    if (clockUtc) clockUtc.textContent = utcStr;
+
+    // EST
+    try {
+      const estStr = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: false });
+      const clockEst = document.getElementById('stock-clock-est');
+      if (clockEst) clockEst.textContent = estStr;
+    } catch(e) {
+      const clockEst = document.getElementById('stock-clock-est');
+      if (clockEst) clockEst.textContent = now.toTimeString().split(' ')[0];
+    }
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+function manualStockTickSync() {
+  const sp = document.getElementById('stock-refresh-spinner');
+  if (sp) sp.classList.add('animate-spin');
+  setTimeout(() => {
+    executeStockTick();
+    if (sp) sp.classList.remove('animate-spin');
+  }, 400);
+}
+
+// Initial on-load setup
+window.addEventListener('DOMContentLoaded', () => {
+  // Stock real-time engine
+  startStockClocks();
+  initializeStockStreams();
+  startStockCanvasAnimationLoop();
+  setInterval(executeStockTick, 1800);
+
+  // Metals init
+  if (typeof initTradingViewWidget !== 'undefined') {
+    initTradingViewWidget("OANDA:XAUUSD", "D");
+  }
+  if (typeof calculateMelt === 'function') calculateMelt();
+  if (typeof calculateRisk === 'function') calculateRisk();
+});
 </script>
 </body>
 </html>
