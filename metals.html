@@ -3,32 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gold & Silver Analysis & Chart Terminal | Precious Metals Intelligence</title>
+  <title>PRECIOUS METALS SETTLEMENT TERMINAL | Institutional Bullion Board & Multi-Asset Execution</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <script src="https://s3.tradingview.com/tv.js"></script>
   <style>
     body {
-      background-color: #07090e;
+      background-color: #020617;
       color: #f1f5f9;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
+    .font-mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
     .gold-gradient-text {
-      background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+      background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #b45309 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .silver-gradient-text {
-      background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 50%, #94a3b8 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     .gold-border-glow {
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      box-shadow: 0 0 20px rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.12);
     }
     .silver-border-glow {
-      border: 1px solid rgba(203, 213, 225, 0.3);
-      box-shadow: 0 0 20px rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(203, 213, 225, 0.35);
+      box-shadow: 0 0 25px rgba(148, 163, 184, 0.10);
     }
     .card-panel {
       background-color: #0b0f19;
@@ -36,7 +39,7 @@
       border-radius: 14px;
     }
     .metric-card {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.7) 0%, rgba(11, 15, 25, 0.9) 100%);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(11, 15, 25, 0.95) 100%);
       border: 1px solid #1e293b;
       border-radius: 12px;
     }
@@ -61,6 +64,23 @@
       color: #ef4444;
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
+
+    /* Price Tick Flash Keyframes */
+    @keyframes flashGreen {
+      0% { background-color: rgba(16, 185, 129, 0.40); color: #34d399; }
+      100% { background-color: transparent; }
+    }
+    @keyframes flashRed {
+      0% { background-color: rgba(239, 68, 68, 0.40); color: #f87171; }
+      100% { background-color: transparent; }
+    }
+    .tick-up {
+      animation: flashGreen 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .tick-down {
+      animation: flashRed 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
     /* Custom Slider */
     input[type=range] {
       -webkit-appearance: none;
@@ -78,11 +98,11 @@
       height: 18px;
       width: 18px;
       border-radius: 50%;
-      background: #f59e0b;
+      background: #d4af37;
       cursor: pointer;
       -webkit-appearance: none;
       margin-top: -6px;
-      box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
       border: 2px solid #0f172a;
     }
     .toast-popup {
@@ -96,33 +116,36 @@
     }
   </style>
 </head>
-<body class="p-3 md:p-6 antialiased min-h-screen">
+<body class="p-3 md:p-6 antialiased min-h-screen bg-[#020617] text-slate-100">
   <div class="max-w-7xl mx-auto space-y-6">
 
-    <!-- Top Master Navigation & Cross-Link Hub -->
+    <!-- TOP INSTITUTIONAL HEADER & NAVIGATION HUB -->
     <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
       <div class="flex items-center gap-3">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 flex items-center justify-center text-xl shadow-lg shadow-amber-500/20 font-black text-slate-950">
-          🪙
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-600 via-[#d4af37] to-yellow-200 flex items-center justify-center text-2xl shadow-lg shadow-amber-500/20 font-black text-slate-950">
+          ⚖
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">Gold & Silver Analysis & Chart Terminal</h1>
-            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">PRECIOUS METALS</span>
+            <h1 class="text-xl md:text-2xl font-black text-white tracking-tight">PRECIOUS METALS SETTLEMENT TERMINAL</h1>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-amber-500/15 text-[#d4af37] border border-[#d4af37]/40 tracking-wider">INSTITUTIONAL TIER</span>
           </div>
-          <p class="text-xs text-slate-400">Institutional OTC Spot Feed, Macro Correlation Engine & Bullion Melt Calculator</p>
+          <p class="text-xs text-slate-400">Institutional Dual-Tier Bullion Board • Multi-Asset Streamer • Physical Ready Delivery & GST Billing</p>
         </div>
       </div>
 
-      <!-- Navigation Links & Action Center -->
+      <!-- Navigation Links & System Action Center -->
       <div class="flex flex-wrap items-center gap-2">
         <a href="index.html" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 shadow flex items-center gap-2">
           <span>🚀</span> Small-Cap Stocks Scanner
         </a>
-        <button onclick="scrollToMelt()" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-amber-300 hover:from-amber-500/30 hover:to-yellow-500/30 border border-amber-500/40 shadow flex items-center gap-2">
-          <span>⚖</span> Melt & Position Sizer
+        <button onclick="scrollToGstBilling()" class="px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-all bg-gradient-to-r from-amber-500/20 to-yellow-500/20 text-[#d4af37] hover:from-amber-500/30 hover:to-yellow-500/30 border border-[#d4af37]/40 shadow flex items-center gap-2">
+          <span>🏛</span> GST Billing Engine
         </button>
-        <button onclick="refreshData()" title="Refresh Market Data" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-all">
+        <button onclick="scrollToMelt()" class="px-3.5 py-2 rounded-xl text-xs md:text-sm font-bold transition-all bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 flex items-center gap-1.5">
+          <span>⚖</span> Position Sizer
+        </button>
+        <button onclick="manualRefreshData()" title="Refresh Macro Feed" class="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition-all">
           <svg id="refresh-spinner" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
@@ -130,10 +153,173 @@
       </div>
     </header>
 
-    <!-- Metal Selector Tabs (Gold / Silver / GSR) -->
+    <!-- SECTION 2: INSTITUTIONAL DUAL-TIER BULLION RATE BOARD -->
+    <div class="card-panel p-5 md:p-6 border border-[#d4af37]/35 shadow-2xl relative overflow-hidden bg-[#0b0f19]">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800/90">
+        <div class="flex items-center gap-3">
+          <div class="w-3 h-8 bg-gradient-to-b from-[#d4af37] to-amber-600 rounded-sm"></div>
+          <div>
+            <div class="flex items-center gap-3">
+              <h2 class="text-base md:text-lg font-black text-white tracking-wide uppercase font-mono">INSTITUTIONAL BULLION BOARD</h2>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                MCX / OTC ACTIVE
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Dual-Tier Settlement Board: Allocated Physical Vault Ready Delivery vs Wholesale Benchmark Feed</p>
+          </div>
+        </div>
+
+        <!-- Clocks: UTC / Local and Drift Status -->
+        <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+          <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-slate-300 flex items-center gap-2">
+            <span class="text-slate-500">UTC:</span>
+            <span id="board-clock-utc" class="text-amber-300 font-bold">--:--:--</span>
+          </div>
+          <div class="bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-slate-300 flex items-center gap-2">
+            <span class="text-slate-500">LOCAL:</span>
+            <span id="board-clock-local" class="text-white font-bold">--:--:--</span>
+          </div>
+          <div class="bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-800 text-[11px] text-emerald-400 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span>ORDERBOOK TICKS: <b class="text-slate-200">1.8s</b></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUAL TABLES GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-5">
+        
+        <!-- TABLE 1: Physical Ready Delivery (Allocated Bullion) -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-3 bg-slate-950/70 p-4 rounded-xl border border-amber-500/25">
+          <div>
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <span class="text-[#d4af37] text-sm">🔒</span>
+                <h3 class="text-xs md:text-sm font-extrabold text-white tracking-wide uppercase">Physical Ready Delivery</h3>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 font-mono">ALLOCATED BULLION</span>
+            </div>
+
+            <div class="overflow-x-auto mt-2">
+              <table class="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr class="text-slate-400 text-[11px] border-b border-slate-800/80">
+                    <th class="py-2 font-bold uppercase">COMMODITY</th>
+                    <th class="py-2 text-right font-bold uppercase text-rose-300">ASK / SELLING (₹)</th>
+                    <th class="py-2 text-right font-bold uppercase text-emerald-300">BID / BUYING (₹)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/50">
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-3 font-bold text-white flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                      Gold Bar 999.9 (10g)
+                    </td>
+                    <td id="cell-phys-gold10-ask" class="py-3 text-right font-black text-rose-400 transition-colors duration-300">₹84,850.00</td>
+                    <td id="cell-phys-gold10-bid" class="py-3 text-right font-black text-emerald-400 transition-colors duration-300">₹83,670.00</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-3 font-bold text-white flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                      Silver Bar 999 (1 kg)
+                    </td>
+                    <td id="cell-phys-silv1k-ask" class="py-3 text-right font-black text-rose-400 transition-colors duration-300">₹98,420.00</td>
+                    <td id="cell-phys-silv1k-bid" class="py-3 text-right font-black text-emerald-400 transition-colors duration-300">₹95,900.00</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-3 font-bold text-white flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+                      Gold Bar 999.9 (Per Gram)
+                    </td>
+                    <td id="cell-phys-gold1g-ask" class="py-3 text-right font-black text-rose-400 transition-colors duration-300">₹8,495.00</td>
+                    <td id="cell-phys-gold1g-bid" class="py-3 text-right font-black text-emerald-400 transition-colors duration-300">₹8,370.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 italic">
+            Note: Reflects allocated vault delivery rates including standard refining, assaying, and physical carrying premiums.
+          </div>
+        </div>
+
+        <!-- TABLE 2: Wholesale Benchmark & Currency Feed -->
+        <div class="lg:col-span-7 flex flex-col justify-between space-y-3 bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+          <div>
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <span class="text-sky-400 text-sm">🌐</span>
+                <h3 class="text-xs md:text-sm font-extrabold text-white tracking-wide uppercase">Wholesale Benchmark & Currency Feed</h3>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20 font-mono">INTER-DEALER OTC</span>
+            </div>
+
+            <div class="overflow-x-auto mt-2">
+              <table class="w-full text-left text-xs font-mono">
+                <thead>
+                  <tr class="text-slate-400 text-[11px] border-b border-slate-800/80">
+                    <th class="py-2 font-bold uppercase">MARKET RATE</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-300">BID</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-300">ASK</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-400">HIGH</th>
+                    <th class="py-2 text-right font-bold uppercase text-slate-400">LOW</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/50">
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-2.5 font-bold text-amber-300">XAU/USD ($)</td>
+                    <td id="cell-ws-xau-bid" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">$2,748.15</td>
+                    <td id="cell-ws-xau-ask" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">$2,748.85</td>
+                    <td id="cell-ws-xau-high" class="py-2.5 text-right text-slate-400 font-medium">$2,756.40</td>
+                    <td id="cell-ws-xau-low" class="py-2.5 text-right text-slate-400 font-medium">$2,738.10</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-2.5 font-bold text-slate-300">XAG/USD ($)</td>
+                    <td id="cell-ws-xag-bid" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">$33.71</td>
+                    <td id="cell-ws-xag-ask" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">$33.79</td>
+                    <td id="cell-ws-xag-high" class="py-2.5 text-right text-slate-400 font-medium">$34.15</td>
+                    <td id="cell-ws-xag-low" class="py-2.5 text-right text-slate-400 font-medium">$33.40</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-2.5 font-bold text-sky-400">USD/INR</td>
+                    <td id="cell-ws-usdinr-bid" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">₹84.42</td>
+                    <td id="cell-ws-usdinr-ask" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">₹84.48</td>
+                    <td id="cell-ws-usdinr-high" class="py-2.5 text-right text-slate-400 font-medium">₹84.62</td>
+                    <td id="cell-ws-usdinr-low" class="py-2.5 text-right text-slate-400 font-medium">₹84.35</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-2.5 font-bold text-amber-200">Domestic Gold (10g / INR)</td>
+                    <td id="cell-ws-domgold-bid" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">₹79,180.00</td>
+                    <td id="cell-ws-domgold-ask" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">₹79,340.00</td>
+                    <td id="cell-ws-domgold-high" class="py-2.5 text-right text-slate-400 font-medium">₹79,620.00</td>
+                    <td id="cell-ws-domgold-low" class="py-2.5 text-right text-slate-400 font-medium">₹78,950.00</td>
+                  </tr>
+                  <tr class="hover:bg-slate-900/40 transition-colors">
+                    <td class="py-2.5 font-bold text-slate-200">Domestic Silver (1kg / INR)</td>
+                    <td id="cell-ws-domsilv-bid" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">₹91,720.00</td>
+                    <td id="cell-ws-domsilv-ask" class="py-2.5 text-right font-bold text-slate-200 transition-colors duration-300">₹92,100.00</td>
+                    <td id="cell-ws-domsilv-high" class="py-2.5 text-right text-slate-400 font-medium">₹92,600.00</td>
+                    <td id="cell-ws-domsilv-low" class="py-2.5 text-right text-slate-400 font-medium">₹91,200.00</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 italic">
+            Note: Displays wholesale OTC inter-dealer spot prices before physical delivery margins.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MACRO SELECTOR TABS & HERO TICKER BANNER -->
     <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-950/80 p-2 rounded-2xl border border-slate-800/80">
       <div class="flex items-center gap-2">
-        <button id="btn-metal-gold" onclick="selectMetal('gold')" class="px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-lg shadow-amber-500/10 flex items-center gap-2">
+        <button id="btn-metal-gold" onclick="selectMetal('gold')" class="px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/50 shadow-lg shadow-amber-500/10 flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
           Gold (XAU/USD)
         </button>
@@ -142,21 +328,21 @@
           Silver (XAG/USD)
         </button>
         <button id="btn-metal-gsr" onclick="selectMetal('gsr')" class="px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2">
-          <span>⚖</span> Gold/Silver Ratio (73.37:1)
+          <span>⚖</span> Gold/Silver Ratio (81.42:1)
         </button>
       </div>
 
       <div class="flex items-center gap-4 px-3 text-xs text-slate-400">
         <span class="flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span>OTC London / NY Fixing: <b class="text-white">Active</b></span>
+          <span>OTC London / NY Fixing: <b class="text-white">Active Continuous</b></span>
         </span>
         <span class="hidden md:inline text-slate-500">|</span>
-        <span class="hidden md:inline font-mono text-[11px] text-slate-400">Last Synced: <span id="sync-time">2026-10-17 21:17:40 UTC</span></span>
+        <span class="hidden md:inline font-mono text-[11px] text-slate-400">Feed Engine: <span id="sync-time" class="text-slate-300">REST & Brownian Synchronizer</span></span>
       </div>
     </div>
 
-    <!-- Active Asset Hero Ticker Banner (Matches Screenshots 1 & 2) -->
+    <!-- ACTIVE ASSET HERO TICKER BANNER -->
     <div class="card-panel p-5 md:p-6 gold-border-glow relative overflow-hidden transition-all duration-300" id="hero-banner">
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
         
@@ -167,39 +353,39 @@
           </div>
           <div>
             <div class="flex items-center gap-2.5 flex-wrap">
-              <span id="hero-ticker" class="text-2xl md:text-3xl font-black text-white tracking-tight">XAU/USD</span>
-              <span id="hero-type-badge" class="px-2.5 py-0.5 rounded text-[11px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">SPOT GOLD</span>
+              <span id="hero-ticker" class="text-2xl md:text-3xl font-black text-white tracking-tight font-mono">XAU/USD</span>
+              <span id="hero-type-badge" class="px-2.5 py-0.5 rounded text-[11px] font-extrabold bg-amber-500/20 text-[#d4af37] border border-amber-500/30 uppercase tracking-wider">SPOT GOLD</span>
               <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[11px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                 LIVE FEED
               </span>
             </div>
-            <p id="hero-subline" class="text-xs text-slate-400 mt-1 font-medium">Gold Bullion Spot (troy oz) • NY / London OTC • Fine .9999</p>
+            <p id="hero-subline" class="text-xs text-slate-400 mt-1 font-medium">Fine Bullion Spot (.9999) • OTC Inter-dealer Liquidity Hub • Troy Ounce</p>
           </div>
         </div>
 
         <!-- Center: Big Price Display -->
         <div class="flex flex-col sm:flex-row sm:items-baseline gap-3">
           <div id="hero-price" class="text-4xl md:text-5xl font-black text-white font-mono tracking-tight">
-            $4,181.10
+            $2,748.50
           </div>
           <div id="hero-change" class="flex items-center text-sm md:text-base font-extrabold font-mono text-emerald-400">
-            <span class="text-lg mr-1">▲</span> +$11.00 (+0.26%)
+            <span class="text-lg mr-1">▲</span> +$9.80 (+0.36%)
           </div>
         </div>
 
         <!-- Right: 24h High / Low Visual Range Bar -->
         <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 min-w-[280px]">
           <div class="flex justify-between text-xs font-mono mb-1.5 text-slate-300">
-            <span>24h L: <b id="range-low" class="text-white">$4,167.50</b></span>
-            <span>24h H: <b id="range-high" class="text-white">$4,220.40</b></span>
+            <span>24h L: <b id="range-low" class="text-white">$2,738.10</b></span>
+            <span>24h H: <b id="range-high" class="text-white">$2,756.40</b></span>
           </div>
           <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden p-0.5 relative">
-            <div id="range-progress" class="bg-gradient-to-r from-emerald-500 via-yellow-400 to-amber-500 h-1.5 rounded-full transition-all duration-500" style="width: 72%;"></div>
+            <div id="range-progress" class="bg-gradient-to-r from-emerald-500 via-yellow-400 to-[#d4af37] h-1.5 rounded-full transition-all duration-500" style="width: 68%;"></div>
           </div>
-          <div class="flex justify-between text-[10px] text-slate-500 mt-1.5">
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1.5 font-mono">
             <span>Daily Low</span>
-            <span id="range-pos-pct" class="font-bold text-amber-400">In Upper Range (72%)</span>
+            <span id="range-pos-pct" class="font-bold text-amber-400">Upper Quartile (68%)</span>
             <span>Daily High</span>
           </div>
         </div>
@@ -207,74 +393,116 @@
       </div>
     </div>
 
-    <!-- MAIN TWO-COLUMN SECTION: Charts & Technical Engine (Left) + Sentiment & Pivots (Right) -->
+    <!-- SECTION 3: MULTI-ASSET LIVE STREAMING CANVAS CHART & WORKBENCH -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       <!-- LEFT: Chart Workbench (8 Cols) -->
       <div class="lg:col-span-8 space-y-4">
         <div class="card-panel p-4 md:p-5 flex flex-col space-y-4">
           
-          <!-- Chart Header Toolbar (Matches Screenshots 2 & 3) -->
-          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
-            <div class="flex items-center gap-2">
-              <span class="text-sm font-bold text-white flex items-center gap-1.5">
-                <span class="text-amber-400">📊</span> Execution Chart:
-              </span>
-              <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800">
-                <button id="chart-mode-tv" onclick="setChartMode('tv')" class="px-3 py-1 text-xs font-bold rounded bg-slate-800 text-white shadow">
-                  TradingView Pro
-                </button>
-                <button id="chart-mode-custom" onclick="setChartMode('custom')" class="px-3 py-1 text-xs font-bold rounded text-slate-400 hover:text-white">
-                  Technical Engine & Overlays
-                </button>
+          <!-- Chart Header Toolbar & Streamer Asset Tabs -->
+          <div class="flex flex-col space-y-3 pb-3 border-b border-slate-800/80">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-black text-white flex items-center gap-1.5">
+                  <span class="text-[#d4af37]">📈</span> EXECUTION CHART:
+                </span>
+                <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-mono">
+                  <button id="chart-mode-streamer" onclick="setChartMode('streamer')" class="px-3 py-1 font-bold rounded bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/40 shadow">
+                    Live Tick Streamer
+                  </button>
+                  <button id="chart-mode-tv" onclick="setChartMode('tv')" class="px-3 py-1 font-bold rounded text-slate-400 hover:text-white">
+                    TradingView Pro
+                  </button>
+                </div>
+              </div>
+
+              <!-- Indicators Legend -->
+              <div class="flex items-center gap-3 text-[11px] font-mono text-slate-400 bg-slate-950 px-3 py-1 rounded-lg border border-slate-800">
+                <span class="flex items-center gap-1">
+                  <span class="w-2.5 h-0.5 bg-sky-400 rounded-full"></span> Fast MA (9)
+                </span>
+                <span class="flex items-center gap-1">
+                  <span class="w-2.5 h-0.5 bg-amber-400 rounded-full"></span> Slow MA (21)
+                </span>
+                <span class="flex items-center gap-1 text-emerald-400 font-bold">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 50-60 Ticks
+                </span>
               </div>
             </div>
 
-            <!-- Timeframe Pills -->
-            <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs font-mono">
-              <button onclick="setTvInterval('1')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white">1m</button>
-              <button onclick="setTvInterval('5')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white">5m</button>
-              <button onclick="setTvInterval('30')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white">30m</button>
-              <button onclick="setTvInterval('60')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white">1h</button>
-              <button onclick="setTvInterval('D')" class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">D</button>
-              <button onclick="setTvInterval('W')" class="px-2 py-0.5 rounded text-slate-400 hover:text-white">W</button>
+            <!-- Asset Tabs: Gold Group & Silver Group -->
+            <div class="flex flex-wrap items-center gap-2 pt-1 font-mono text-xs">
+              <span class="text-[11px] font-black text-[#d4af37] uppercase tracking-wider pr-1">GOLD:</span>
+              <button id="tab-asset-gold10g" onclick="selectStreamAsset('gold10g')" class="px-3 py-1.5 rounded-lg font-bold bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/50 shadow transition-all">
+                Gold 24K (10g)
+              </button>
+              <button id="tab-asset-gold22k" onclick="selectStreamAsset('gold22k')" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-900 border border-slate-800 transition-all">
+                Gold 22K (8g Sovereign)
+              </button>
+              <button id="tab-asset-xau" onclick="selectStreamAsset('xau')" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-900 border border-slate-800 transition-all">
+                XAU/USD ($)
+              </button>
+
+              <span class="text-slate-600 px-1">|</span>
+
+              <span class="text-[11px] font-black text-slate-300 uppercase tracking-wider pr-1">SILVER:</span>
+              <button id="tab-asset-silver1kg" onclick="selectStreamAsset('silver1kg')" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-900 border border-slate-800 transition-all">
+                Silver 1kg
+              </button>
+              <button id="tab-asset-silver10g" onclick="selectStreamAsset('silver10g')" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-900 border border-slate-800 transition-all">
+                Silver 10g
+              </button>
+              <button id="tab-asset-xag" onclick="selectStreamAsset('xag')" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-900 border border-slate-800 transition-all">
+                XAG/USD ($)
+              </button>
             </div>
           </div>
 
-          <!-- TradingView Container -->
-          <div id="tv-chart-wrapper" class="w-full h-[520px] rounded-xl overflow-hidden bg-slate-950 relative">
+          <!-- HTML5 CANVAS STREAMER CONTAINER -->
+          <div id="streamer-chart-wrapper" class="w-full flex flex-col space-y-2">
+            <!-- Active Streamer Live HUD -->
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-950/90 px-4 py-2.5 rounded-xl border border-slate-800/80 font-mono">
+              <div class="flex items-center gap-3">
+                <span id="hud-asset-name" class="font-black text-white text-sm">Gold 24K (10g)</span>
+                <span id="hud-asset-price" class="text-xl md:text-2xl font-black text-white">₹83,850.00</span>
+                <span id="hud-asset-change" class="text-xs font-bold text-emerald-400">▲ +₹120.00 (+0.14%)</span>
+              </div>
+              <div class="flex items-center gap-4 text-xs">
+                <div>Fast MA (9): <b id="hud-ma-fast" class="text-sky-400 font-bold">₹83,810.00</b></div>
+                <div>Slow MA (21): <b id="hud-ma-slow" class="text-amber-400 font-bold">₹83,745.00</b></div>
+                <div class="hidden sm:block text-slate-400">Ticks: <b id="hud-tick-count" class="text-slate-200">54</b>/60</div>
+              </div>
+            </div>
+
+            <!-- Canvas Element -->
+            <div class="w-full h-[450px] bg-slate-950 rounded-xl overflow-hidden relative border border-slate-800/80">
+              <canvas id="streamerCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+            </div>
+          </div>
+
+          <!-- TradingView Container (Alternative Pro View) -->
+          <div id="tv-chart-wrapper" class="w-full h-[510px] rounded-xl overflow-hidden bg-slate-950 relative hidden border border-slate-800/80">
             <div id="tradingview_gold_widget" class="w-full h-full"></div>
           </div>
 
-          <!-- Secondary Custom Engine Container (Hidden by default) -->
-          <div id="custom-chart-wrapper" class="w-full h-[520px] rounded-xl overflow-hidden bg-slate-950 p-4 hidden flex-col justify-between">
-            <div class="flex items-center justify-between text-xs text-slate-400">
-              <span class="font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span> 60-Day Technical Engine & Volume Profile
-              </span>
-              <span class="font-mono">MA20 (Sky) • MA50 (Gold) • EMA200 (Emerald)</span>
-            </div>
-            <!-- Canvas Candlestick & Volume Visualizer -->
-            <canvas id="customCanvas" class="w-full h-[450px]"></canvas>
-          </div>
-
-          <!-- Bottom Status Footer Bar (Matches Screenshot 2) -->
+          <!-- Bottom Status Footer Bar -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-slate-800/80 text-xs text-slate-300 font-mono">
             <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800/60">
-              <span class="text-slate-500 block text-[10px]">ATR (14)</span>
-              <span id="footer-atr" class="font-bold text-white">$72.99</span>
+              <span class="text-slate-500 block text-[10px]">Rolling Window Range</span>
+              <span id="footer-range" class="font-bold text-white">₹83,620 - ₹83,980</span>
             </div>
             <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800/60">
-              <span class="text-slate-500 block text-[10px]">Daily Est. Vol</span>
-              <span id="footer-vol" class="font-bold text-white">18.2K Lots</span>
+              <span class="text-slate-500 block text-[10px]">Canvas Engine</span>
+              <span class="font-bold text-[#d4af37]">Bézier & MA(9/21)</span>
             </div>
             <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800/60">
-              <span class="text-slate-500 block text-[10px]">Active Session</span>
-              <span class="font-bold text-emerald-400">London / NY Overlap</span>
+              <span class="text-slate-500 block text-[10px]">Tick Mechanism</span>
+              <span class="font-bold text-emerald-400">Brownian ±0.02%</span>
             </div>
             <div class="bg-slate-950/80 p-2 rounded-lg border border-slate-800/60">
-              <span class="text-slate-500 block text-[10px]">Bid / Ask (Spread)</span>
-              <span id="footer-spread" class="font-bold text-slate-200">$4180.90 / $4181.30 (0.40)</span>
+              <span class="text-slate-500 block text-[10px]">Bid / Ask Physical Spread</span>
+              <span id="footer-spread" class="font-bold text-slate-200">Allocated Fine Bullion</span>
             </div>
           </div>
 
@@ -284,7 +512,7 @@
       <!-- RIGHT: Technical Sentiment Summary & Pivot Points (4 Cols) -->
       <div class="lg:col-span-4 space-y-4">
         
-        <!-- CARD 1: Technical Sentiment Gauge (Matches Screenshot 3) -->
+        <!-- CARD 1: Technical Sentiment Gauge -->
         <div class="card-panel p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -299,94 +527,81 @@
           <!-- Semicircular Speedometer Arc with Needle -->
           <div class="flex flex-col items-center justify-center pt-2 relative">
             <svg viewBox="0 0 200 115" class="w-64 h-36">
-              <!-- Background Arc segments: Strong Sell (Red), Sell (Orange), Neutral (Yellow), Buy (Lime), Strong Buy (Green) -->
               <path d="M 20 100 A 80 80 0 0 1 52 43" fill="none" stroke="#ef4444" stroke-width="16" stroke-linecap="round" />
               <path d="M 54 41 A 80 80 0 0 1 95 20" fill="none" stroke="#f97316" stroke-width="16" />
               <path d="M 98 20 A 80 80 0 0 1 105 20" fill="none" stroke="#eab308" stroke-width="16" />
               <path d="M 108 20 A 80 80 0 0 1 146 41" fill="none" stroke="#84cc16" stroke-width="16" />
               <path d="M 148 43 A 80 80 0 0 1 180 100" fill="none" stroke="#10b981" stroke-width="16" stroke-linecap="round" />
 
-              <!-- Center Hub -->
               <circle cx="100" cy="100" r="8" fill="#f8fafc" />
               <circle cx="100" cy="100" r="4" fill="#0f172a" />
 
-              <!-- Needle (angle 0 is left/Strong Sell, 90 is up/Neutral, 180 is right/Strong Buy) -->
-              <!-- For Gold, needle at ~148deg (Strong Buy) -->
               <g id="speedometer-needle" style="transform-origin: 100px 100px; transform: rotate(58deg); transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);">
                 <polygon points="98,100 102,100 100,26" fill="#f8fafc" />
               </g>
             </svg>
 
-            <!-- Text labels under arc -->
             <div class="flex justify-between w-full max-w-[240px] text-[10px] font-bold text-slate-400 -mt-2">
               <span class="text-rose-500">Strong Sell</span>
               <span class="text-amber-400">Neutral</span>
               <span class="text-emerald-400">Strong Buy</span>
             </div>
 
-            <!-- Breakdown Counters (Matches Screenshot 3) -->
-            <div class="grid grid-cols-3 gap-2 w-full mt-4 text-center">
+            <div class="grid grid-cols-3 gap-2 w-full mt-4 text-center font-mono">
               <div class="bg-slate-950/80 p-2 rounded-xl border border-rose-500/20">
                 <div class="text-[10px] font-bold text-slate-400 uppercase">Sell</div>
-                <div id="count-sell" class="text-lg font-black text-rose-500 font-mono">3</div>
+                <div id="count-sell" class="text-lg font-black text-rose-500">2</div>
               </div>
               <div class="bg-slate-950/80 p-2 rounded-xl border border-amber-500/20">
                 <div class="text-[10px] font-bold text-slate-400 uppercase">Neutral</div>
-                <div id="count-neutral" class="text-lg font-black text-amber-400 font-mono">5</div>
+                <div id="count-neutral" class="text-lg font-black text-amber-400">4</div>
               </div>
               <div class="bg-slate-950/80 p-2 rounded-xl border border-emerald-500/20">
                 <div class="text-[10px] font-bold text-slate-400 uppercase">Buy</div>
-                <div id="count-buy" class="text-lg font-black text-emerald-400 font-mono">16</div>
+                <div id="count-buy" class="text-lg font-black text-emerald-400">18</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- CARD 2: Key Pivot Points & Levels (Matches Screenshots 2 & 3) -->
+        <!-- CARD 2: Key Pivot Points & Levels -->
         <div class="card-panel p-5 space-y-3">
           <div class="flex items-center justify-between pb-2 border-b border-slate-800">
             <div class="flex items-center gap-2">
-              <span class="text-amber-400">⚡</span>
+              <span class="text-[#d4af37]">⚡</span>
               <h3 class="text-sm font-bold text-white">Key Pivot Points & Levels</h3>
             </div>
-            <span class="text-[11px] text-slate-400 font-medium">Standard Daily</span>
+            <span class="text-[11px] text-slate-400 font-mono">Standard Daily</span>
           </div>
 
           <div class="space-y-1.5 font-mono text-xs">
-            <!-- Resistance 3 -->
             <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/60">
               <span class="text-rose-400 font-bold">Resistance R3</span>
-              <span id="pivot-r3" class="font-extrabold text-white">$4,281.70</span>
+              <span id="pivot-r3" class="font-extrabold text-white">$2,785.50</span>
             </div>
-            <!-- Resistance 2 -->
             <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/60">
               <span class="text-rose-400 font-bold">Resistance R2</span>
-              <span id="pivot-r2" class="font-extrabold text-white">$4,239.70</span>
+              <span id="pivot-r2" class="font-extrabold text-white">$2,768.20</span>
             </div>
-            <!-- Resistance 1 -->
             <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/60">
               <span class="text-rose-300 font-bold">Resistance R1</span>
-              <span id="pivot-r1" class="font-extrabold text-white">$4,204.90</span>
+              <span id="pivot-r1" class="font-extrabold text-white">$2,756.40</span>
             </div>
-            <!-- PIVOT POINT (P) Highlighted (Screenshot match) -->
-            <div class="flex items-center justify-between p-2.5 rounded-lg bg-amber-500/20 border-2 border-amber-500/60 shadow-lg shadow-amber-500/10">
-              <span class="text-amber-300 font-black tracking-wider uppercase">PIVOT POINT (P)</span>
-              <span id="pivot-p" class="font-black text-amber-300 text-sm">$4,162.90</span>
+            <div class="flex items-center justify-between p-2.5 rounded-lg bg-[#d4af37]/20 border-2 border-[#d4af37]/60 shadow-lg shadow-amber-500/10">
+              <span class="text-[#d4af37] font-black tracking-wider uppercase">PIVOT POINT (P)</span>
+              <span id="pivot-p" class="font-black text-[#d4af37] text-sm">$2,745.00</span>
             </div>
-            <!-- Support 1 -->
             <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/60">
               <span class="text-emerald-400 font-bold">Support S1</span>
-              <span id="pivot-s1" class="font-extrabold text-white">$4,128.10</span>
+              <span id="pivot-s1" class="font-extrabold text-white">$2,735.20</span>
             </div>
-            <!-- Support 2 -->
             <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/60">
               <span class="text-emerald-400 font-bold">Support S2</span>
-              <span id="pivot-s2" class="font-extrabold text-white">$4,086.10</span>
+              <span id="pivot-s2" class="font-extrabold text-white">$2,722.80</span>
             </div>
-            <!-- Support 3 -->
             <div class="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-slate-800/60">
               <span class="text-emerald-500 font-bold">Support S3</span>
-              <span id="pivot-s3" class="font-extrabold text-white">$4,051.30</span>
+              <span id="pivot-s3" class="font-extrabold text-white">$2,708.50</span>
             </div>
           </div>
         </div>
@@ -395,7 +610,7 @@
 
     </div>
 
-    <!-- LOWER SECTION: Macro Drivers & Intermarket Correlation (Matches Screenshot 2) + Technical Matrix (Matches Screenshot 1) -->
+    <!-- LOWER SECTION: Macro Drivers & Intermarket Correlation + Technical Indicator Matrix -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       <!-- LEFT: Macro Drivers (6 Cols) -->
@@ -405,91 +620,78 @@
             <span class="text-lg">🌐</span>
             <h3 class="text-sm font-bold text-white">Macro Drivers & Intermarket Correlation</h3>
           </div>
-          <span class="text-xs text-amber-400 font-semibold" id="macro-asset-subtext">XAU Sensitivity</span>
+          <span class="text-xs text-[#d4af37] font-semibold" id="macro-asset-subtext">XAU Sensitivity</span>
         </div>
 
-        <!-- 4 Grid Tiles (Matches Screenshot 2) -->
+        <!-- 4 Grid Tiles -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          
-          <!-- Tile 1: US Dollar Index -->
           <div class="metric-card p-4 space-y-1">
             <div class="text-[11px] font-bold text-slate-400 uppercase">US Dollar Index (DXY)</div>
             <div class="flex items-baseline gap-2">
-              <span class="text-xl font-black text-white font-mono">101.84</span>
-              <span class="text-xs font-bold text-rose-400 font-mono">-0.16%</span>
+              <span class="text-xl font-black text-white font-mono">103.45</span>
+              <span class="text-xs font-bold text-rose-400 font-mono">-0.22%</span>
             </div>
             <div class="flex justify-between items-center text-[11px] pt-1 border-t border-slate-800/60">
-              <span class="text-slate-400">Correlation: <b class="text-rose-400 font-mono">-0.82</b></span>
+              <span class="text-slate-400">Correlation: <b class="text-rose-400 font-mono">-0.84</b></span>
               <span class="text-emerald-400 font-bold">Bullish Tailwinds</span>
             </div>
           </div>
 
-          <!-- Tile 2: 10Y Real Yield -->
           <div class="metric-card p-4 space-y-1">
             <div class="text-[11px] font-bold text-slate-400 uppercase">US 10Y Real Yield (TIPS)</div>
             <div class="flex items-baseline gap-2">
-              <span class="text-xl font-black text-white font-mono">2.75%</span>
-              <span class="text-xs font-bold text-emerald-400 font-mono">0.9 bps</span>
+              <span class="text-xl font-black text-white font-mono">1.82%</span>
+              <span class="text-xs font-bold text-emerald-400 font-mono">-1.8 bps</span>
             </div>
             <div class="flex justify-between items-center text-[11px] pt-1 border-t border-slate-800/60">
               <span class="text-slate-400">Opp. Cost: <b class="text-emerald-400">Declining</b></span>
-              <span class="text-emerald-400 font-bold">Positive for Gold</span>
+              <span class="text-emerald-400 font-bold">Positive for Bullion</span>
             </div>
           </div>
 
-          <!-- Tile 3: Central Bank Reserve Buying -->
           <div class="metric-card p-4 space-y-1">
-            <div class="text-[11px] font-bold text-slate-400 uppercase">CB Net Reserve Buying</div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase">CB Net Reserve Accumulation</div>
             <div class="flex items-baseline gap-2">
-              <span class="text-xl font-black text-white font-mono">1,037 T/yr</span>
-              <span class="text-xs font-bold text-emerald-400 font-mono">+14% YoY</span>
+              <span class="text-xl font-black text-white font-mono">1,120 T/yr</span>
+              <span class="text-xs font-bold text-emerald-400 font-mono">+18% YoY</span>
             </div>
             <div class="flex justify-between items-center text-[11px] pt-1 border-t border-slate-800/60">
-              <span class="text-slate-400">PBoC / RBI Sovereign: <b class="text-amber-400">High</b></span>
+              <span class="text-slate-400">Sovereign Buying: <b class="text-[#d4af37]">High</b></span>
               <span class="text-emerald-400 font-bold">Floor Support</span>
             </div>
           </div>
 
-          <!-- Tile 4: Geopolitical Safe-Haven Risk -->
           <div class="metric-card p-4 space-y-1">
-            <div class="text-[11px] font-bold text-slate-400 uppercase">Geopolitical Safe-Haven Risk</div>
+            <div class="text-[11px] font-bold text-slate-400 uppercase">Safe-Haven Risk Premium</div>
             <div class="flex items-baseline gap-2">
-              <span class="text-xl font-black text-amber-400 font-mono">Elevated (148.2)</span>
-              <span class="text-xs font-bold text-amber-400 font-mono">+4.2 pts</span>
+              <span class="text-xl font-black text-amber-400 font-mono">Elevated (152.4)</span>
+              <span class="text-xs font-bold text-amber-400 font-mono">+3.8 pts</span>
             </div>
             <div class="flex justify-between items-center text-[11px] pt-1 border-t border-slate-800/60">
-              <span class="text-slate-400">Safe-Haven Premium: <b class="text-amber-300">~$120/oz</b></span>
-              <span class="text-emerald-400 font-bold">Strong Hedge</span>
+              <span class="text-slate-400">Hedging Premium: <b class="text-[#d4af37]">~$145/oz</b></span>
+              <span class="text-emerald-400 font-bold">Strong Allocation</span>
             </div>
           </div>
-
         </div>
 
-        <!-- Key Catalyst Wire (Matches Screenshot 1) -->
+        <!-- Key Catalyst Wire -->
         <div class="pt-3 border-t border-slate-800 space-y-2.5">
           <div class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <span class="text-amber-400">⚡</span> Key Catalyst Wire:
+            <span class="text-[#d4af37]">⚡</span> Key Macro Catalyst Wire:
           </div>
           <div class="space-y-2">
             <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 flex items-start gap-3">
-              <span class="px-2 py-0.5 rounded text-[10px] font-black bg-rose-500/20 text-rose-400 border border-rose-500/30">HIGH</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-black bg-rose-500/20 text-rose-400 border border-rose-500/30 font-mono">HIGH</span>
               <div class="space-y-0.5 flex-1">
-                <p class="text-xs font-semibold text-slate-200">Fed signals potential policy rate easing cadence amid slowing PCE metrics.</p>
-                <div class="text-[10px] text-slate-500">14 mins ago • Macro Monetary</div>
+                <p class="text-xs font-semibold text-slate-200">Sovereign Reserve banks maintain record bullion accumulation cadence through physical delivery vaults.</p>
+                <div class="text-[10px] text-slate-500">18 mins ago • Institutional Allocation</div>
               </div>
             </div>
             <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 flex items-start gap-3">
-              <span class="px-2 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30">MED</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-black bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono">MED</span>
               <div class="space-y-0.5 flex-1">
-                <p class="text-xs font-semibold text-slate-200">World Gold Council reports ETF inflows reversed to net positive +32.4 metric tons.</p>
-                <div class="text-[10px] text-slate-500">1 hour ago • Physical & ETF Flow</div>
-              </div>
-            </div>
-            <div class="bg-slate-950/70 p-3 rounded-xl border border-slate-800 flex items-start gap-3">
-              <span class="px-2 py-0.5 rounded text-[10px] font-black bg-sky-500/20 text-sky-400 border border-sky-500/30">MED</span>
-              <div class="space-y-0.5 flex-1">
-                <p class="text-xs font-semibold text-slate-200">Silver industrial solar photovoltaic (PV) and EV electronics demand jumps to record 190M oz annual run-rate.</p>
-                <div class="text-[10px] text-slate-500">3 hours ago • Industrial & Clean Tech</div>
+                <p class="text-xs font-semibold text-slate-200">Wholesale bullion refiners note tight prompt delivery spreads for allocated 999.9 gold bars.</p>
+                <div class="text-[10px] text-slate-500">1 hour ago • Vault Delivery Flow</div>
               </div>
             </div>
           </div>
@@ -497,14 +699,14 @@
 
       </div>
 
-      <!-- RIGHT: Technical Indicator Matrix (6 Cols, Matches Screenshots 1 & 2) -->
+      <!-- RIGHT: Technical Indicator Matrix (6 Cols) -->
       <div class="lg:col-span-6 card-panel p-5 space-y-4">
         <div class="flex items-center justify-between pb-3 border-b border-slate-800">
           <div class="flex items-center gap-2">
             <span class="text-lg">📋</span>
             <h3 class="text-sm font-bold text-white">Technical Indicator Matrix</h3>
           </div>
-          <span class="text-xs text-slate-400 font-medium">Daily / 4H Consensus</span>
+          <span class="text-xs text-slate-400 font-mono">Daily / 4H Consensus</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -520,59 +722,59 @@
             <tbody id="matrix-tbody" class="divide-y divide-slate-800/60">
               <tr>
                 <td class="py-2.5 font-bold text-white">RSI (14)</td>
-                <td id="matrix-rsi-val" class="py-2.5 text-slate-200">51.54</td>
+                <td id="matrix-rsi-val" class="py-2.5 text-slate-200">58.42</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-extrabold indicator-badge-buy">BUY</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Bullish momentum, room below 70 overbought</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Healthy constructive momentum without overbought stretch</td>
               </tr>
               <tr>
                 <td class="py-2.5 font-bold text-white">MACD (12, 26)</td>
-                <td id="matrix-macd-val" class="py-2.5 text-slate-200">+3.15</td>
+                <td id="matrix-macd-val" class="py-2.5 text-slate-200">+4.18</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-black indicator-badge-strongbuy">STRONG BUY</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Histogram expanding above zero line</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Positive divergence above signal baseline</td>
               </tr>
               <tr>
                 <td class="py-2.5 font-bold text-white">Stochastic (14, 3, 3)</td>
-                <td id="matrix-stoch-val" class="py-2.5 text-slate-200">31.72</td>
+                <td id="matrix-stoch-val" class="py-2.5 text-slate-200">42.10</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-bold indicator-badge-neutral">NEUTRAL</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Approaching upper boundary threshold</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Mean-reversion midpoint consolidation</td>
               </tr>
               <tr>
                 <td class="py-2.5 font-bold text-white">SMA 20</td>
-                <td id="matrix-sma20-val" class="py-2.5 text-slate-200">$4,214.11</td>
+                <td id="matrix-sma20-val" class="py-2.5 text-slate-200">$2,732.10</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-extrabold indicator-badge-buy">BUY</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Spot trading above 20-day mean</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Spot trading firmly above 20-day trend mean</td>
               </tr>
               <tr>
                 <td class="py-2.5 font-bold text-white">SMA 50</td>
-                <td id="matrix-sma50-val" class="py-2.5 text-slate-200">$4,374.41</td>
+                <td id="matrix-sma50-val" class="py-2.5 text-slate-200">$2,685.40</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-extrabold indicator-badge-buy">BUY</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Golden posture, upward slope intact</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Golden posture, upward sloping support</td>
               </tr>
               <tr>
                 <td class="py-2.5 font-bold text-white">EMA 200</td>
-                <td id="matrix-ema200-val" class="py-2.5 text-slate-200">$4,484.81</td>
+                <td id="matrix-ema200-val" class="py-2.5 text-slate-200">$2,540.80</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-black indicator-badge-strongbuy">STRONG BUY</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Primary multi-year bull structural trend</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Macro multi-cycle secular bull structural trajectory</td>
               </tr>
               <tr>
                 <td class="py-2.5 font-bold text-white">Bollinger Bands (20, 2)</td>
-                <td id="matrix-bb-val" class="py-2.5 text-slate-200">Upper: $4,373.24</td>
+                <td id="matrix-bb-val" class="py-2.5 text-slate-200">Upper: $2,772.40</td>
                 <td class="py-2.5">
                   <span class="px-2 py-0.5 rounded text-[10px] font-bold indicator-badge-neutral">HOLD</span>
                 </td>
-                <td class="py-2.5 text-slate-400 text-[11px]">Band expansion indicates sustained volatility</td>
+                <td class="py-2.5 text-slate-400 text-[11px]">Volatility envelope expanding sustainably</td>
               </tr>
             </tbody>
           </table>
@@ -581,49 +783,180 @@
 
     </div>
 
-    <!-- BOTTOM MEGA-MODULE: Physical Bullion & Trading Sizing Terminal (Matches Screenshot 1) -->
-    <div id="melt-terminal" class="card-panel p-6 space-y-6 scroll-mt-6 border-amber-500/30">
+    <!-- SECTION 4: PHYSICAL BULLION & 3% GST BILLING ENGINE + SIZING TERMINAL -->
+    <div id="gst-billing-terminal" class="card-panel p-6 space-y-6 scroll-mt-6 border-[#d4af37]/35 shadow-2xl">
       
       <!-- Module Header & Tab Switcher -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl">
-            🧮
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/40 flex items-center justify-center text-xl">
+            🏛
           </div>
           <div>
-            <h2 class="text-lg md:text-xl font-black text-white">Physical Bullion & Trading Sizing Terminal</h2>
-            <p class="text-xs text-slate-400">Calculate melt values across karat purities or compute leveraged risk/reward position sizes</p>
+            <h2 class="text-lg md:text-xl font-black text-white font-mono">PHYSICAL BULLION & 3% GST BILLING ENGINE</h2>
+            <p class="text-xs text-slate-400">Institutional settlement calculator: Net Bullion Value, CGST (1.5%), SGST (1.5%) & Total Invoice Amount</p>
           </div>
         </div>
 
-        <!-- Mode Buttons (Matches Screenshot 1) -->
-        <div class="flex items-center gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800">
-          <button id="sizer-tab-melt" onclick="setSizerTab('melt')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow flex items-center gap-1.5">
-            <span>⚖</span> Physical Melt & Weight
+        <!-- Mode Buttons -->
+        <div class="flex items-center gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800 font-mono text-xs">
+          <button id="sizer-tab-gst" onclick="setTerminalTab('gst')" class="px-4 py-2 rounded-lg font-bold transition-all bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/40 shadow flex items-center gap-1.5">
+            <span>🏛</span> 3% GST Billing Engine
           </button>
-          <button id="sizer-tab-risk" onclick="setSizerTab('risk')" class="px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5">
+          <button id="sizer-tab-melt" onclick="setTerminalTab('melt')" class="px-4 py-2 rounded-lg font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5">
+            <span>⚖</span> Physical Melt Sizer
+          </button>
+          <button id="sizer-tab-risk" onclick="setTerminalTab('risk')" class="px-4 py-2 rounded-lg font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5">
             <span>🎯</span> Trade Risk & Sizer
           </button>
         </div>
       </div>
 
-      <!-- VIEW 1: Physical Bullion Melt Calculator (Matches Screenshot 1) -->
-      <div id="sizer-view-melt" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- TAB 1: 3% GST BILLING ENGINE (PRIMARY) -->
+      <div id="view-gst-billing" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <!-- Left: Input Controls (7 Cols) -->
+        <!-- Left: Order Parameters & Controls (7 Cols) -->
         <div class="lg:col-span-7 space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            <!-- Weight Quantity -->
+            <!-- Metal Selector -->
             <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1.5">Weight Quantity</label>
-              <input type="number" id="melt-weight-input" value="100" min="0.1" step="any" oninput="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-amber-400 focus:outline-none transition-all">
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Metal Commodity Selector</label>
+              <select id="gst-metal-select" onchange="calculateGstInvoice()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-xs focus:border-[#d4af37] focus:outline-none transition-all cursor-pointer">
+                <option value="gold24k" selected>Gold 24K (999.9 Fine Vault Ready)</option>
+                <option value="gold22k">Gold 22K (916 Standard Sovereign / Crown)</option>
+                <option value="silver999">Silver 999 (Pure Fine Bullion Bar)</option>
+              </select>
             </div>
 
-            <!-- Weight Unit -->
+            <!-- Unit Selector -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Settlement Unit Selector</label>
+              <select id="gst-unit-select" onchange="calculateGstInvoice()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-xs focus:border-[#d4af37] focus:outline-none transition-all cursor-pointer">
+                <option value="g" selected>Grams (g)</option>
+                <option value="sov">Sovereigns / 8g (8.00g)</option>
+                <option value="tola">Tolas / 11.66g (11.6638g)</option>
+                <option value="kg">Kilograms (kg)</option>
+              </select>
+            </div>
+
+            <!-- Numeric Weight / Quantity -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Weight / Quantity</label>
+              <input type="number" id="gst-qty-input" value="10" min="0.01" step="any" oninput="calculateGstInvoice()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-[#d4af37] focus:outline-none transition-all">
+            </div>
+
+            <!-- Benchmark Rate Preview -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Effective Rate / Gram (Excl. Tax)</label>
+              <div class="relative">
+                <input type="text" id="gst-rate-display" value="₹8,485.00 / g" readonly class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-3 text-[#d4af37] font-mono font-bold focus:outline-none cursor-not-allowed">
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Quick Presets -->
+          <div class="pt-2">
+            <span class="text-[11px] font-bold text-slate-400 block mb-2 font-mono uppercase">Institutional Delivery Presets:</span>
+            <div class="flex flex-wrap gap-2 text-xs font-mono">
+              <button onclick="applyGstPreset('gold24k', 10, 'g')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-[#d4af37]/40 transition-all">
+                10g Gold 24K Bar
+              </button>
+              <button onclick="applyGstPreset('gold22k', 1, 'sov')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-[#d4af37]/40 transition-all">
+                1 Sovereign (8g) 22K
+              </button>
+              <button onclick="applyGstPreset('gold24k', 100, 'g')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-[#d4af37]/40 transition-all">
+                100g 24K Minted Bar
+              </button>
+              <button onclick="applyGstPreset('gold24k', 5, 'tola')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-[#d4af37]/40 transition-all">
+                5 Tolas 24K
+              </button>
+              <button onclick="applyGstPreset('silver999', 1, 'kg')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-slate-500 transition-all">
+                1 kg Silver Bar 999
+              </button>
+              <button onclick="applyGstPreset('silver999', 500, 'g')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 hover:border-slate-500 transition-all">
+                500g Silver Ingot
+              </button>
+            </div>
+          </div>
+
+          <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs text-slate-400 font-mono space-y-1">
+            <div class="flex items-center gap-1.5 text-slate-300 font-bold">
+              <span>⚖</span> Formula Engine & Benchmark Alignment:
+            </div>
+            <p class="text-[11px] leading-relaxed">
+              Base benchmark rates derived from Spot USD converted to domestic tariff parity: <code class="text-[#d4af37]">(XAU / 31.1034768) * USD_INR * 1.06</code>.
+              Physical ready delivery rates incorporate vault refinement & standard assaying premiums.
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Institutional Tax Invoice Breakdown Card (5 Cols) -->
+        <div class="lg:col-span-5 bg-gradient-to-b from-slate-950 via-[#0b0f19] to-amber-950/20 border-2 border-[#d4af37]/40 rounded-2xl p-5 md:p-6 space-y-4 shadow-2xl relative">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div>
+              <div class="text-[11px] font-black text-[#d4af37] uppercase tracking-wider font-mono">SETTLEMENT MEMO / TAX INVOICE</div>
+              <div id="invoice-item-desc" class="text-xs text-slate-300 font-bold mt-0.5">Gold 24K Bar • 10.00 Grams</div>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/30">HSN: <span id="invoice-hsn">7108</span></span>
+          </div>
+
+          <!-- Total Final Invoice -->
+          <div>
+            <div class="text-[11px] text-slate-400 font-mono uppercase">Total Invoice Amount (INR)</div>
+            <div id="invoice-total" class="text-3xl md:text-4xl font-black text-white font-mono mt-1 text-emerald-400">₹87,395.50</div>
+            <div id="invoice-effective-gram" class="text-xs text-[#d4af37] font-mono mt-0.5 font-bold">Effective Incl. 3% GST: ₹8,739.55 / g</div>
+          </div>
+
+          <!-- Itemized Breakdown -->
+          <div class="space-y-2.5 pt-3 border-t border-slate-800 text-xs font-mono">
+            <div class="flex justify-between text-slate-300">
+              <span>Net Bullion Value (INR):</span>
+              <span id="invoice-net-value" class="font-bold text-white">₹84,850.00</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span class="flex items-center gap-1">
+                <span>Central GST (CGST @ 1.5%):</span>
+              </span>
+              <span id="invoice-cgst" class="font-bold text-amber-300">₹1,272.75</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span class="flex items-center gap-1">
+                <span>State GST (SGST @ 1.5%):</span>
+              </span>
+              <span id="invoice-sgst" class="font-bold text-amber-300">₹1,272.75</span>
+            </div>
+            <div class="flex justify-between text-slate-400 pt-1 border-t border-slate-800/80">
+              <span>Combined Total Tax (3.0% GST):</span>
+              <span id="invoice-total-tax" class="font-bold text-emerald-400">₹2,545.50</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="grid grid-cols-2 gap-2 pt-2">
+            <button onclick="copyGstInvoiceSummary()" class="py-3 px-3 rounded-xl font-bold text-xs bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-1.5 font-mono">
+              <span>📋</span> Copy Invoice
+            </button>
+            <button onclick="window.print()" class="py-3 px-3 rounded-xl font-bold text-xs bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 transition-all flex items-center justify-center gap-1.5 font-mono">
+              <span>🖨</span> Print Voucher
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: PHYSICAL MELT SIZER (SECONDARY VIEW) -->
+      <div id="view-melt-sizer" class="grid grid-cols-1 lg:grid-cols-12 gap-6 hidden">
+        <div class="lg:col-span-7 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Weight Quantity</label>
+              <input type="number" id="melt-weight-input" value="100" min="0.1" step="any" oninput="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-[#d4af37] focus:outline-none transition-all">
+            </div>
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5">Weight Unit</label>
-              <select id="melt-unit-select" onchange="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-xs focus:border-amber-400 focus:outline-none transition-all cursor-pointer">
+              <select id="melt-unit-select" onchange="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-xs focus:border-[#d4af37] focus:outline-none cursor-pointer">
                 <option value="g" selected>Grams (g)</option>
                 <option value="ozt">Troy Ounces (ozt)</option>
                 <option value="kg">Kilograms (kg)</option>
@@ -631,142 +964,92 @@
                 <option value="sov">Sovereigns (7.988g)</option>
               </select>
             </div>
-
-            <!-- Gold Purity / Karat -->
             <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1.5">Metal Purity (Karat / Fineness)</label>
-              <select id="melt-purity-select" onchange="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-xs focus:border-amber-400 focus:outline-none transition-all cursor-pointer">
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Metal Karat / Fineness</label>
+              <select id="melt-purity-select" onchange="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono text-xs focus:border-[#d4af37] focus:outline-none cursor-pointer">
                 <option value="1.0000" selected>24K - Pure (.9999 Fine Gold)</option>
-                <option value="0.9167">22K - Crown Gold / Jewelry (.9167)</option>
+                <option value="0.9167">22K - Crown Gold (.9167)</option>
                 <option value="0.7500">18K - Fine Jewelry (.750)</option>
                 <option value="0.5850">14K - Commercial (.585)</option>
-                <option value="0.4170">10K - Minimum Standard (.417)</option>
                 <option value="0.9990">Silver - Fine Silver (.999)</option>
                 <option value="0.9250">Silver - Sterling Silver (.925)</option>
-                <option value="0.9000">Silver - Coin Silver (.900)</option>
               </select>
             </div>
-
-            <!-- Dealer Premium / Discount -->
             <div>
-              <label class="block text-xs font-bold text-slate-300 mb-1.5">Dealer Premium / Discount (%)</label>
-              <div class="relative">
-                <input type="number" id="melt-premium-input" value="2.5" step="0.1" oninput="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-amber-400 focus:outline-none transition-all pr-8">
-                <span class="absolute right-3.5 top-3.5 text-slate-500 font-bold text-sm">%</span>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- Quick Presets (Matches Screenshot 1) -->
-          <div class="pt-2">
-            <span class="text-[11px] font-bold text-slate-400 block mb-2">Quick Presets:</span>
-            <div class="flex flex-wrap gap-2 text-xs">
-              <button onclick="applyPreset(31.1035, 'g', '1.0000', 3.0)" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-500/40 transition-all">
-                1 ozt 24K Bar
-              </button>
-              <button onclick="applyPreset(100, 'g', '1.0000', 2.5)" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-500/40 transition-all">
-                100g 24K Cast
-              </button>
-              <button onclick="applyPreset(1, 'kg', '1.0000', 1.5)" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-500/40 transition-all">
-                1 kg Sovereign / Bar
-              </button>
-              <button onclick="applyPreset(50, 'g', '0.7500', 5.0)" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-amber-500/40 transition-all">
-                50g 18K Jewelry
-              </button>
-              <button onclick="applyPreset(10, 'ozt', '0.9990', 4.0, 'silver')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-500 transition-all">
-                10 ozt Silver Bar
-              </button>
-              <button onclick="applyPreset(100, 'ozt', '0.9990', 2.5, 'silver')" class="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-500 transition-all">
-                100 oz COMEX Silver
-              </button>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Carrying Premium / Discount (%)</label>
+              <input type="number" id="melt-premium-input" value="1.5" step="0.1" oninput="calculateMelt()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-[#d4af37] focus:outline-none">
             </div>
           </div>
         </div>
 
-        <!-- Right: Valuation Summary Card (Matches Screenshot 1) -->
-        <div class="lg:col-span-5 bg-gradient-to-b from-slate-950 via-slate-950 to-amber-950/20 border-2 border-amber-500/40 rounded-2xl p-5 md:p-6 space-y-4 shadow-xl">
+        <div class="lg:col-span-5 bg-gradient-to-b from-slate-950 to-slate-900 border border-slate-800 rounded-2xl p-5 md:p-6 space-y-4">
           <div>
-            <div class="text-[11px] font-black text-amber-400 uppercase tracking-wider">Estimated Net Valuation</div>
-            <div id="quote-net-val" class="text-3xl md:text-4xl font-black text-white font-mono mt-1">$13,724.58</div>
-            <div id="quote-pure-weight" class="text-xs text-amber-300 font-mono mt-0.5">Pure Gold: 100.00g (3.215 ozt)</div>
+            <div class="text-[11px] font-black text-[#d4af37] uppercase tracking-wider font-mono">Estimated Valuation</div>
+            <div id="quote-net-val" class="text-3xl md:text-4xl font-black text-white font-mono mt-1">$8,832.40</div>
+            <div id="quote-pure-weight" class="text-xs text-amber-300 font-mono mt-0.5">Pure Metal: 100.00g (3.215 ozt)</div>
           </div>
-
           <div class="space-y-2 pt-2 border-t border-slate-800 text-xs font-mono">
             <div class="flex justify-between text-slate-400">
               <span>Pure Spot Value:</span>
-              <span id="quote-spot-val" class="font-bold text-white">$13,389.83</span>
+              <span id="quote-spot-val" class="font-bold text-white">$8,701.87</span>
             </div>
             <div class="flex justify-between text-slate-400">
-              <span>Dealer Margin / Markup:</span>
-              <span id="quote-dealer-margin" class="font-bold text-emerald-400">+$334.75 (+2.5%)</span>
+              <span>Delivery Spread:</span>
+              <span id="quote-dealer-margin" class="font-bold text-emerald-400">+$130.53 (+1.5%)</span>
             </div>
             <div class="flex justify-between text-slate-400">
-              <span>Price Per Gram (Equiv):</span>
-              <span id="quote-price-gram" class="font-bold text-white">$137.25 / g</span>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Price Per Troy Oz (Equiv):</span>
-              <span id="quote-price-ozt" class="font-bold text-white">$4,268.91 / ozt</span>
+              <span>Price Per Gram:</span>
+              <span id="quote-price-gram" class="font-bold text-white">$88.32 / g</span>
             </div>
           </div>
-
-          <button onclick="copyQuotationSummary()" class="w-full py-3 rounded-xl font-bold text-xs md:text-sm bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-2">
-            <span>📋</span> Copy Quotation Summary
-          </button>
         </div>
-
       </div>
 
-      <!-- VIEW 2: Leveraged Trade Risk & Position Sizer (Hidden by default) -->
-      <div id="sizer-view-risk" class="grid grid-cols-1 lg:grid-cols-12 gap-6 hidden">
+      <!-- TAB 3: TRADE RISK & SIZER -->
+      <div id="view-risk-sizer" class="grid grid-cols-1 lg:grid-cols-12 gap-6 hidden font-mono">
         <div class="lg:col-span-7 space-y-4">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5">Account Equity ($)</label>
-              <input type="number" id="risk-equity" value="25000" step="500" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-amber-400 focus:outline-none">
+              <input type="number" id="risk-equity" value="25000" step="500" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold focus:border-[#d4af37] focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5">Risk Per Trade (%)</label>
-              <input type="number" id="risk-pct" value="1.5" step="0.25" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-amber-400 focus:outline-none">
+              <input type="number" id="risk-pct" value="1.5" step="0.25" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold focus:border-[#d4af37] focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5">Trade Entry Price ($)</label>
-              <input type="number" id="risk-entry" value="4181.1" step="0.5" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-amber-400 focus:outline-none">
+              <input type="number" id="risk-entry" value="2748.50" step="0.5" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold focus:border-[#d4af37] focus:outline-none">
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-300 mb-1.5">Stop Loss ($)</label>
-              <input type="number" id="risk-sl" value="4156.10" step="0.5" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-rose-400 focus:outline-none">
+              <input type="number" id="risk-sl" value="2730.00" step="0.5" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold focus:border-rose-400 focus:outline-none">
             </div>
             <div class="sm:col-span-2">
               <label class="block text-xs font-bold text-slate-300 mb-1.5">Take Profit Target ($)</label>
-              <input type="number" id="risk-tp" value="4246.10" step="0.5" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-mono font-bold focus:border-emerald-400 focus:outline-none">
+              <input type="number" id="risk-tp" value="2795.00" step="0.5" oninput="calculateRisk()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white font-bold focus:border-emerald-400 focus:outline-none">
             </div>
           </div>
         </div>
 
-        <div class="lg:col-span-5 bg-gradient-to-b from-slate-950 to-slate-900 border border-slate-800 rounded-2xl p-5 md:p-6 space-y-4 shadow-xl">
+        <div class="lg:col-span-5 bg-gradient-to-b from-slate-950 to-slate-900 border border-slate-800 rounded-2xl p-5 md:p-6 space-y-4">
           <div>
             <div class="text-[11px] font-black text-sky-400 uppercase tracking-wider">Recommended Position Sizing</div>
-            <div id="risk-pos-size" class="text-3xl md:text-4xl font-black text-white font-mono mt-1">15.00 ozt</div>
-            <div id="risk-pos-lots" class="text-xs text-slate-400 font-mono mt-0.5">CFD Contract Size: 0.15 Standard Lots</div>
+            <div id="risk-pos-size" class="text-3xl md:text-4xl font-black text-white mt-1">20.27 ozt</div>
+            <div id="risk-pos-lots" class="text-xs text-slate-400 mt-0.5">CFD Contract Size: 0.20 Standard Lots</div>
           </div>
-          <div class="space-y-2 pt-2 border-t border-slate-800 text-xs font-mono">
+          <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
             <div class="flex justify-between text-slate-400">
               <span>Capital at Risk:</span>
               <span id="risk-max-loss" class="font-bold text-rose-400">-$375.00 (1.50%)</span>
             </div>
             <div class="flex justify-between text-slate-400">
               <span>Potential Reward:</span>
-              <span id="risk-max-gain" class="font-bold text-emerald-400">+$975.00 (+3.90%)</span>
+              <span id="risk-max-gain" class="font-bold text-emerald-400">+$942.50 (+3.77%)</span>
             </div>
             <div class="flex justify-between text-slate-400">
               <span>Risk : Reward Ratio:</span>
-              <span id="risk-rr-ratio" class="font-black text-amber-300">1 : 2.60</span>
-            </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Trade Direction:</span>
-              <span class="font-bold text-emerald-400 uppercase">Long Bullish</span>
+              <span id="risk-rr-ratio" class="font-black text-[#d4af37]">1 : 2.51</span>
             </div>
           </div>
         </div>
@@ -774,24 +1057,24 @@
 
     </div>
 
-    <!-- Gold/Silver Ratio Historical Guide & Karat Reference Table -->
+    <!-- HALLMARK STANDARDS & RATIO CONTEXT -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
       <!-- Card 1: Gold / Silver Ratio Analysis -->
-      <div class="card-panel p-5 space-y-3">
+      <div class="card-panel p-5 space-y-3 font-mono">
         <div class="flex items-center justify-between pb-2 border-b border-slate-800">
           <div class="flex items-center gap-2">
-            <span class="text-amber-400">⚖</span>
-            <h3 class="text-sm font-bold text-white">Gold / Silver Ratio (GSR) Context</h3>
+            <span class="text-[#d4af37]">⚖</span>
+            <h3 class="text-sm font-bold text-white">Gold / Silver Ratio (GSR) Benchmark</h3>
           </div>
-          <span class="font-mono text-xs font-black text-amber-300">73.37 : 1</span>
+          <span class="text-xs font-black text-[#d4af37]" id="gsr-display-val">81.42 : 1</span>
         </div>
-        <p class="text-xs text-slate-400 leading-relaxed">
+        <p class="text-xs text-slate-400 leading-relaxed font-sans">
           The Gold-to-Silver ratio denotes how many ounces of physical silver are required to purchase one ounce of gold.
-          Historically, a ratio above <b>80:1</b> suggests silver is structurally undervalued relative to gold, often preceding outsized silver rallies.
+          Historically, a ratio above <b>80:1</b> denotes relative silver undervaluation compared to structural gold monetary reserves.
         </p>
         <div class="w-full bg-slate-950 h-3 rounded-full overflow-hidden p-0.5 border border-slate-800">
-          <div class="bg-gradient-to-r from-sky-500 via-amber-400 to-rose-500 h-2 rounded-full" style="width: 73%;"></div>
+          <div class="bg-gradient-to-r from-sky-500 via-amber-400 to-rose-500 h-2 rounded-full" style="width: 81%;"></div>
         </div>
         <div class="flex justify-between text-[10px] text-slate-500">
           <span>Silver Undervalued (>80)</span>
@@ -804,23 +1087,23 @@
       <div class="card-panel p-5 space-y-3">
         <div class="flex items-center justify-between pb-2 border-b border-slate-800">
           <div class="flex items-center gap-2">
-            <span class="text-amber-400">🔬</span>
-            <h3 class="text-sm font-bold text-white">Hallmark & Karat Standards</h3>
+            <span class="text-[#d4af37]">🔬</span>
+            <h3 class="text-sm font-bold text-white">Physical Hallmark & Karat Standards</h3>
           </div>
-          <span class="text-xs text-slate-400">International Hallmarks</span>
+          <span class="text-xs text-slate-400 font-mono">BIS & LBMA Assaying</span>
         </div>
         <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
           <div class="bg-slate-950/70 p-2 rounded-lg border border-slate-800">
-            <span class="text-amber-400 font-bold block">24K (999.9)</span>
-            <span class="text-[10px] text-slate-500">Pure Bullion / Bars</span>
+            <span class="text-[#d4af37] font-bold block">24K (999.9)</span>
+            <span class="text-[10px] text-slate-500">Fine Vault Bars</span>
           </div>
           <div class="bg-slate-950/70 p-2 rounded-lg border border-slate-800">
-            <span class="text-amber-400 font-bold block">22K (916)</span>
-            <span class="text-[10px] text-slate-500">Sovereigns / Krugerrand</span>
+            <span class="text-[#d4af37] font-bold block">22K (916)</span>
+            <span class="text-[10px] text-slate-500">Sovereign / Coins</span>
           </div>
           <div class="bg-slate-950/70 p-2 rounded-lg border border-slate-800">
-            <span class="text-amber-400 font-bold block">18K (750)</span>
-            <span class="text-[10px] text-slate-500">Standard Fine Jewelry</span>
+            <span class="text-[#d4af37] font-bold block">18K (750)</span>
+            <span class="text-[10px] text-slate-500">Fine Jewelry Standard</span>
           </div>
           <div class="bg-slate-950/70 p-2 rounded-lg border border-slate-800">
             <span class="text-slate-300 font-bold block">Silver 999</span>
@@ -828,11 +1111,11 @@
           </div>
           <div class="bg-slate-950/70 p-2 rounded-lg border border-slate-800">
             <span class="text-slate-300 font-bold block">Sterling 925</span>
-            <span class="text-[10px] text-slate-500">Silver Jewelry & Flatware</span>
+            <span class="text-[10px] text-slate-500">Silver Hallmarked Flatware</span>
           </div>
           <div class="bg-slate-950/70 p-2 rounded-lg border border-slate-800">
             <span class="text-slate-300 font-bold block">Coin 900</span>
-            <span class="text-[10px] text-slate-500">Junk / Constitutional</span>
+            <span class="text-[10px] text-slate-500">Institutional Ingot Standard</span>
           </div>
         </div>
       </div>
@@ -841,138 +1124,870 @@
 
     <!-- Toast Notification Container -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 hidden">
-      <div class="bg-emerald-500 text-slate-950 font-bold text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2">
+      <div class="bg-emerald-500 text-slate-950 font-bold text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 font-mono">
         <span>✓</span> <span id="toast-msg">Quotation copied to clipboard!</span>
       </div>
     </div>
 
   </div>
 
-  <!-- JAVASCRIPT LOGIC & REACTIVE STATE -->
+  <!-- JAVASCRIPT LOGIC, REST FETCH ENGINE, BROWNIAN TICK LOOP & CANVAS STREAMER -->
   <script>
-    // State Store
-    const state = {
-      currentMetal: 'gold',
-      gold: {"symbol": "GC=F", "last": 4181.1, "prev_close": 4170.1, "change": 11.0, "change_pct": 0.26, "high": 4220.4, "low": 4167.5, "sma20": 4214.11, "sma50": 4374.41, "ema200": 4484.81, "rsi": 51.54, "macd": 3.15, "stoch": 31.72, "bb_upper": 4373.24, "bb_lower": 4054.98, "p": 4162.9, "r1": 4204.9, "r2": 4239.7, "r3": 4281.7, "s1": 4128.1, "s2": 4086.1, "s3": 4051.3, "atr": 72.99, "history": [{"time": "2026-07-24", "open": 4053.4, "high": 4085.2, "low": 4024.0, "close": 4070.8, "vol": 120072}, {"time": "2026-07-27", "open": 4097.5, "high": 4119.3, "low": 4067.1, "close": 4077.0, "vol": 135087}, {"time": "2026-07-28", "open": 4083.0, "high": 4085.7, "low": 4011.1, "close": 4038.7, "vol": 167757}, {"time": "2026-07-29", "open": 4020.9, "high": 4115.2, "low": 3993.8, "close": 4036.3, "vol": 89664}, {"time": "2026-07-30", "open": 4060.7, "high": 4118.5, "low": 4028.5, "close": 4100.1, "vol": 149370}, {"time": "2026-07-31", "open": 4163.9, "high": 4170.7, "low": 4076.4, "close": 4107.0, "vol": 110633}, {"time": "2026-08-03", "open": 4135.2, "high": 4145.5, "low": 4074.0, "close": 4090.5, "vol": 93289}, {"time": "2026-08-04", "open": 4109.6, "high": 4163.8, "low": 4098.2, "close": 4152.6, "vol": 118831}, {"time": "2026-08-05", "open": 4133.8, "high": 4328.2, "low": 4121.6, "close": 4305.2, "vol": 211902}, {"time": "2026-08-06", "open": 4307.0, "high": 4363.7, "low": 4281.2, "close": 4299.6, "vol": 167624}, {"time": "2026-08-07", "open": 4298.3, "high": 4432.3, "low": 4288.0, "close": 4399.7, "vol": 190635}, {"time": "2026-08-10", "open": 4400.0, "high": 4453.8, "low": 4373.9, "close": 4419.7, "vol": 118606}, {"time": "2026-08-11", "open": 4446.9, "high": 4495.0, "low": 4415.7, "close": 4441.1, "vol": 138129}, {"time": "2026-08-12", "open": 4430.0, "high": 4502.7, "low": 4421.4, "close": 4467.5, "vol": 153093}, {"time": "2026-08-13", "open": 4468.8, "high": 4509.1, "low": 4400.0, "close": 4420.4, "vol": 139219}, {"time": "2026-08-14", "open": 4408.2, "high": 4454.6, "low": 4365.5, "close": 4437.3, "vol": 126955}, {"time": "2026-08-17", "open": 4440.0, "high": 4486.5, "low": 4422.3, "close": 4473.7, "vol": 121052}, {"time": "2026-08-18", "open": 4473.4, "high": 4493.1, "low": 4383.3, "close": 4420.6, "vol": 131150}, {"time": "2026-08-19", "open": 4391.4, "high": 4582.8, "low": 4378.0, "close": 4545.3, "vol": 250482}, {"time": "2026-08-20", "open": 4580.0, "high": 4597.1, "low": 4506.0, "close": 4571.4, "vol": 186475}, {"time": "2026-08-21", "open": 4577.0, "high": 4690.4, "low": 4565.5, "close": 4680.6, "vol": 195566}, {"time": "2026-08-24", "open": 4673.4, "high": 4738.5, "low": 4651.8, "close": 4697.8, "vol": 206802}, {"time": "2026-08-25", "open": 4710.1, "high": 4755.0, "low": 4659.5, "close": 4694.5, "vol": 176784}, {"time": "2026-08-26", "open": 4715.7, "high": 4730.9, "low": 4638.2, "close": 4653.3, "vol": 151459}, {"time": "2026-08-27", "open": 4650.0, "high": 4697.7, "low": 4616.0, "close": 4664.0, "vol": 140302}, {"time": "2026-08-28", "open": 4656.0, "high": 4688.0, "low": 4495.0, "close": 4529.9, "vol": 274603}, {"time": "2026-08-31", "open": 4483.2, "high": 4521.5, "low": 4445.6, "close": 4481.5, "vol": 152216}, {"time": "2026-09-01", "open": 4498.7, "high": 4510.5, "low": 4369.7, "close": 4396.4, "vol": 198560}, {"time": "2026-09-02", "open": 4377.2, "high": 4444.4, "low": 4329.2, "close": 4414.6, "vol": 187568}, {"time": "2026-09-03", "open": 4436.4, "high": 4558.5, "low": 4426.7, "close": 4539.9, "vol": 209167}, {"time": "2026-09-04", "open": 4522.0, "high": 4537.8, "low": 4412.0, "close": 4476.6, "vol": 189656}, {"time": "2026-09-08", "open": 4466.5, "high": 4488.8, "low": 4381.0, "close": 4439.0, "vol": 217162}, {"time": "2026-09-09", "open": 4399.0, "high": 4479.0, "low": 4384.1, "close": 4460.7, "vol": 164390}, {"time": "2026-09-10", "open": 4448.0, "high": 4479.9, "low": 4354.7, "close": 4407.3, "vol": 201300}, {"time": "2026-09-11", "open": 4359.4, "high": 4444.9, "low": 4333.0, "close": 4408.9, "vol": 187975}, {"time": "2026-09-14", "open": 4375.0, "high": 4396.8, "low": 4293.0, "close": 4351.9, "vol": 164499}, {"time": "2026-09-15", "open": 4340.3, "high": 4358.2, "low": 4301.6, "close": 4332.8, "vol": 146019}, {"time": "2026-09-16", "open": 4333.5, "high": 4413.1, "low": 4273.3, "close": 4387.5, "vol": 249081}, {"time": "2026-09-17", "open": 4301.4, "high": 4423.3, "low": 4294.5, "close": 4399.7, "vol": 169188}, {"time": "2026-09-18", "open": 4381.6, "high": 4439.8, "low": 4372.2, "close": 4424.9, "vol": 142919}, {"time": "2026-09-21", "open": 4413.0, "high": 4422.1, "low": 4360.3, "close": 4383.9, "vol": 138203}, {"time": "2026-09-22", "open": 4382.5, "high": 4414.1, "low": 4327.6, "close": 4376.4, "vol": 178132}, {"time": "2026-09-23", "open": 4394.7, "high": 4407.5, "low": 4310.7, "close": 4318.4, "vol": 143873}, {"time": "2026-09-24", "open": 4324.4, "high": 4338.0, "low": 4278.3, "close": 4298.0, "vol": 164814}, {"time": "2026-09-25", "open": 4309.5, "high": 4351.6, "low": 4289.2, "close": 4321.2, "vol": 164814}, {"time": "2026-09-28", "open": 4315.0, "high": 4315.6, "low": 4143.1, "close": 4168.4, "vol": 229031}, {"time": "2026-09-29", "open": 4150.1, "high": 4218.1, "low": 4145.2, "close": 4179.7, "vol": 149747}, {"time": "2026-09-30", "open": 4216.2, "high": 4251.1, "low": 4178.2, "close": 4186.7, "vol": 156277}, {"time": "2026-10-01", "open": 4190.1, "high": 4222.8, "low": 4169.4, "close": 4202.3, "vol": 130846}, {"time": "2026-10-02", "open": 4204.6, "high": 4259.0, "low": 4153.8, "close": 4162.3, "vol": 169001}, {"time": "2026-10-05", "open": 4169.4, "high": 4198.9, "low": 4150.4, "close": 4156.8, "vol": 112195}, {"time": "2026-10-06", "open": 4169.2, "high": 4212.4, "low": 4130.7, "close": 4187.1, "vol": 121934}, {"time": "2026-10-07", "open": 4195.0, "high": 4197.8, "low": 4091.2, "close": 4140.7, "vol": 163894}, {"time": "2026-10-08", "open": 4139.9, "high": 4170.7, "low": 4128.1, "close": 4157.0, "vol": 148432}, {"time": "2026-10-09", "open": 4159.7, "high": 4233.7, "low": 4156.1, "close": 4216.3, "vol": 134612}, {"time": "2026-10-12", "open": 4220.8, "high": 4242.3, "low": 4178.1, "close": 4190.6, "vol": 102772}, {"time": "2026-10-13", "open": 4195.5, "high": 4224.8, "low": 4169.7, "close": 4177.3, "vol": 124779}, {"time": "2026-10-14", "open": 4184.2, "high": 4193.5, "low": 4095.0, "close": 4107.9, "vol": 191279}, {"time": "2026-10-15", "open": 4128.3, "high": 4197.7, "low": 4120.9, "close": 4170.1, "vol": 159510}, {"time": "2026-10-16", "open": 4192.1, "high": 4220.4, "low": 4167.5, "close": 4181.1, "vol": 159510}]},
-      silver: {"symbol": "SI=F", "last": 56.99, "prev_close": 56.84, "change": 0.16, "change_pct": 0.28, "high": 57.01, "low": 56.99, "sma20": 60.84, "sma50": 63.9, "ema200": 69.59, "rsi": 34.87, "macd": -0.4, "stoch": 15.63, "bb_upper": 66.45, "bb_lower": 55.23, "p": 56.84, "r1": 56.84, "r2": 56.84, "r3": 56.84, "s1": 56.84, "s2": 56.84, "s3": 56.84, "atr": 1.23, "history": [{"time": "2026-07-24", "open": 58.66, "high": 58.66, "low": 58.66, "close": 58.66, "vol": 5}, {"time": "2026-07-27", "open": 58.47, "high": 58.47, "low": 58.47, "close": 58.47, "vol": 3}, {"time": "2026-07-28", "open": 57.3, "high": 57.3, "low": 57.3, "close": 57.3, "vol": 2}, {"time": "2026-07-29", "open": 57.86, "high": 57.86, "low": 57.86, "close": 57.86, "vol": 382}, {"time": "2026-07-30", "open": 57.28, "high": 59.25, "low": 57.22, "close": 58.81, "vol": 138}, {"time": "2026-07-31", "open": 59.2, "high": 59.2, "low": 57.34, "close": 57.59, "vol": 65}, {"time": "2026-08-03", "open": 57.67, "high": 57.8, "low": 57.67, "close": 57.67, "vol": 90}, {"time": "2026-08-04", "open": 58.1, "high": 60.06, "low": 58.1, "close": 60.06, "vol": 9}, {"time": "2026-08-05", "open": 62.45, "high": 62.45, "low": 62.1, "close": 62.1, "vol": 6}, {"time": "2026-08-06", "open": 61.91, "high": 61.91, "low": 61.44, "close": 61.44, "vol": 8}, {"time": "2026-08-07", "open": 63.62, "high": 65.05, "low": 63.33, "close": 63.33, "vol": 461}, {"time": "2026-08-10", "open": 63.9, "high": 65.11, "low": 63.9, "close": 65.11, "vol": 24}, {"time": "2026-08-11", "open": 64.86, "high": 64.86, "low": 64.77, "close": 64.77, "vol": 8}, {"time": "2026-08-12", "open": 66.62, "high": 66.65, "low": 65.56, "close": 65.56, "vol": 186}, {"time": "2026-08-13", "open": 64.87, "high": 64.87, "low": 64.78, "close": 64.87, "vol": 3}, {"time": "2026-08-14", "open": 64.99, "high": 64.99, "low": 64.99, "close": 64.99, "vol": 0}, {"time": "2026-08-17", "open": 65.25, "high": 66.12, "low": 65.25, "close": 66.12, "vol": 4}, {"time": "2026-08-18", "open": 65.25, "high": 65.25, "low": 63.6, "close": 63.94, "vol": 29}, {"time": "2026-08-19", "open": 63.21, "high": 66.85, "low": 63.12, "close": 65.73, "vol": 41}, {"time": "2026-08-20", "open": 66.85, "high": 68.95, "low": 66.85, "close": 68.03, "vol": 22}, {"time": "2026-08-21", "open": 68.1, "high": 69.85, "low": 68.1, "close": 69.47, "vol": 7}, {"time": "2026-08-24", "open": 69.35, "high": 69.35, "low": 68.54, "close": 68.54, "vol": 10}, {"time": "2026-08-25", "open": 69.5, "high": 69.5, "low": 68.12, "close": 68.64, "vol": 4}, {"time": "2026-08-26", "open": 69.31, "high": 69.31, "low": 67.99, "close": 67.99, "vol": 104}, {"time": "2026-08-27", "open": 69.43, "high": 69.43, "low": 69.43, "close": 69.43, "vol": 23252}, {"time": "2026-08-28", "open": 69.35, "high": 71.16, "low": 66.23, "close": 67.0, "vol": 4329}, {"time": "2026-08-31", "open": 66.01, "high": 67.18, "low": 65.85, "close": 66.22, "vol": 423}, {"time": "2026-09-01", "open": 66.51, "high": 66.71, "low": 63.87, "close": 64.62, "vol": 1138}, {"time": "2026-09-02", "open": 63.36, "high": 65.05, "low": 63.36, "close": 64.72, "vol": 71}, {"time": "2026-09-03", "open": 65.56, "high": 67.3, "low": 65.44, "close": 66.97, "vol": 57}, {"time": "2026-09-04", "open": 66.53, "high": 66.54, "low": 65.46, "close": 66.05, "vol": 94}, {"time": "2026-09-08", "open": 65.97, "high": 66.3, "low": 65.6, "close": 66.3, "vol": 95}, {"time": "2026-09-09", "open": 66.3, "high": 68.11, "low": 66.3, "close": 67.94, "vol": 138}, {"time": "2026-09-10", "open": 64.19, "high": 64.41, "low": 64.14, "close": 64.28, "vol": 275}, {"time": "2026-09-11", "open": 63.29, "high": 64.55, "low": 63.1, "close": 64.55, "vol": 526}, {"time": "2026-09-14", "open": 63.51, "high": 63.7, "low": 63.02, "close": 63.51, "vol": 365}, {"time": "2026-09-15", "open": 63.03, "high": 63.64, "low": 63.03, "close": 63.24, "vol": 164}, {"time": "2026-09-16", "open": 64.42, "high": 64.54, "low": 63.7, "close": 64.29, "vol": 13}, {"time": "2026-09-17", "open": 65.47, "high": 65.47, "low": 65.47, "close": 65.47, "vol": 157}, {"time": "2026-09-18", "open": 66.94, "high": 66.94, "low": 66.56, "close": 66.56, "vol": 97}, {"time": "2026-09-21", "open": 66.44, "high": 66.67, "low": 65.82, "close": 65.82, "vol": 88}, {"time": "2026-09-22", "open": 65.39, "high": 65.93, "low": 65.39, "close": 65.93, "vol": 99}, {"time": "2026-09-23", "open": 66.21, "high": 66.22, "low": 64.38, "close": 64.38, "vol": 216}, {"time": "2026-09-24", "open": 63.4, "high": 63.63, "low": 63.0, "close": 63.46, "vol": 51}, {"time": "2026-09-25", "open": 63.63, "high": 64.25, "low": 63.62, "close": 64.25, "vol": 49}, {"time": "2026-09-28", "open": 61.38, "high": 61.38, "low": 61.22, "close": 61.22, "vol": 1386}, {"time": "2026-09-29", "open": 60.66, "high": 61.2, "low": 60.49, "close": 60.67, "vol": 146}, {"time": "2026-09-30", "open": 60.82, "high": 60.82, "low": 60.0, "close": 60.1, "vol": 349}, {"time": "2026-10-01", "open": 61.05, "high": 61.05, "low": 60.72, "close": 60.72, "vol": 229}, {"time": "2026-10-02", "open": 61.56, "high": 61.56, "low": 59.98, "close": 59.98, "vol": 164}, {"time": "2026-10-05", "open": 61.52, "high": 61.62, "low": 60.87, "close": 60.87, "vol": 223}, {"time": "2026-10-06", "open": 60.92, "high": 61.38, "low": 60.92, "close": 61.17, "vol": 33}, {"time": "2026-10-07", "open": 60.88, "high": 60.88, "low": 59.53, "close": 59.9, "vol": 446}, {"time": "2026-10-08", "open": 59.06, "high": 59.06, "low": 58.92, "close": 59.06, "vol": 244}, {"time": "2026-10-09", "open": 60.67, "high": 60.76, "low": 60.67, "close": 60.67, "vol": 11}, {"time": "2026-10-12", "open": 60.14, "high": 60.14, "low": 60.14, "close": 60.14, "vol": 0}, {"time": "2026-10-13", "open": 59.16, "high": 59.16, "low": 59.16, "close": 59.16, "vol": 19}, {"time": "2026-10-14", "open": 56.74, "high": 56.74, "low": 55.5, "close": 55.55, "vol": 11}, {"time": "2026-10-15", "open": 56.84, "high": 56.84, "low": 56.84, "close": 56.84, "vol": 0}, {"time": "2026-10-16", "open": 56.99, "high": 57.01, "low": 56.99, "close": 56.99, "vol": 0}]},
-      gsr: 73.37,
-      chartInterval: 'D',
-      chartMode: 'tv'
+    // CORE CONSTANTS & CONVERSION FACTORS
+    const TROY_OZ_TO_GRAMS = 31.1034768;
+    const CUSTOMS_TARIFF = 1.06; // 6% customs tariff benchmark parity
+
+    // PRIMARY DATA ENGINE STATE
+    const engineState = {
+      // Benchmark macro rates
+      rates: {
+        XAU_USD: 2748.50,
+        XAG_USD: 33.75,
+        USD_INR: 84.45,
+        prev_XAU: 2738.70,
+        prev_XAG: 33.55,
+        high_XAU: 2756.40,
+        low_XAU: 2738.10,
+        high_XAG: 34.15,
+        low_XAG: 33.40,
+        high_INR: 84.62,
+        low_INR: 84.35
+      },
+      // Derived rates
+      derived: {
+        gram24k: 0,
+        gram22k: 0,
+        silverGram: 0,
+        // Physical Allocated Ready Delivery
+        physGold10gAsk: 0,
+        physGold10gBid: 0,
+        physSilv1kAsk: 0,
+        physSilv1kBid: 0,
+        physGold1gAsk: 0,
+        physGold1gBid: 0,
+        // Wholesale Feed
+        wsXauBid: 0,
+        wsXauAsk: 0,
+        wsXagBid: 0,
+        wsXagAsk: 0,
+        wsUsdInrBid: 0,
+        wsUsdInrAsk: 0,
+        wsDomGoldBid: 0,
+        wsDomGoldAsk: 0,
+        wsDomGoldHigh: 0,
+        wsDomGoldLow: 0,
+        wsDomSilvBid: 0,
+        wsDomSilvAsk: 0,
+        wsDomSilvHigh: 0,
+        wsDomSilvLow: 0
+      },
+      activeMetal: 'gold', // 'gold', 'silver', 'gsr'
+      activeStreamAsset: 'gold10g', // 'gold10g', 'gold22k', 'xau', 'silver1kg', 'silver10g', 'xag'
+      chartMode: 'streamer', // 'streamer' | 'tv'
+      // Rolling queues for each asset (55 points each)
+      streams: {
+        gold10g: [],
+        gold22k: [],
+        xau: [],
+        silver1kg: [],
+        silver10g: [],
+        xag: []
+      }
     };
 
     let tvWidget = null;
+    let canvasAnimationId = null;
+    let pulsePhase = 0;
 
-    // Initialize TradingView Widget
-    function initTradingViewWidget(symbol, interval = 'D') {
-      const container = document.getElementById('tradingview_gold_widget');
-      container.innerHTML = '';
-      tvWidget = new TradingView.widget({
-        "autosize": true,
-        "symbol": symbol,
-        "interval": interval,
-        "timezone": "America/New_York",
-        "theme": "dark",
-        "style": "1",
-        "locale": "en",
-        "enable_publishing": false,
-        "allow_symbol_change": true,
-        "container_id": "tradingview_gold_widget",
-        "studies": [
-          "RSI@tv-basicstudies",
-          "MASimple@tv-basicstudies"
-        ],
-        "hide_side_toolbar": false,
-        "details": true,
-        "hotlist": true,
-        "calendar": false
+    // 1. RECALCULATE DERIVED RATES
+    function recalculateDerivedRates() {
+      const r = engineState.rates;
+      const d = engineState.derived;
+
+      // Formulas from specification:
+      // Gram 24K Benchmark = (XAU_USD / 31.1034768) * USD_INR * 1.06 (customs tariff)
+      d.gram24k = (r.XAU_USD / TROY_OZ_TO_GRAMS) * r.USD_INR * CUSTOMS_TARIFF;
+      // Gram 22K = Gram 24K * 0.916
+      d.gram22k = d.gram24k * 0.916;
+      // Silver Gram = (XAG_USD / 31.1034768) * USD_INR * 1.06
+      d.silverGram = (r.XAG_USD / TROY_OZ_TO_GRAMS) * r.USD_INR * CUSTOMS_TARIFF;
+
+      // Physical Allocated Rates = Benchmark + physical bar delivery spread:
+      // Gold Bar 999.9 (10g):
+      d.physGold10gAsk = (d.gram24k * 10) * 1.012;
+      d.physGold10gBid = (d.gram24k * 10) * 0.998;
+
+      // Silver Bar 999 (1 kg):
+      d.physSilv1kAsk = (d.silverGram * 1000) * 1.018;
+      d.physSilv1kBid = (d.silverGram * 1000) * 0.992;
+
+      // Gold Bar 999.9 (Per Gram):
+      d.physGold1gAsk = d.gram24k * 1.015;
+      d.physGold1gBid = d.gram24k * 0.995;
+
+      // Wholesale Benchmark & Currency Feed:
+      d.wsXauBid = r.XAU_USD - 0.35;
+      d.wsXauAsk = r.XAU_USD + 0.35;
+      d.wsXagBid = r.XAG_USD - 0.04;
+      d.wsXagAsk = r.XAG_USD + 0.04;
+      d.wsUsdInrBid = r.USD_INR - 0.03;
+      d.wsUsdInrAsk = r.USD_INR + 0.03;
+
+      const dom10g = d.gram24k * 10;
+      d.wsDomGoldBid = dom10g * 0.999;
+      d.wsDomGoldAsk = dom10g * 1.001;
+      d.wsDomGoldHigh = (r.high_XAU / TROY_OZ_TO_GRAMS) * r.high_INR * CUSTOMS_TARIFF * 10;
+      d.wsDomGoldLow = (r.low_XAU / TROY_OZ_TO_GRAMS) * r.low_INR * CUSTOMS_TARIFF * 10;
+
+      const domSilv1k = d.silverGram * 1000;
+      d.wsDomSilvBid = domSilv1k * 0.998;
+      d.wsDomSilvAsk = domSilv1k * 1.002;
+      d.wsDomSilvHigh = (r.high_XAG / TROY_OZ_TO_GRAMS) * r.high_INR * CUSTOMS_TARIFF * 1000;
+      d.wsDomSilvLow = (r.low_XAG / TROY_OZ_TO_GRAMS) * r.low_INR * CUSTOMS_TARIFF * 1000;
+    }
+
+    // 2. HELPER TO UPDATE CELL WITH FLASH ANIMATION
+    function updateCellWithFlash(elementId, newFormattedValue, numericVal) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const oldVal = parseFloat(el.getAttribute('data-val')) || numericVal;
+      el.setAttribute('data-val', numericVal);
+
+      if (numericVal > oldVal) {
+        el.classList.remove('tick-up', 'tick-down');
+        void el.offsetWidth; // force reflow
+        el.classList.add('tick-up');
+      } else if (numericVal < oldVal) {
+        el.classList.remove('tick-up', 'tick-down');
+        void el.offsetWidth;
+        el.classList.add('tick-down');
+      }
+      el.textContent = newFormattedValue;
+    }
+
+    // 3. RENDER DUAL-TIER BOARD TO DOM
+    function renderBoardDOM() {
+      const d = engineState.derived;
+      const r = engineState.rates;
+
+      // Table 1: Physical Ready Delivery
+      updateCellWithFlash('cell-phys-gold10-ask', `₹${d.physGold10gAsk.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.physGold10gAsk);
+      updateCellWithFlash('cell-phys-gold10-bid', `₹${d.physGold10gBid.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.physGold10gBid);
+
+      updateCellWithFlash('cell-phys-silv1k-ask', `₹${d.physSilv1kAsk.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.physSilv1kAsk);
+      updateCellWithFlash('cell-phys-silv1k-bid', `₹${d.physSilv1kBid.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.physSilv1kBid);
+
+      updateCellWithFlash('cell-phys-gold1g-ask', `₹${d.physGold1gAsk.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.physGold1gAsk);
+      updateCellWithFlash('cell-phys-gold1g-bid', `₹${d.physGold1gBid.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.physGold1gBid);
+
+      // Table 2: Wholesale Benchmark & Currency Feed
+      updateCellWithFlash('cell-ws-xau-bid', `$${d.wsXauBid.toFixed(2)}`, d.wsXauBid);
+      updateCellWithFlash('cell-ws-xau-ask', `$${d.wsXauAsk.toFixed(2)}`, d.wsXauAsk);
+      document.getElementById('cell-ws-xau-high').textContent = `$${r.high_XAU.toFixed(2)}`;
+      document.getElementById('cell-ws-xau-low').textContent = `$${r.low_XAU.toFixed(2)}`;
+
+      updateCellWithFlash('cell-ws-xag-bid', `$${d.wsXagBid.toFixed(2)}`, d.wsXagBid);
+      updateCellWithFlash('cell-ws-xag-ask', `$${d.wsXagAsk.toFixed(2)}`, d.wsXagAsk);
+      document.getElementById('cell-ws-xag-high').textContent = `$${r.high_XAG.toFixed(2)}`;
+      document.getElementById('cell-ws-xag-low').textContent = `$${r.low_XAG.toFixed(2)}`;
+
+      updateCellWithFlash('cell-ws-usdinr-bid', `₹${d.wsUsdInrBid.toFixed(2)}`, d.wsUsdInrBid);
+      updateCellWithFlash('cell-ws-usdinr-ask', `₹${d.wsUsdInrAsk.toFixed(2)}`, d.wsUsdInrAsk);
+      document.getElementById('cell-ws-usdinr-high').textContent = `₹${r.high_INR.toFixed(2)}`;
+      document.getElementById('cell-ws-usdinr-low').textContent = `₹${r.low_INR.toFixed(2)}`;
+
+      updateCellWithFlash('cell-ws-domgold-bid', `₹${d.wsDomGoldBid.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.wsDomGoldBid);
+      updateCellWithFlash('cell-ws-domgold-ask', `₹${d.wsDomGoldAsk.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.wsDomGoldAsk);
+      document.getElementById('cell-ws-domgold-high').textContent = `₹${d.wsDomGoldHigh.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('cell-ws-domgold-low').textContent = `₹${d.wsDomGoldLow.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+      updateCellWithFlash('cell-ws-domsilv-bid', `₹${d.wsDomSilvBid.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.wsDomSilvBid);
+      updateCellWithFlash('cell-ws-domsilv-ask', `₹${d.wsDomSilvAsk.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`, d.wsDomSilvAsk);
+      document.getElementById('cell-ws-domsilv-high').textContent = `₹${d.wsDomSilvHigh.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('cell-ws-domsilv-low').textContent = `₹${d.wsDomSilvLow.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+      // Update GSR
+      const gsr = (r.XAU_USD / r.XAG_USD);
+      document.getElementById('gsr-display-val').textContent = `${gsr.toFixed(2)} : 1`;
+
+      // Update Hero display based on active metal
+      updateHeroTicker();
+    }
+
+    // 4. HERO TICKER UPDATE
+    function updateHeroTicker() {
+      const metal = engineState.activeMetal;
+      const r = engineState.rates;
+      const priceEl = document.getElementById('hero-price');
+      const changeEl = document.getElementById('hero-change');
+      const rLow = document.getElementById('range-low');
+      const rHigh = document.getElementById('range-high');
+
+      if (metal === 'gold') {
+        const chg = r.XAU_USD - r.prev_XAU;
+        const chgPct = (chg / r.prev_XAU) * 100;
+        priceEl.textContent = `$${r.XAU_USD.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        changeEl.innerHTML = `<span class="text-lg mr-1">${chg >= 0 ? '▲' : '▼'}</span> ${chg >= 0 ? '+' : ''}$${chg.toFixed(2)} (${chgPct >= 0 ? '+' : ''}${chgPct.toFixed(2)}%)`;
+        changeEl.className = `flex items-center text-sm md:text-base font-extrabold font-mono ${chg >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+        rLow.textContent = `$${r.low_XAU.toFixed(2)}`;
+        rHigh.textContent = `$${r.high_XAU.toFixed(2)}`;
+      } else if (metal === 'silver') {
+        const chg = r.XAG_USD - r.prev_XAG;
+        const chgPct = (chg / r.prev_XAG) * 100;
+        priceEl.textContent = `$${r.XAG_USD.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        changeEl.innerHTML = `<span class="text-lg mr-1">${chg >= 0 ? '▲' : '▼'}</span> ${chg >= 0 ? '+' : ''}$${chg.toFixed(2)} (${chgPct >= 0 ? '+' : ''}${chgPct.toFixed(2)}%)`;
+        changeEl.className = `flex items-center text-sm md:text-base font-extrabold font-mono ${chg >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+        rLow.textContent = `$${r.low_XAG.toFixed(2)}`;
+        rHigh.textContent = `$${r.high_XAG.toFixed(2)}`;
+      } else {
+        const gsr = (r.XAU_USD / r.XAG_USD);
+        priceEl.textContent = `${gsr.toFixed(2)}x`;
+        changeEl.innerHTML = `<span class="text-sm font-bold text-amber-400">Gold/Silver Ratio Benchmark</span>`;
+      }
+    }
+
+    // 5. REST FETCH DATA ENGINE
+    async function fetchMacroRates() {
+      // 1. USD/INR
+      try {
+        const resUsd = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (resUsd.ok) {
+          const data = await resUsd.json();
+          if (data && data.rates && data.rates.INR) {
+            const inr = parseFloat(data.rates.INR);
+            if (!isNaN(inr) && inr > 50 && inr < 150) {
+              engineState.rates.USD_INR = inr;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn('USD/INR open endpoint fallback active:', err);
+      }
+
+      // 2. Gold XAU
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3500);
+        const resGold = await fetch('https://gold-api.com/api/XAU', { signal: controller.signal });
+        clearTimeout(timeout);
+        if (resGold.ok) {
+          const data = await resGold.json();
+          const p = parseFloat(data.price || data.last);
+          if (!isNaN(p) && p > 1000) {
+            engineState.rates.XAU_USD = p;
+          }
+        }
+      } catch (err) {
+        console.warn('XAU gold-api fallback baseline active:', err);
+      }
+
+      // 3. Silver XAG
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3500);
+        const resSilv = await fetch('https://gold-api.com/api/XAG', { signal: controller.signal });
+        clearTimeout(timeout);
+        if (resSilv.ok) {
+          const data = await resSilv.json();
+          const p = parseFloat(data.price || data.last);
+          if (!isNaN(p) && p > 10) {
+            engineState.rates.XAG_USD = p;
+          }
+        }
+      } catch (err) {
+        console.warn('XAG gold-api fallback baseline active:', err);
+      }
+
+      recalculateDerivedRates();
+      renderBoardDOM();
+      calculateGstInvoice();
+    }
+
+    // 6. INITIALIZE ROLLING QUEUES FOR 6 STREAMING ASSETS
+    function initializeStreamQueues() {
+      recalculateDerivedRates();
+      const d = engineState.derived;
+      const r = engineState.rates;
+
+      const basePrices = {
+        gold10g: d.physGold10gAsk,
+        gold22k: d.gram22k * 8,
+        xau: r.XAU_USD,
+        silver1kg: d.physSilv1kAsk,
+        silver10g: d.silverGram * 10,
+        xag: r.XAG_USD
+      };
+
+      const now = Date.now();
+      const totalPoints = 54;
+
+      for (const [key, basePrice] of Object.entries(basePrices)) {
+        let cur = basePrice * 0.997; // start slightly offset
+        const list = [];
+        for (let i = totalPoints; i >= 0; i--) {
+          const time = new Date(now - i * 1800);
+          const noise = cur * (Math.random() - 0.495) * 0.0003;
+          cur += noise;
+          list.push({ time, price: cur });
+        }
+
+        // Compute MA9 and MA21 for historical points
+        computeMovingAverages(list);
+        engineState.streams[key] = list;
+      }
+    }
+
+    function computeMovingAverages(list) {
+      for (let i = 0; i < list.length; i++) {
+        // Fast MA 9
+        const slice9 = list.slice(Math.max(0, i - 8), i + 1);
+        const sum9 = slice9.reduce((acc, pt) => acc + pt.price, 0);
+        list[i].fastMA = sum9 / slice9.length;
+
+        // Slow MA 21
+        const slice21 = list.slice(Math.max(0, i - 20), i + 1);
+        const sum21 = slice21.reduce((acc, pt) => acc + pt.price, 0);
+        list[i].slowMA = sum21 / slice21.length;
+      }
+    }
+
+    // 7. INTER-POLL TICK LOOP: BROWNIAN DRIFT (±0.02%) EVERY 1.5 - 2 SECONDS
+    function executeBrownianTick() {
+      const r = engineState.rates;
+
+      // Drift factors within ±0.02%
+      const driftXAU = r.XAU_USD * (Math.random() - 0.492) * 0.00035;
+      const driftXAG = r.XAG_USD * (Math.random() - 0.490) * 0.00045;
+      const driftINR = r.USD_INR * (Math.random() - 0.498) * 0.00008;
+
+      r.XAU_USD = +(r.XAU_USD + driftXAU).toFixed(2);
+      r.XAG_USD = +(r.XAG_USD + driftXAG).toFixed(2);
+      r.USD_INR = +(r.USD_INR + driftINR).toFixed(2);
+
+      // Track highs / lows
+      if (r.XAU_USD > r.high_XAU) r.high_XAU = r.XAU_USD;
+      if (r.XAU_USD < r.low_XAU) r.low_XAU = r.XAU_USD;
+      if (r.XAG_USD > r.high_XAG) r.high_XAG = r.XAG_USD;
+      if (r.XAG_USD < r.low_XAG) r.low_XAG = r.XAG_USD;
+
+      recalculateDerivedRates();
+      renderBoardDOM();
+
+      // Push latest tick to streaming assets
+      const d = engineState.derived;
+      const now = new Date();
+      const newTicks = {
+        gold10g: d.physGold10gAsk,
+        gold22k: d.gram22k * 8,
+        xau: r.XAU_USD,
+        silver1kg: d.physSilv1kAsk,
+        silver10g: d.silverGram * 10,
+        xag: r.XAG_USD
+      };
+
+      for (const [key, price] of Object.entries(newTicks)) {
+        const queue = engineState.streams[key];
+        queue.push({ time: now, price });
+        if (queue.length > 58) queue.shift();
+        computeMovingAverages(queue);
+      }
+
+      // Update active asset streamer HUD
+      updateStreamerHUD();
+
+      // Recalculate GST billing with current real-time prices
+      calculateGstInvoice();
+    }
+
+    // 8. ASSET TAB SELECTION FOR STREAMING CANVAS
+    function selectStreamAsset(key) {
+      engineState.activeStreamAsset = key;
+
+      const tabs = ['gold10g', 'gold22k', 'xau', 'silver1kg', 'silver10g', 'xag'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-asset-${t}`);
+        if (!btn) return;
+        if (t === key) {
+          btn.className = "px-3 py-1.5 rounded-lg font-bold bg-[#d4af37]/25 text-[#d4af37] border border-[#d4af37]/60 shadow transition-all";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white bg-slate-950 hover:bg-slate-900 border border-slate-800 transition-all";
+        }
+      });
+
+      updateStreamerHUD();
+    }
+
+    // 9. STREAMER HUD UPDATE
+    function updateStreamerHUD() {
+      const key = engineState.activeStreamAsset;
+      const queue = engineState.streams[key] || [];
+      if (queue.length === 0) return;
+
+      const lastPt = queue[queue.length - 1];
+      const firstPt = queue[0];
+      const diff = lastPt.price - firstPt.price;
+      const diffPct = (diff / firstPt.price) * 100;
+
+      const meta = {
+        gold10g: { name: 'Gold 24K (10g / INR)', sym: '₹', dec: 2 },
+        gold22k: { name: 'Gold 22K (8g Sovereign / INR)', sym: '₹', dec: 2 },
+        xau: { name: 'XAU/USD Spot Bullion (troy oz)', sym: '$', dec: 2 },
+        silver1kg: { name: 'Silver Bar 1kg (INR)', sym: '₹', dec: 2 },
+        silver10g: { name: 'Silver Bar 10g (INR)', sym: '₹', dec: 2 },
+        xag: { name: 'XAG/USD Spot Silver (troy oz)', sym: '$', dec: 2 }
+      }[key];
+
+      document.getElementById('hud-asset-name').textContent = meta.name;
+      document.getElementById('hud-asset-price').textContent = `${meta.sym}${lastPt.price.toLocaleString(undefined, {minimumFractionDigits: meta.dec, maximumFractionDigits: meta.dec})}`;
+      document.getElementById('hud-asset-change').innerHTML = `<span class="mr-1">${diff >= 0 ? '▲' : '▼'}</span> ${diff >= 0 ? '+' : ''}${meta.sym}${diff.toFixed(2)} (${diffPct >= 0 ? '+' : ''}${diffPct.toFixed(2)}%)`;
+      document.getElementById('hud-asset-change').className = `text-xs font-bold ${diff >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+
+      document.getElementById('hud-ma-fast').textContent = `${meta.sym}${lastPt.fastMA.toFixed(meta.dec)}`;
+      document.getElementById('hud-ma-slow').textContent = `${meta.sym}${lastPt.slowMA.toFixed(meta.dec)}`;
+      document.getElementById('hud-tick-count').textContent = queue.length;
+
+      // Range
+      const minP = Math.min(...queue.map(q => q.price));
+      const maxP = Math.max(...queue.map(q => q.price));
+      document.getElementById('footer-range').textContent = `${meta.sym}${minP.toFixed(meta.dec)} - ${meta.sym}${maxP.toFixed(meta.dec)}`;
+    }
+
+    // 10. HTML5 CANVAS STREAMER RENDERING ENGINE
+    function renderStreamerCanvas() {
+      const canvas = document.getElementById('streamerCanvas');
+      if (!canvas) return;
+
+      const container = canvas.parentElement;
+      const dpr = window.devicePixelRatio || 1;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+
+      const ctx = canvas.getContext('2d');
+      ctx.resetTransform();
+      ctx.scale(dpr, dpr);
+
+      // Clear
+      ctx.clearRect(0, 0, w, h);
+
+      const key = engineState.activeStreamAsset;
+      const queue = engineState.streams[key] || [];
+      if (queue.length < 2) return;
+
+      // Min and Max prices with 8% padding
+      const prices = queue.map(q => q.price);
+      let minP = Math.min(...prices);
+      let maxP = Math.max(...prices);
+      const span = maxP - minP || 1;
+      minP -= span * 0.12;
+      maxP += span * 0.12;
+
+      const paddingLeft = 16;
+      const paddingRight = 72; // space for y-axis labels
+      const paddingTop = 30;
+      const paddingBottom = 32;
+
+      const chartW = w - paddingLeft - paddingRight;
+      const chartH = h - paddingTop - paddingBottom;
+
+      const getX = (idx) => paddingLeft + (idx / (queue.length - 1)) * chartW;
+      const getY = (val) => paddingTop + chartH - ((val - minP) / (maxP - minP)) * chartH;
+
+      // 1. Subtle Grid Lines (5 horizontal levels)
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      ctx.fillStyle = '#64748b';
+      ctx.font = '11px ui-monospace, SFMono-Regular, monospace';
+
+      const isDollar = key === 'xau' || key === 'xag';
+      const sym = isDollar ? '$' : '₹';
+
+      for (let i = 0; i <= 4; i++) {
+        const yVal = minP + (i / 4) * (maxP - minP);
+        const yPos = getY(yVal);
+
+        ctx.beginPath();
+        ctx.moveTo(paddingLeft, yPos);
+        ctx.lineTo(paddingLeft + chartW, yPos);
+        ctx.stroke();
+
+        ctx.fillText(`${sym}${yVal.toFixed(isDollar ? 2 : 0)}`, paddingLeft + chartW + 8, yPos + 4);
+      }
+
+      // Vertical time grid lines
+      for (let i = 0; i < queue.length; i += 12) {
+        const xPos = getX(i);
+        ctx.beginPath();
+        ctx.moveTo(xPos, paddingTop);
+        ctx.lineTo(xPos, paddingTop + chartH);
+        ctx.stroke();
+
+        const t = queue[i].time;
+        const timeStr = `${t.getHours().toString().padStart(2, '0')}:${t.getMinutes().toString().padStart(2, '0')}:${t.getSeconds().toString().padStart(2, '0')}`;
+        ctx.fillText(timeStr, xPos - 18, paddingTop + chartH + 18);
+      }
+
+      // 2. Trend determination (Net Positive vs Negative)
+      const firstPrice = queue[0].price;
+      const latestPrice = queue[queue.length - 1].price;
+      const isPositive = latestPrice >= firstPrice;
+      const trendColor = isPositive ? '#10b981' : '#f43f5e';
+
+      // 3. Smooth Bézier Curve Points
+      const points = queue.map((pt, idx) => ({ x: getX(idx), y: getY(pt.price) }));
+
+      // Soft Gradient Fill Under Curve
+      const gradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartH);
+      if (isPositive) {
+        gradient.addColorStop(0, 'rgba(16, 185, 129, 0.28)');
+        gradient.addColorStop(1, 'rgba(16, 185, 129, 0.00)');
+      } else {
+        gradient.addColorStop(0, 'rgba(244, 63, 94, 0.28)');
+        gradient.addColorStop(1, 'rgba(244, 63, 94, 0.00)');
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 0; i < points.length - 1; i++) {
+        const xc = (points[i].x + points[i + 1].x) / 2;
+        const yc = (points[i].y + points[i + 1].y) / 2;
+        ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+      }
+      ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+      ctx.lineTo(points[points.length - 1].x, paddingTop + chartH);
+      ctx.lineTo(points[0].x, paddingTop + chartH);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Main Price Stroke (Bézier Curve)
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+      for (let i = 0; i < points.length - 1; i++) {
+        const xc = (points[i].x + points[i + 1].x) / 2;
+        const yc = (points[i].y + points[i + 1].y) / 2;
+        ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
+      }
+      ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
+      ctx.strokeStyle = trendColor;
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = trendColor;
+      ctx.shadowBlur = 10;
+      ctx.stroke();
+      ctx.shadowBlur = 0; // reset
+
+      // 4. Moving Averages: Fast MA (9) [Sky Blue]
+      ctx.beginPath();
+      for (let i = 0; i < queue.length; i++) {
+        const x = getX(i);
+        const y = getY(queue[i].fastMA);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      // Moving Averages: Slow MA (21) [Champagne Gold]
+      ctx.beginPath();
+      for (let i = 0; i < queue.length; i++) {
+        const x = getX(i);
+        const y = getY(queue[i].slowMA);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#d4af37';
+      ctx.lineWidth = 1.6;
+      ctx.stroke();
+
+      // 5. Active Pulsing Marker on Latest Tick Head
+      const lastPoint = points[points.length - 1];
+      pulsePhase += 0.05;
+      const pulseRadius = 5 + (Math.sin(pulsePhase) + 1) * 4;
+      const pulseAlpha = 0.8 - (Math.sin(pulsePhase) + 1) * 0.35;
+
+      // Outer ripple
+      ctx.beginPath();
+      ctx.arc(lastPoint.x, lastPoint.y, pulseRadius, 0, Math.PI * 2);
+      ctx.fillStyle = isPositive ? `rgba(52, 211, 153, ${pulseAlpha})` : `rgba(251, 113, 133, ${pulseAlpha})`;
+      ctx.fill();
+
+      // Inner solid head
+      ctx.beginPath();
+      ctx.arc(lastPoint.x, lastPoint.y, 4.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.strokeStyle = trendColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // 11. ANIMATION LOOP FOR CANVAS
+    function startCanvasAnimationLoop() {
+      function loop() {
+        renderStreamerCanvas();
+        canvasAnimationId = requestAnimationFrame(loop);
+      }
+      if (!canvasAnimationId) {
+        canvasAnimationId = requestAnimationFrame(loop);
+      }
+    }
+
+    // 12. PHYSICAL BULLION & 3% GST BILLING CALCULATOR
+    function calculateGstInvoice() {
+      const metalType = document.getElementById('gst-metal-select').value;
+      const unit = document.getElementById('gst-unit-select').value;
+      const qty = parseFloat(document.getElementById('gst-qty-input').value) || 0;
+
+      // Convert unit to grams
+      let grams = qty;
+      let unitLabel = 'Grams';
+      if (unit === 'sov') {
+        grams = qty * 8.00;
+        unitLabel = 'Sovereign(s)';
+      } else if (unit === 'tola') {
+        grams = qty * 11.6638;
+        unitLabel = 'Tola(s)';
+      } else if (unit === 'kg') {
+        grams = qty * 1000.00;
+        unitLabel = 'Kilogram(s)';
+      }
+
+      const d = engineState.derived;
+      let ratePerGram = 0;
+      let hsn = '7108';
+      let commodityTitle = '';
+
+      if (metalType === 'gold24k') {
+        ratePerGram = d.physGold1gAsk || (d.gram24k * 1.015);
+        commodityTitle = `Gold Bar 999.9 Fine (${qty} ${unitLabel})`;
+        hsn = '7108';
+      } else if (metalType === 'gold22k') {
+        ratePerGram = d.gram22k * 1.012;
+        commodityTitle = `Gold 22K (916 Standard) (${qty} ${unitLabel})`;
+        hsn = '7108';
+      } else if (metalType === 'silver999') {
+        ratePerGram = (d.physSilv1kAsk / 1000) || (d.silverGram * 1.018);
+        commodityTitle = `Silver Bar 999 Fine (${qty} ${unitLabel})`;
+        hsn = '7106';
+      }
+
+      // Calculations:
+      // Net Bullion Value (INR) = grams * ratePerGram
+      const netValue = grams * ratePerGram;
+      // CGST (1.5%)
+      const cgst = netValue * 0.015;
+      // SGST (1.5%)
+      const sgst = netValue * 0.015;
+      const totalTax = cgst + sgst;
+      // Total Invoice Amount (INR)
+      const totalInvoice = netValue + totalTax;
+      const effectivePerGram = grams > 0 ? (totalInvoice / grams) : 0;
+
+      // Update DOM
+      document.getElementById('gst-rate-display').value = `₹${ratePerGram.toFixed(2)} / g`;
+      document.getElementById('invoice-item-desc').textContent = `${commodityTitle} • ${grams.toFixed(2)}g Pure Eq.`;
+      document.getElementById('invoice-hsn').textContent = hsn;
+      document.getElementById('invoice-total').textContent = `₹${totalInvoice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('invoice-effective-gram').textContent = `Effective Incl. 3% GST: ₹${effectivePerGram.toFixed(2)} / g`;
+      document.getElementById('invoice-net-value').textContent = `₹${netValue.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('invoice-cgst').textContent = `₹${cgst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('invoice-sgst').textContent = `₹${sgst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('invoice-total-tax').textContent = `₹${totalTax.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    }
+
+    function applyGstPreset(metal, qty, unit) {
+      document.getElementById('gst-metal-select').value = metal;
+      document.getElementById('gst-qty-input').value = qty;
+      document.getElementById('gst-unit-select').value = unit;
+      calculateGstInvoice();
+    }
+
+    function copyGstInvoiceSummary() {
+      const desc = document.getElementById('invoice-item-desc').textContent;
+      const hsn = document.getElementById('invoice-hsn').textContent;
+      const netVal = document.getElementById('invoice-net-value').textContent;
+      const cgst = document.getElementById('invoice-cgst').textContent;
+      const sgst = document.getElementById('invoice-sgst').textContent;
+      const tax = document.getElementById('invoice-total-tax').textContent;
+      const total = document.getElementById('invoice-total').textContent;
+      const eff = document.getElementById('invoice-effective-gram').textContent;
+
+      const summary = `=====================================================
+PRECIOUS METALS SETTLEMENT TERMINAL - TAX INVOICE
+=====================================================
+Commodity: ${desc}
+HSN / SAC Code: ${hsn}
+Execution Timestamp: ${new Date().toISOString()}
+
+Itemized Settlement Breakdown:
+- Net Bullion Value: ${netVal}
+- Central GST (CGST @ 1.5%): ${cgst}
+- State GST (SGST @ 1.5%): ${sgst}
+- Combined GST (3.0%): ${tax}
+-----------------------------------------------------
+TOTAL INVOICE AMOUNT (INR): ${total}
+${eff}
+Physical Vault Allocated Ready Delivery Delivery Settlement
+=====================================================`;
+
+      navigator.clipboard.writeText(summary).then(() => {
+        showToast("Tax Invoice breakdown copied to clipboard!");
       });
     }
 
-    // Switch between Gold and Silver
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('toast-popup');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('toast-popup');
+      }, 2600);
+    }
+
+    // 13. TERMINAL TAB SWITCHER (GST BILLING / MELT / RISK)
+    function setTerminalTab(tab) {
+      const btnGst = document.getElementById('sizer-tab-gst');
+      const btnMelt = document.getElementById('sizer-tab-melt');
+      const btnRisk = document.getElementById('sizer-tab-risk');
+      const vGst = document.getElementById('view-gst-billing');
+      const vMelt = document.getElementById('view-melt-sizer');
+      const vRisk = document.getElementById('view-risk-sizer');
+
+      [btnGst, btnMelt, btnRisk].forEach(b => b.className = "px-4 py-2 rounded-lg font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5");
+      vGst.classList.add('hidden');
+      vMelt.classList.add('hidden');
+      vRisk.classList.add('hidden');
+
+      if (tab === 'gst') {
+        btnGst.className = "px-4 py-2 rounded-lg font-bold transition-all bg-[#d4af37]/20 text-[#d4af37] border border-[#d4af37]/40 shadow flex items-center gap-1.5";
+        vGst.classList.remove('hidden');
+        calculateGstInvoice();
+      } else if (tab === 'melt') {
+        btnMelt.className = "px-4 py-2 rounded-lg font-bold transition-all bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow flex items-center gap-1.5";
+        vMelt.classList.remove('hidden');
+        calculateMelt();
+      } else if (tab === 'risk') {
+        btnRisk.className = "px-4 py-2 rounded-lg font-bold transition-all bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow flex items-center gap-1.5";
+        vRisk.classList.remove('hidden');
+        calculateRisk();
+      }
+    }
+
+    // 14. PRESERVED MELT SIZER CALCULATIONS
+    function calculateMelt() {
+      const qty = parseFloat(document.getElementById('melt-weight-input').value) || 0;
+      const unit = document.getElementById('melt-unit-select').value;
+      const purity = parseFloat(document.getElementById('melt-purity-select').value) || 1.0;
+      const premiumPct = parseFloat(document.getElementById('melt-premium-input').value) || 0;
+
+      let grams = qty;
+      if (unit === 'ozt') grams = qty * TROY_OZ_TO_GRAMS;
+      else if (unit === 'kg') grams = qty * 1000.0;
+      else if (unit === 'tola') grams = qty * 11.6638;
+      else if (unit === 'sov') grams = qty * 7.98805;
+
+      const pureGrams = grams * purity;
+      const pureOzt = pureGrams / TROY_OZ_TO_GRAMS;
+      const isSilver = purity <= 0.999 && document.getElementById('melt-purity-select').selectedOptions[0].text.includes("Silver");
+      const spotPriceOzt = isSilver ? engineState.rates.XAG_USD : engineState.rates.XAU_USD;
+
+      const pureSpotVal = pureOzt * spotPriceOzt;
+      const margin = pureSpotVal * (premiumPct / 100.0);
+      const netVal = pureSpotVal + margin;
+      const pricePerGramEquiv = grams > 0 ? netVal / grams : 0;
+
+      document.getElementById('quote-net-val').textContent = `$${netVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('quote-pure-weight').textContent = `Pure Metal: ${pureGrams.toFixed(2)}g (${pureOzt.toFixed(3)} ozt)`;
+      document.getElementById('quote-spot-val').textContent = `$${pureSpotVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      document.getElementById('quote-dealer-margin').textContent = `+${margin.toFixed(2)} (+${premiumPct.toFixed(1)}%)`;
+      document.getElementById('quote-price-gram').textContent = `$${pricePerGramEquiv.toFixed(2)} / g`;
+    }
+
+    // 15. PRESERVED RISK SIZER CALCULATIONS
+    function calculateRisk() {
+      const equity = parseFloat(document.getElementById('risk-equity').value) || 10000;
+      const riskPct = parseFloat(document.getElementById('risk-pct').value) || 1;
+      const entry = parseFloat(document.getElementById('risk-entry').value) || engineState.rates.XAU_USD;
+      const sl = parseFloat(document.getElementById('risk-sl').value) || (entry - 10);
+      const tp = parseFloat(document.getElementById('risk-tp').value) || (entry + 25);
+
+      const maxRiskDollars = equity * (riskPct / 100.0);
+      const stopDistance = Math.abs(entry - sl);
+      if (stopDistance <= 0) return;
+
+      const posOzt = maxRiskDollars / stopDistance;
+      const posLots = posOzt / 100.0;
+      const rewardDistance = Math.abs(tp - entry);
+      const maxGainDollars = posOzt * rewardDistance;
+      const rrRatio = (rewardDistance / stopDistance).toFixed(2);
+
+      document.getElementById('risk-pos-size').textContent = `${posOzt.toFixed(2)} ozt`;
+      document.getElementById('risk-pos-lots').textContent = `CFD Contract Size: ${posLots.toFixed(2)} Standard Lots`;
+      document.getElementById('risk-max-loss').textContent = `-$${maxRiskDollars.toFixed(2)} (${riskPct.toFixed(2)}%)`;
+      document.getElementById('risk-max-gain').textContent = `+$${maxGainDollars.toFixed(2)} (+${((maxGainDollars / equity) * 100).toFixed(2)}%)`;
+      document.getElementById('risk-rr-ratio').textContent = `1 : ${rrRatio}`;
+    }
+
+    // 16. SWITCH BETWEEN GOLD, SILVER, GSR
     function selectMetal(metal) {
-      state.currentMetal = metal;
-      
+      engineState.activeMetal = metal;
       const btnGold = document.getElementById('btn-metal-gold');
       const btnSilver = document.getElementById('btn-metal-silver');
       const btnGsr = document.getElementById('btn-metal-gsr');
-      const heroBanner = document.getElementById('hero-banner');
       const badge = document.getElementById('hero-symbol-badge');
       const ticker = document.getElementById('hero-ticker');
       const typeBadge = document.getElementById('hero-type-badge');
       const subline = document.getElementById('hero-subline');
-      const price = document.getElementById('hero-price');
-      const chg = document.getElementById('hero-change');
-      const rLow = document.getElementById('range-low');
-      const rHigh = document.getElementById('range-high');
       const macroAsset = document.getElementById('macro-asset-subtext');
 
       if (metal === 'gold') {
-        btnGold.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-lg shadow-amber-500/10 flex items-center gap-2";
+        btnGold.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/50 shadow-lg shadow-amber-500/10 flex items-center gap-2";
         btnSilver.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2";
         btnGsr.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2";
-        
+
         badge.textContent = "AU";
         badge.className = "w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-600 to-yellow-400 text-slate-950 font-black text-2xl flex items-center justify-center shadow-xl shadow-amber-500/20";
         ticker.textContent = "XAU/USD";
         typeBadge.textContent = "SPOT GOLD";
-        typeBadge.className = "px-2.5 py-0.5 rounded text-[11px] font-extrabold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider";
-        subline.textContent = "Gold Bullion Spot (troy oz) • NY / London OTC • Fine .9999";
-        
-        price.textContent = `$${state.gold.last.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        chg.innerHTML = `<span class="text-lg mr-1">${state.gold.change >= 0 ? '▲' : '▼'}</span> ${state.gold.change >= 0 ? '+' : ''}${state.gold.change.toFixed(2)} (${state.gold.change_pct.toFixed(2)}%)`;
-        chg.className = `flex items-center text-sm md:text-base font-extrabold font-mono ${state.gold.change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-        
-        rLow.textContent = `$${state.gold.low.toFixed(2)}`;
-        rHigh.textContent = `$${state.gold.high.toFixed(2)}`;
+        typeBadge.className = "px-2.5 py-0.5 rounded text-[11px] font-extrabold bg-amber-500/20 text-[#d4af37] border border-amber-500/30 uppercase tracking-wider";
+        subline.textContent = "Fine Bullion Spot (.9999) • OTC Inter-dealer Liquidity Hub • Troy Ounce";
         macroAsset.textContent = "XAU Sensitivity";
 
-        // Needle rotation: Gold ~148 deg (Strong Buy)
         document.getElementById('speedometer-needle').style.transform = "rotate(58deg)";
         document.getElementById('sentiment-badge').textContent = "STRONG BUY BIAS";
         document.getElementById('sentiment-badge').className = "px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 uppercase tracking-wider";
 
-        // Pivots
-        updatePivots(state.gold);
-        updateMatrix(state.gold);
-
-        initTradingViewWidget("OANDA:XAUUSD", state.chartInterval);
-        document.getElementById('risk-entry').value = state.gold.last;
-        document.getElementById('risk-sl').value = (state.gold.last - 25).toFixed(2);
-        document.getElementById('risk-tp').value = (state.gold.last + 65).toFixed(2);
+        updatePivots(engineState.rates.XAU_USD);
+        selectStreamAsset('gold10g');
+        if (tvWidget) initTradingViewWidget("OANDA:XAUUSD");
       } else if (metal === 'silver') {
         btnSilver.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all bg-slate-200/20 text-white border border-slate-300/40 shadow-lg shadow-slate-400/10 flex items-center gap-2";
         btnGold.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2";
         btnGsr.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2";
-        
+
         badge.textContent = "AG";
         badge.className = "w-14 h-14 rounded-2xl bg-gradient-to-tr from-slate-400 via-slate-200 to-white text-slate-950 font-black text-2xl flex items-center justify-center shadow-xl shadow-slate-400/20";
         ticker.textContent = "XAG/USD";
         typeBadge.textContent = "SPOT SILVER";
         typeBadge.className = "px-2.5 py-0.5 rounded text-[11px] font-extrabold bg-slate-300/20 text-slate-200 border border-slate-400/30 uppercase tracking-wider";
-        subline.textContent = "Silver Bullion Spot (troy oz) • COMEX / London OTC • Fine .999";
-        
-        price.textContent = `$${state.silver.last.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-        chg.innerHTML = `<span class="text-lg mr-1">${state.silver.change >= 0 ? '▲' : '▼'}</span> ${state.silver.change >= 0 ? '+' : ''}${state.silver.change.toFixed(2)} (${state.silver.change_pct.toFixed(2)}%)`;
-        chg.className = `flex items-center text-sm md:text-base font-extrabold font-mono ${state.silver.change >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-        
-        rLow.textContent = `$${state.silver.low.toFixed(2)}`;
-        rHigh.textContent = `$${state.silver.high.toFixed(2)}`;
+        subline.textContent = "Silver Bullion Spot (.999) • COMEX / London OTC Industrial Benchmark";
         macroAsset.textContent = "XAG Industrial Sensitivity";
 
-        // Needle rotation: Silver ~115 deg (Buy)
         document.getElementById('speedometer-needle').style.transform = "rotate(25deg)";
         document.getElementById('sentiment-badge').textContent = "BUY MOMENTUM";
         document.getElementById('sentiment-badge').className = "px-2.5 py-0.5 rounded-full text-[11px] font-black bg-lime-500/20 text-lime-400 border border-lime-500/40 uppercase tracking-wider";
 
-        // Pivots
-        updatePivots(state.silver);
-        updateMatrix(state.silver);
-
-        initTradingViewWidget("OANDA:XAGUSD", state.chartInterval);
-        document.getElementById('risk-entry').value = state.silver.last;
-        document.getElementById('risk-sl').value = (state.silver.last - 0.85).toFixed(2);
-        document.getElementById('risk-tp').value = (state.silver.last + 2.20).toFixed(2);
-      } else if (metal === 'gsr') {
+        updatePivots(engineState.rates.XAG_USD);
+        selectStreamAsset('silver1kg');
+        if (tvWidget) initTradingViewWidget("OANDA:XAGUSD");
+      } else {
         btnGsr.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-lg shadow-sky-500/10 flex items-center gap-2";
         btnGold.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2";
         btnSilver.className = "px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent flex items-center gap-2";
@@ -984,262 +1999,128 @@
         typeBadge.className = "px-2.5 py-0.5 rounded text-[11px] font-extrabold bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase tracking-wider";
         subline.textContent = "Relative Valuation Metric • Ounces of Silver per Ounce of Gold";
 
-        price.textContent = `${state.gsr.toFixed(2)}x`;
-        chg.innerHTML = `<span class="text-sm font-bold text-amber-400">Historical Band: 55x - 85x</span>`;
-
-        initTradingViewWidget("TVC:GOLDSILVER", state.chartInterval);
+        if (tvWidget) initTradingViewWidget("TVC:GOLDSILVER");
       }
 
-      calculateMelt();
-      calculateRisk();
+      updateHeroTicker();
     }
 
-    function updatePivots(m) {
-      document.getElementById('pivot-r3').textContent = `$${m.r3.toFixed(2)}`;
-      document.getElementById('pivot-r2').textContent = `$${m.r2.toFixed(2)}`;
-      document.getElementById('pivot-r1').textContent = `$${m.r1.toFixed(2)}`;
-      document.getElementById('pivot-p').textContent = `$${m.p.toFixed(2)}`;
-      document.getElementById('pivot-s1').textContent = `$${m.s1.toFixed(2)}`;
-      document.getElementById('pivot-s2').textContent = `$${m.s2.toFixed(2)}`;
-      document.getElementById('pivot-s3').textContent = `$${m.s3.toFixed(2)}`;
+    function updatePivots(spot) {
+      const p = spot;
+      const r1 = spot * 1.0045;
+      const r2 = spot * 1.0090;
+      const r3 = spot * 1.0150;
+      const s1 = spot * 0.9955;
+      const s2 = spot * 0.9910;
+      const s3 = spot * 0.9850;
+
+      const sym = engineState.activeMetal === 'silver' ? '$' : '$';
+      document.getElementById('pivot-r3').textContent = `${sym}${r3.toFixed(2)}`;
+      document.getElementById('pivot-r2').textContent = `${sym}${r2.toFixed(2)}`;
+      document.getElementById('pivot-r1').textContent = `${sym}${r1.toFixed(2)}`;
+      document.getElementById('pivot-p').textContent = `${sym}${p.toFixed(2)}`;
+      document.getElementById('pivot-s1').textContent = `${sym}${s1.toFixed(2)}`;
+      document.getElementById('pivot-s2').textContent = `${sym}${s2.toFixed(2)}`;
+      document.getElementById('pivot-s3').textContent = `${sym}${s3.toFixed(2)}`;
     }
 
-    function updateMatrix(m) {
-      document.getElementById('matrix-rsi-val').textContent = m.rsi;
-      document.getElementById('matrix-macd-val').textContent = (m.macd >= 0 ? '+' : '') + m.macd;
-      document.getElementById('matrix-stoch-val').textContent = m.stoch;
-      document.getElementById('matrix-sma20-val').textContent = `$${m.sma20.toFixed(2)}`;
-      document.getElementById('matrix-sma50-val').textContent = `$${m.sma50.toFixed(2)}`;
-      document.getElementById('matrix-ema200-val').textContent = `$${m.ema200.toFixed(2)}`;
-      document.getElementById('matrix-bb-val').textContent = `Upper: $${m.bb_upper.toFixed(2)}`;
-      document.getElementById('footer-atr').textContent = `$${m.atr.toFixed(2)}`;
-      document.getElementById('footer-spread').textContent = `$${(m.last - 0.20).toFixed(2)} / $${(m.last + 0.20).toFixed(2)} (0.40)`;
-    }
-
-    function setTvInterval(interval) {
-      state.chartInterval = interval;
-      const sym = state.currentMetal === 'gold' ? 'OANDA:XAUUSD' : (state.currentMetal === 'silver' ? 'OANDA:XAGUSD' : 'TVC:GOLDSILVER');
-      initTradingViewWidget(sym, interval);
-    }
-
+    // 17. CHART MODE (STREAMER VS TRADINGVIEW PRO)
     function setChartMode(mode) {
-      state.chartMode = mode;
+      engineState.chartMode = mode;
+      const btnStreamer = document.getElementById('chart-mode-streamer');
       const btnTv = document.getElementById('chart-mode-tv');
-      const btnCustom = document.getElementById('chart-mode-custom');
-      const tvWrap = document.getElementById('tv-chart-wrapper');
-      const customWrap = document.getElementById('custom-chart-wrapper');
+      const wrapStreamer = document.getElementById('streamer-chart-wrapper');
+      const wrapTv = document.getElementById('tv-chart-wrapper');
 
-      if (mode === 'tv') {
-        btnTv.className = "px-3 py-1 text-xs font-bold rounded bg-slate-800 text-white shadow";
-        btnCustom.className = "px-3 py-1 text-xs font-bold rounded text-slate-400 hover:text-white";
-        tvWrap.classList.remove('hidden');
-        customWrap.classList.add('hidden');
+      if (mode === 'streamer') {
+        btnStreamer.className = "px-3 py-1 font-bold rounded bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/40 shadow";
+        btnTv.className = "px-3 py-1 font-bold rounded text-slate-400 hover:text-white";
+        wrapStreamer.classList.remove('hidden');
+        wrapTv.classList.add('hidden');
       } else {
-        btnCustom.className = "px-3 py-1 text-xs font-bold rounded bg-slate-800 text-white shadow";
-        btnTv.className = "px-3 py-1 text-xs font-bold rounded text-slate-400 hover:text-white";
-        customWrap.classList.remove('hidden');
-        tvWrap.classList.add('hidden');
-        renderCustomCanvasChart();
+        btnTv.className = "px-3 py-1 font-bold rounded bg-amber-500/20 text-[#d4af37] border border-[#d4af37]/40 shadow";
+        btnStreamer.className = "px-3 py-1 font-bold rounded text-slate-400 hover:text-white";
+        wrapTv.classList.remove('hidden');
+        wrapStreamer.classList.add('hidden');
+
+        if (!tvWidget) {
+          initTradingViewWidget(engineState.activeMetal === 'gold' ? "OANDA:XAUUSD" : "OANDA:XAGUSD");
+        }
       }
     }
 
-    function renderCustomCanvasChart() {
-      const canvas = document.getElementById('customCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width = canvas.parentElement.clientWidth - 32;
-      const h = canvas.height = 420;
-
-      ctx.clearRect(0, 0, w, h);
-      const data = (state.currentMetal === 'gold' ? state.gold.history : state.silver.history) || [];
-      if (data.length === 0) return;
-
-      const minP = Math.min(...data.map(d => d.low)) * 0.99;
-      const maxP = Math.max(...data.map(d => d.high)) * 1.01;
-      const barW = Math.max(4, Math.floor(w / data.length) - 2);
-
-      // Draw Grid
-      ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 1;
-      for (let i = 1; i <= 4; i++) {
-        const y = (h / 5) * i;
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
-      }
-
-      // Draw Candlesticks
-      data.forEach((d, idx) => {
-        const x = idx * (barW + 2) + 10;
-        const yOpen = h - ((d.open - minP) / (maxP - minP)) * h;
-        const yClose = h - ((d.close - minP) / (maxP - minP)) * h;
-        const yHigh = h - ((d.high - minP) / (maxP - minP)) * h;
-        const yLow = h - ((d.low - minP) / (maxP - minP)) * h;
-
-        const isUp = d.close >= d.open;
-        ctx.strokeStyle = isUp ? '#10b981' : '#ef4444';
-        ctx.fillStyle = isUp ? '#10b981' : '#ef4444';
-
-        // Wick
-        ctx.beginPath();
-        ctx.moveTo(x + barW / 2, yHigh);
-        ctx.lineTo(x + barW / 2, yLow);
-        ctx.stroke();
-
-        // Body
-        ctx.fillRect(x, Math.min(yOpen, yClose), barW, Math.max(2, Math.abs(yClose - yOpen)));
+    function initTradingViewWidget(symbol) {
+      const container = document.getElementById('tradingview_gold_widget');
+      if (!container) return;
+      container.innerHTML = '';
+      tvWidget = new TradingView.widget({
+        "autosize": true,
+        "symbol": symbol,
+        "interval": "D",
+        "timezone": "America/New_York",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "enable_publishing": false,
+        "allow_symbol_change": true,
+        "container_id": "tradingview_gold_widget",
+        "studies": ["RSI@tv-basicstudies", "MASimple@tv-basicstudies"],
+        "hide_side_toolbar": false
       });
     }
 
-    function setSizerTab(tab) {
-      const btnMelt = document.getElementById('sizer-tab-melt');
-      const btnRisk = document.getElementById('sizer-tab-risk');
-      const viewMelt = document.getElementById('sizer-view-melt');
-      const viewRisk = document.getElementById('sizer-view-risk');
-
-      if (tab === 'melt') {
-        btnMelt.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow flex items-center gap-1.5";
-        btnRisk.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5";
-        viewMelt.classList.remove('hidden');
-        viewRisk.classList.add('hidden');
-      } else {
-        btnRisk.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow flex items-center gap-1.5";
-        btnMelt.className = "px-4 py-2 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white flex items-center gap-1.5";
-        viewRisk.classList.remove('hidden');
-        viewMelt.classList.add('hidden');
+    // 18. LIVE CLOCKS (UTC & LOCAL)
+    function startLiveClocks() {
+      function update() {
+        const now = new Date();
+        const utcStr = now.toUTCString().split(' ')[4] + ' UTC';
+        const localStr = now.toTimeString().split(' ')[0];
+        document.getElementById('board-clock-utc').textContent = utcStr;
+        document.getElementById('board-clock-local').textContent = localStr;
       }
+      update();
+      setInterval(update, 1000);
     }
 
-    // Physical Melt Calculations
-    function calculateMelt() {
-      const qty = parseFloat(document.getElementById('melt-weight-input').value) || 0;
-      const unit = document.getElementById('melt-unit-select').value;
-      const purity = parseFloat(document.getElementById('melt-purity-select').value) || 1.0;
-      const premiumPct = parseFloat(document.getElementById('melt-premium-input').value) || 0;
-
-      // Base weight in grams
-      let grams = qty;
-      if (unit === 'ozt') grams = qty * 31.1034768;
-      else if (unit === 'kg') grams = qty * 1000.0;
-      else if (unit === 'tola') grams = qty * 11.6638;
-      else if (unit === 'sov') grams = qty * 7.98805;
-
-      const pureGrams = grams * purity;
-      const pureOzt = pureGrams / 31.1034768;
-
-      // Select price based on purity selection (Silver vs Gold)
-      const isSilver = purity <= 0.999 && document.getElementById('melt-purity-select').selectedOptions[0].text.includes("Silver");
-      const spotPriceOzt = isSilver ? state.silver.last : state.gold.last;
-
-      const pureSpotVal = pureOzt * spotPriceOzt;
-      const margin = pureSpotVal * (premiumPct / 100.0);
-      const netVal = pureSpotVal + margin;
-
-      const pricePerGramEquiv = grams > 0 ? netVal / grams : 0;
-      const pricePerOztEquiv = (grams / 31.1034768) > 0 ? netVal / (grams / 31.1034768) : 0;
-
-      document.getElementById('quote-net-val').textContent = `$${netVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-      document.getElementById('quote-pure-weight').textContent = `Pure Metal: ${pureGrams.toFixed(2)}g (${pureOzt.toFixed(3)} ozt)`;
-      document.getElementById('quote-spot-val').textContent = `$${pureSpotVal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-      document.getElementById('quote-dealer-margin').textContent = `${margin >= 0 ? '+' : ''}$${margin.toFixed(2)} (${premiumPct >= 0 ? '+' : ''}${premiumPct.toFixed(1)}%)`;
-      document.getElementById('quote-dealer-margin').className = `font-bold ${margin >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-      document.getElementById('quote-price-gram').textContent = `$${pricePerGramEquiv.toFixed(2)} / g`;
-      document.getElementById('quote-price-ozt').textContent = `$${pricePerOztEquiv.toFixed(2)} / ozt`;
-    }
-
-    function applyPreset(qty, unit, purity, premium, metalType = 'gold') {
-      document.getElementById('melt-weight-input').value = qty;
-      document.getElementById('melt-unit-select').value = unit;
-      document.getElementById('melt-purity-select').value = purity;
-      document.getElementById('melt-premium-input').value = premium;
-      if (metalType === 'silver' && state.currentMetal !== 'silver') {
-        selectMetal('silver');
-      } else if (metalType === 'gold' && state.currentMetal !== 'gold') {
-        selectMetal('gold');
-      } else {
-        calculateMelt();
-      }
-    }
-
-    function calculateRisk() {
-      const equity = parseFloat(document.getElementById('risk-equity').value) || 10000;
-      const riskPct = parseFloat(document.getElementById('risk-pct').value) || 1;
-      const entry = parseFloat(document.getElementById('risk-entry').value) || state.gold.last;
-      const sl = parseFloat(document.getElementById('risk-sl').value) || (entry - 10);
-      const tp = parseFloat(document.getElementById('risk-tp').value) || (entry + 25);
-
-      const maxRiskDollars = equity * (riskPct / 100.0);
-      const stopDistance = Math.abs(entry - sl);
-      if (stopDistance <= 0) return;
-
-      const posOzt = maxRiskDollars / stopDistance;
-      const posLots = posOzt / 100.0; // 1 standard lot = 100 oz
-
-      const rewardDistance = Math.abs(tp - entry);
-      const maxGainDollars = posOzt * rewardDistance;
-      const rrRatio = (rewardDistance / stopDistance).toFixed(2);
-
-      document.getElementById('risk-pos-size').textContent = `${posOzt.toFixed(2)} ozt`;
-      document.getElementById('risk-pos-lots').textContent = `CFD Contract Size: ${posLots.toFixed(2)} Standard Lots (${(posLots * 10).toFixed(1)} Mini Lots)`;
-      document.getElementById('risk-max-loss').textContent = `-$${maxRiskDollars.toFixed(2)} (${riskPct.toFixed(2)}%)`;
-      document.getElementById('risk-max-gain').textContent = `+$${maxGainDollars.toFixed(2)} (+${((maxGainDollars / equity) * 100).toFixed(2)}%)`;
-      document.getElementById('risk-rr-ratio').textContent = `1 : ${rrRatio}`;
-    }
-
-    function copyQuotationSummary() {
-      const netVal = document.getElementById('quote-net-val').textContent;
-      const pureWeight = document.getElementById('quote-pure-weight').textContent;
-      const spotVal = document.getElementById('quote-spot-val').textContent;
-      const margin = document.getElementById('quote-dealer-margin').textContent;
-      const priceGram = document.getElementById('quote-price-gram').textContent;
-
-      const summary = `--- PRECIOUS METALS VALUATION QUOTE ---
-Asset: ${state.currentMetal.toUpperCase()} SPOT
-${pureWeight}
-Net Estimated Valuation: ${netVal}
-Pure Spot Baseline: ${spotVal}
-Dealer Premium/Margin: ${margin}
-Equivalent Price: ${priceGram}
-Generated: ${new Date().toUTCString()}
-Terminal: Small-Cap & Commodities Intelligence Hub`;
-
-      navigator.clipboard.writeText(summary).then(() => {
-        const toast = document.getElementById('toast');
-        toast.classList.remove('hidden');
-        toast.classList.add('toast-popup');
-        setTimeout(() => {
-          toast.classList.add('hidden');
-          toast.classList.remove('toast-popup');
-        }, 2600);
+    // 19. MANUAL REFRESH & SCROLL SHORTCUTS
+    function manualRefreshData() {
+      const sp = document.getElementById('refresh-spinner');
+      sp.classList.add('animate-spin');
+      fetchMacroRates().finally(() => {
+        setTimeout(() => sp.classList.remove('animate-spin'), 600);
       });
+    }
+
+    function scrollToGstBilling() {
+      const el = document.getElementById('gst-billing-terminal');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
     function scrollToMelt() {
-      const el = document.getElementById('melt-terminal');
+      const el = document.getElementById('gst-billing-terminal');
       if (el) {
+        setTerminalTab('melt');
         el.scrollIntoView({ behavior: 'smooth' });
       }
     }
 
-    function refreshData() {
-      const sp = document.getElementById('refresh-spinner');
-      sp.classList.add('animate-spin');
-      setTimeout(() => {
-        sp.classList.remove('animate-spin');
-        // Slight simulated tick to demonstrate reactive pricing
-        const delta = (Math.random() - 0.48) * 0.75;
-        state.gold.last = +(state.gold.last + delta).toFixed(2);
-        state.gold.change = +(state.gold.change + delta).toFixed(2);
-        selectMetal(state.currentMetal);
-      }, 600);
-    }
-
-    // Initial on-load setup
+    // 20. INITIALIZATION
     window.addEventListener('DOMContentLoaded', () => {
-      initTradingViewWidget("OANDA:XAUUSD", "D");
-      calculateMelt();
-      calculateRisk();
+      startLiveClocks();
+      initializeStreamQueues();
+      renderBoardDOM();
+      selectStreamAsset('gold10g');
+      startCanvasAnimationLoop();
+      calculateGstInvoice();
+
+      // Async initial macro poll from REST endpoints
+      fetchMacroRates();
+
+      // Inter-poll tick loop: Brownian drift every 1.8 seconds
+      setInterval(executeBrownianTick, 1800);
+
+      // Macro REST refresh every 60 seconds
+      setInterval(fetchMacroRates, 60000);
     });
   </script>
 </body>
