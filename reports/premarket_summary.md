@@ -1,6 +1,6 @@
 # Pre-Market Small-Cap Momentum Gappers Briefing
 
-**Generated:** 2026-10-20 (Pre-Market Scanner)  
+**Generated:** 2026-10-21 (Pre-Market Scanner)  
 **Universe Criteria:** Small-Cap Momentum ($1.00–$20.00 | Market Cap ≤ $500M | Float ≤ 40M | PM Vol > 250k | PM Gap > 4%)
 
 ---
@@ -9,31 +9,62 @@
 
 | Ticker | Company | Catalyst Category | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [**WORX**](https://www.tradingview.com/symbols/WORX/) | SCWorx Corp. | `Contract / Momentum` | **+48.88%** | $3.84 | 545,477 | 22,449,040 | 4.8x | **41.2x** |
-| [**SAIQ**](https://www.tradingview.com/symbols/SAIQ/) | WISeSat.Space Holdings Corp. | `Compliance / Uplisting` | **+36.95%** | $5.76 | 4,494,439 | 7,803,469 | 11.1x | **1.7x** |
-| [**HOST**](https://www.tradingview.com/symbols/HOST/) | Host Digital Inc. | `Contract / Momentum` | **+16.14%** | $2.59 | 5,462,148 | 408,433 | 18.2x | **0.1x** |
-| [**NCPL**](https://www.tradingview.com/symbols/NCPL/) | Netcapital Inc. | `Compliance / Uplisting` | **+13.50%** | $2.13 | 2,089,080 | 533,851 | 0.4x | **0.3x** |
+| [**AMOD**](https://www.tradingview.com/symbols/AMOD/) | Alpha Modus Holdings, Inc. | `Crypto / Treasury` | **+46.51%** | $2.15 | 1,035,029 | 23,099,155 | 25.4x | **22.3x** |
+| [**AHT**](https://www.tradingview.com/symbols/AHT/) | Ashford Hospitality Trust Inc | `Contract / Momentum` | **+33.52%** | $2.52 | 6,400,887 | 10,438,873 | 51.6x | **1.6x** |
+| [**YMAT**](https://www.tradingview.com/symbols/YMAT/) | J-Star Holding Co., Ltd. | `Compliance / Uplisting` | **+22.89%** | $2.32 | 1,578,153 | 3,489,385 | 0.5x | **2.2x** |
+| [**INVE**](https://www.tradingview.com/symbols/INVE/) | INVE Technologies, Inc. | `AI / Tech / Hardware` | **+20.77%** | $2.74 | 22,920,499 | 6,273,012 | 128.2x | **0.3x** |
+| [**SPHL**](https://www.tradingview.com/symbols/SPHL/) | Springview Holdings Ltd | `Compliance / Uplisting` | **+19.34%** | $3.20 | 1,236,980 | 3,863,113 | 106.8x | **3.1x** |
+| [**NCPL**](https://www.tradingview.com/symbols/NCPL/) | Netcapital Inc. | `Compliance / Uplisting` | **+15.35%** | $1.98 | 2,089,080 | 511,680 | 0.2x | **0.2x** |
+| [**SDEV**](https://www.tradingview.com/symbols/SDEV/) | Stablecoin Development Corporation | `Contract / Momentum` | **+9.77%** | $1.16 | 1,017,381 | 658,959 | 8.0x | **0.6x** |
+| [**SHMD**](https://www.tradingview.com/symbols/SHMD/) | SCHMID Group N.V. | `Contract / Momentum` | **+5.90%** | $3.21 | 4,524,472 | 961,793 | 3.1x | **0.2x** |
+| [**TNMG**](https://www.tradingview.com/symbols/TNMG/) | TNL Mediagene | `Contract / Momentum` | **+5.67%** | $3.20 | 677,887 | 269,653 | 2.6x | **0.4x** |
+| [**ATGL**](https://www.tradingview.com/symbols/ATGL/) | Alpha Technology Group Limited | `AI / Tech / Hardware` | **+5.05%** | $7.37 | 2,674,997 | 320,736 | 4.2x | **0.1x** |
 
 ---
 
 ## 2. Catalyst Deep Dive
 
-### 1. **WORX (SCWorx Corp.)**
+### 1. **AMOD (Alpha Modus Holdings, Inc.)**
+* **Catalyst:** $200M+ Bitcoin Treasury Strategy & PIPE Closing with Massive Micro-Float Squeeze
+* **Deal/News Summary:** Alpha Modus Holdings announced the closing of a strategic PIPE transaction securing 3,170 Bitcoin (over $200M in digital assets) to anchor a major crypto-treasury corporate reserve pivot. The news sparked a retail and algorithmic frenzy, triggering an enormous low-float short squeeze.
+* **Chart & Technical Context:** The stock exploded +197.4% in pre-market, soaring on a monumental 78M pre-market shares. Intraday momentum continued aggressively, holding massive volume shelves above $3.00.
+
+### 2. **AHT (Ashford Hospitality Trust Inc)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 2. **SAIQ (WISeSat.Space Holdings Corp.)**
+### 3. **YMAT (J-Star Holding Co., Ltd.)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 3. **HOST (Host Digital Inc.)**
+### 4. **INVE (INVE Technologies, Inc.)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 4. **NCPL (Netcapital Inc.)**
+### 5. **SPHL (Springview Holdings Ltd)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 6. **NCPL (Netcapital Inc.)**
 * **Catalyst:** Regained Nasdaq Minimum Bid Compliance & Appointed New Independent Auditor Adeptus Partners
 * **Deal/News Summary:** Netcapital announced that Nasdaq confirmed the company officially regained compliance with the $1.00 minimum bid price requirement (Rule 5550(a)(2)) following 10 consecutive trading days above $1.00. Concurrently, Netcapital engaged Adeptus Partners, LLC as its new independent auditor to audit fiscal years 2022-2026 and complete delinquent Form 10-K and 10-Q filings ahead of the October 23 Nasdaq deadline.
 * **Chart & Technical Context:** NCPL gapped up +29.8% to $1.98 on 1.75M pre-market shares, continuing upward follow-through after climbing +24.5% in yesterday's session on 46.9M shares.
+
+### 7. **SDEV (Stablecoin Development Corporation)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 8. **SHMD (SCHMID Group N.V.)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 9. **TNMG (TNL Mediagene)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 10. **ATGL (Alpha Technology Group Limited)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
 
 ---
 
@@ -41,10 +72,16 @@
 
 | Ticker | Micro-Cap Dilution Risk | Float Rotation Ratio | Structural Overhead / Compliance |
 | :--- | :--- | :---: | :--- |
-| **WORX** | Elevated volatility on low-float runner. | **41.2x** | Support: N/A / Resistance: N/A |
-| **SAIQ** | Elevated volatility on low-float runner. | **1.7x** | Support: N/A / Resistance: N/A |
-| **HOST** | Elevated volatility on low-float runner. | **0.1x** | Support: N/A / Resistance: N/A |
-| **NCPL** | High Float Turnover (~84%): Trading 1.75M shares against a 2.09M float represents ~0.8x pre-market float turnover (and 46.9M shares regular volume yesterday). Structural risks remain: ongoing SEC litigation, investor securities class actions (Dec 7 lead plaintiff deadline), and the impending October 23 Nasdaq deadline to file delinquent 10-K/10-Q reports. | **0.3x** | Support: $1.40 / $1.25 / Resistance: $1.85 / $2.10 |
+| **AMOD** | Unprecedented Float Turnover (>14,300%): With a micro-float of just 542k shares, the float rotated over 140 times before market open! Extreme dilution risk looms as the PIPE deal included the issuance of 51M new common shares and 51M warrants, meaning catastrophic dilution is locked in once registration takes effect. | **22.3x** | Support: $1.25 / $1.10 / Resistance: $1.60 / $1.85 |
+| **AHT** | Elevated volatility on low-float runner. | **1.6x** | Support: N/A / Resistance: N/A |
+| **YMAT** | Elevated volatility on low-float runner. | **2.2x** | Support: N/A / Resistance: N/A |
+| **INVE** | Elevated volatility on low-float runner. | **0.3x** | Support: N/A / Resistance: N/A |
+| **SPHL** | Elevated volatility on low-float runner. | **3.1x** | Support: N/A / Resistance: N/A |
+| **NCPL** | High Float Turnover (~84%): Trading 1.75M shares against a 2.09M float represents ~0.8x pre-market float turnover (and 46.9M shares regular volume yesterday). Structural risks remain: ongoing SEC litigation, investor securities class actions (Dec 7 lead plaintiff deadline), and the impending October 23 Nasdaq deadline to file delinquent 10-K/10-Q reports. | **0.2x** | Support: $1.40 / $1.25 / Resistance: $1.85 / $2.10 |
+| **SDEV** | Elevated volatility on low-float runner. | **0.6x** | Support: N/A / Resistance: N/A |
+| **SHMD** | Elevated volatility on low-float runner. | **0.2x** | Support: N/A / Resistance: N/A |
+| **TNMG** | Elevated volatility on low-float runner. | **0.4x** | Support: N/A / Resistance: N/A |
+| **ATGL** | Elevated volatility on low-float runner. | **0.1x** | Support: N/A / Resistance: N/A |
 
 ---
 
@@ -55,10 +92,16 @@
 
 | Ticker | Company | Catalyst Category | Structural Volatility & Follow-Through Profile |
 | :--- | :--- | :---: | :--- |
-| **WORX** | SCWorx Corp. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **SAIQ** | WISeSat.Space Holdings Corp. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **HOST** | Host Digital Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **AMOD** | Alpha Modus Holdings, Inc. | `Crypto / Treasury` | Extreme morning spikes but high afternoon fade risk; closely tethered to underlying crypto sentiment. |
+| **AHT** | Ashford Hospitality Trust Inc | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **YMAT** | J-Star Holding Co., Ltd. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **INVE** | INVE Technologies, Inc. | `AI / Tech / Hardware` | Aggressive breakout momentum driven by hardware deals; elevated volume with multi-session runner potential. |
+| **SPHL** | Springview Holdings Ltd | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
 | **NCPL** | Netcapital Inc. | `Compliance / Uplisting` | Strong support on exchange compliance confirmation, but structural overhead from past filings/delays. |
+| **SDEV** | Stablecoin Development Corporation | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **SHMD** | SCHMID Group N.V. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **TNMG** | TNL Mediagene | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **ATGL** | Alpha Technology Group Limited | `AI / Tech / Hardware` | Aggressive breakout momentum driven by hardware deals; elevated volume with multi-session runner potential. |
 
 ---
 
