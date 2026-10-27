@@ -1,6 +1,6 @@
 # Pre-Market Small-Cap Momentum Gappers Briefing
 
-**Generated:** 2026-10-26 (Pre-Market Scanner)  
+**Generated:** 2026-10-27 (Pre-Market Scanner)  
 **Universe Criteria:** Small-Cap Momentum ($1.00–$20.00 | Market Cap ≤ $500M | Float ≤ 40M | PM Vol > 250k | PM Gap > 4%)
 
 ---
@@ -9,39 +9,28 @@
 
 | Ticker | Company | Catalyst Category | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [**AZTR**](https://www.tradingview.com/symbols/AZTR/) | Azitra Inc | `Contract / Momentum` | **+46.85%** | $1.94 | 5,653,777 | 3,653,366 | 1607.0x | **0.6x** |
-| [**SPRC**](https://www.tradingview.com/symbols/SPRC/) | SciSparc Ltd. | `Biotech / Pharma` | **+46.79%** | $1.47 | 562,647 | 12,036,637 | 8.2x | **21.4x** |
-| [**CLRO**](https://www.tradingview.com/symbols/CLRO/) | ClearOne, Inc. | `Contract / Momentum` | **+33.85%** | $4.87 | 713,829 | 15,382,706 | 19.2x | **21.5x** |
-| [**RENT**](https://www.tradingview.com/symbols/RENT/) | Rent the Runway, Inc. | `Contract / Momentum` | **+30.41%** | $2.79 | 24,228,000 | 10,851,077 | 32.3x | **0.4x** |
-| [**SAIQ**](https://www.tradingview.com/symbols/SAIQ/) | WISeSat.Space Holdings Corp. | `Compliance / Uplisting` | **+13.07%** | $6.75 | 8,284,069 | 939,517 | 0.8x | **0.1x** |
-| [**YMAT**](https://www.tradingview.com/symbols/YMAT/) | J-Star Holding Co., Ltd. | `Compliance / Uplisting` | **+12.68%** | $2.21 | 1,578,153 | 3,461,082 | 0.3x | **2.2x** |
+| [**CLRO**](https://www.tradingview.com/symbols/CLRO/) | ClearOne, Inc. | `Contract / Momentum` | **+20.52%** | $5.59 | 713,829 | 11,095,944 | 2.0x | **15.5x** |
+| [**SAIQ**](https://www.tradingview.com/symbols/SAIQ/) | WISeSat.Space Holdings Corp. | `Compliance / Uplisting` | **+7.73%** | $7.41 | 8,284,069 | 530,282 | 0.4x | **0.1x** |
+| [**TDIC**](https://www.tradingview.com/symbols/TDIC/) | Dreamland Limited | `Contract / Momentum` | **+6.00%** | $1.76 | 455,691 | 6,183,096 | 6.1x | **13.6x** |
+| [**SDEV**](https://www.tradingview.com/symbols/SDEV/) | Stablecoin Development Corporation | `Contract / Momentum` | **+5.63%** | $1.09 | 1,017,381 | 734,886 | 1.0x | **0.7x** |
 
 ---
 
 ## 2. Catalyst Deep Dive
 
-### 1. **AZTR (Azitra Inc)**
+### 1. **CLRO (ClearOne, Inc.)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 2. **SPRC (SciSparc Ltd.)**
-* **Catalyst:** Strategic Transformation into Agentic AI Technologies for Cybersecurity & Fintech
-* **Deal/News Summary:** SciSparc officially announced a major corporate transformation on October 15, 2026, pivoting its core business toward agentic AI-powered technologies with direct applications in cybersecurity and financial technology. This follows subsidiary NeuroThera Labs' breakthrough quantum-enabled analysis of billions of gene combinations on an S&P 500 company's quantum architecture, triggering immense retail and algorithmic momentum.
-* **Chart & Technical Context:** SPRC erupted over +25% in pre-market trade, surging toward multi-dollar morning highs on an astonishing 12.1+ million pre-market shares. Heavy buying volume is absorbing supply and sustaining price action above the 20-period 5m SMA.
-
-### 3. **CLRO (ClearOne, Inc.)**
+### 2. **SAIQ (WISeSat.Space Holdings Corp.)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 4. **RENT (Rent the Runway, Inc.)**
+### 3. **TDIC (Dreamland Limited)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 5. **SAIQ (WISeSat.Space Holdings Corp.)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
-
-### 6. **YMAT (J-Star Holding Co., Ltd.)**
+### 4. **SDEV (Stablecoin Development Corporation)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
@@ -51,12 +40,10 @@
 
 | Ticker | Micro-Cap Dilution Risk | Float Rotation Ratio | Structural Overhead / Compliance |
 | :--- | :--- | :---: | :--- |
-| **AZTR** | Elevated volatility on low-float runner. | **0.6x** | Support: N/A / Resistance: N/A |
-| **SPRC** | Monumental Float Turnover (>2,160%): With an ultra-low float of just 562k shares, the float turned over more than 21 times before the opening bell! While micro-float squeeze mechanics fuel explosive vertical momentum, SciSparc has a market cap of only ~$2.1M, creating severe structural risk of rapid capital raises, registered direct offerings, or warrant exercises on elevated liquidity. | **21.4x** | Support: $3.20 / $2.85 / Resistance: $4.20 / $4.80 |
-| **CLRO** | Elevated volatility on low-float runner. | **21.5x** | Support: N/A / Resistance: N/A |
-| **RENT** | Elevated volatility on low-float runner. | **0.4x** | Support: N/A / Resistance: N/A |
+| **CLRO** | Elevated volatility on low-float runner. | **15.5x** | Support: N/A / Resistance: N/A |
 | **SAIQ** | Elevated volatility on low-float runner. | **0.1x** | Support: N/A / Resistance: N/A |
-| **YMAT** | Elevated volatility on low-float runner. | **2.2x** | Support: N/A / Resistance: N/A |
+| **TDIC** | Elevated volatility on low-float runner. | **13.6x** | Support: N/A / Resistance: N/A |
+| **SDEV** | Elevated volatility on low-float runner. | **0.7x** | Support: N/A / Resistance: N/A |
 
 ---
 
@@ -67,12 +54,10 @@
 
 | Ticker | Company | Catalyst Category | Structural Volatility & Follow-Through Profile |
 | :--- | :--- | :---: | :--- |
-| **AZTR** | Azitra Inc | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **SPRC** | SciSparc Ltd. | `Biotech / Pharma` | High resilience & explosive max-run upside; sustained institutional & retail speculative flow. |
 | **CLRO** | ClearOne, Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **RENT** | Rent the Runway, Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
 | **SAIQ** | WISeSat.Space Holdings Corp. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **YMAT** | J-Star Holding Co., Ltd. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **TDIC** | Dreamland Limited | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **SDEV** | Stablecoin Development Corporation | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
 
 ---
 
