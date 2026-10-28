@@ -1,6 +1,6 @@
 # Pre-Market Small-Cap Momentum Gappers Briefing
 
-**Generated:** 2026-10-27 (Pre-Market Scanner)  
+**Generated:** 2026-10-28 (Pre-Market Scanner)  
 **Universe Criteria:** Small-Cap Momentum ($1.00–$20.00 | Market Cap ≤ $500M | Float ≤ 40M | PM Vol > 250k | PM Gap > 4%)
 
 ---
@@ -9,28 +9,43 @@
 
 | Ticker | Company | Catalyst Category | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [**CLRO**](https://www.tradingview.com/symbols/CLRO/) | ClearOne, Inc. | `Contract / Momentum` | **+20.52%** | $5.59 | 713,829 | 11,095,944 | 2.0x | **15.5x** |
-| [**SAIQ**](https://www.tradingview.com/symbols/SAIQ/) | WISeSat.Space Holdings Corp. | `Compliance / Uplisting` | **+7.73%** | $7.41 | 8,284,069 | 530,282 | 0.4x | **0.1x** |
-| [**TDIC**](https://www.tradingview.com/symbols/TDIC/) | Dreamland Limited | `Contract / Momentum` | **+6.00%** | $1.76 | 455,691 | 6,183,096 | 6.1x | **13.6x** |
-| [**SDEV**](https://www.tradingview.com/symbols/SDEV/) | Stablecoin Development Corporation | `Contract / Momentum` | **+5.63%** | $1.09 | 1,017,381 | 734,886 | 1.0x | **0.7x** |
+| [**ULBI**](https://www.tradingview.com/symbols/ULBI/) | Ultralife Corporation | `Contract / Momentum` | **+145.44%** | $15.65 | 9,760,445 | 292,347 | 17.9x | **0.0x** |
+| [**CHSN**](https://www.tradingview.com/symbols/CHSN/) | Chanson International Holding | `Compliance / Uplisting` | **+40.65%** | $1.30 | 2,096,288 | 3,800,208 | 474.5x | **1.8x** |
+| [**ELPW**](https://www.tradingview.com/symbols/ELPW/) | Elong Power Holding Limited | `Compliance / Uplisting` | **+38.93%** | $2.82 | 854,287 | 21,816,598 | 1745.2x | **25.5x** |
+| [**BOOM**](https://www.tradingview.com/symbols/BOOM/) | DMC Global Inc. | `Contract / Momentum` | **+24.49%** | $7.49 | 18,156,040 | 408,455 | 26.5x | **0.0x** |
+| [**BKYI**](https://www.tradingview.com/symbols/BKYI/) | BIO-key International, Inc. | `Biotech / Pharma` | **+18.10%** | $3.14 | 1,910,753 | 7,430,337 | 1.9x | **3.9x** |
+| [**YMAT**](https://www.tradingview.com/symbols/YMAT/) | J-Star Holding Co., Ltd. | `Compliance / Uplisting` | **+10.85%** | $2.19 | 1,578,153 | 603,390 | 0.1x | **0.4x** |
+| [**CLRO**](https://www.tradingview.com/symbols/CLRO/) | ClearOne, Inc. | `Contract / Momentum` | **+4.21%** | $5.32 | 713,829 | 264,987 | 0.2x | **0.4x** |
 
 ---
 
 ## 2. Catalyst Deep Dive
 
-### 1. **CLRO (ClearOne, Inc.)**
+### 1. **ULBI (Ultralife Corporation)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 2. **SAIQ (WISeSat.Space Holdings Corp.)**
+### 2. **CHSN (Chanson International Holding)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 3. **TDIC (Dreamland Limited)**
+### 3. **ELPW (Elong Power Holding Limited)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
-### 4. **SDEV (Stablecoin Development Corporation)**
+### 4. **BOOM (DMC Global Inc.)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 5. **BKYI (BIO-key International, Inc.)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 6. **YMAT (J-Star Holding Co., Ltd.)**
+* **Catalyst:** Pre-Market Momentum & Volume Surge
+* **Deal/News Summary:** High relative volume and pre-market gap detected.
+
+### 7. **CLRO (ClearOne, Inc.)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
@@ -40,10 +55,13 @@
 
 | Ticker | Micro-Cap Dilution Risk | Float Rotation Ratio | Structural Overhead / Compliance |
 | :--- | :--- | :---: | :--- |
-| **CLRO** | Elevated volatility on low-float runner. | **15.5x** | Support: N/A / Resistance: N/A |
-| **SAIQ** | Elevated volatility on low-float runner. | **0.1x** | Support: N/A / Resistance: N/A |
-| **TDIC** | Elevated volatility on low-float runner. | **13.6x** | Support: N/A / Resistance: N/A |
-| **SDEV** | Elevated volatility on low-float runner. | **0.7x** | Support: N/A / Resistance: N/A |
+| **ULBI** | Elevated volatility on low-float runner. | **0.0x** | Support: N/A / Resistance: N/A |
+| **CHSN** | Elevated volatility on low-float runner. | **1.8x** | Support: N/A / Resistance: N/A |
+| **ELPW** | Elevated volatility on low-float runner. | **25.5x** | Support: N/A / Resistance: N/A |
+| **BOOM** | Elevated volatility on low-float runner. | **0.0x** | Support: N/A / Resistance: N/A |
+| **BKYI** | Elevated volatility on low-float runner. | **3.9x** | Support: N/A / Resistance: N/A |
+| **YMAT** | Elevated volatility on low-float runner. | **0.4x** | Support: N/A / Resistance: N/A |
+| **CLRO** | Elevated volatility on low-float runner. | **0.4x** | Support: N/A / Resistance: N/A |
 
 ---
 
@@ -54,10 +72,13 @@
 
 | Ticker | Company | Catalyst Category | Structural Volatility & Follow-Through Profile |
 | :--- | :--- | :---: | :--- |
+| **ULBI** | Ultralife Corporation | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **CHSN** | Chanson International Holding | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **ELPW** | Elong Power Holding Limited | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **BOOM** | DMC Global Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **BKYI** | BIO-key International, Inc. | `Biotech / Pharma` | High resilience & explosive max-run upside; sustained institutional & retail speculative flow. |
+| **YMAT** | J-Star Holding Co., Ltd. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
 | **CLRO** | ClearOne, Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **SAIQ** | WISeSat.Space Holdings Corp. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **TDIC** | Dreamland Limited | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **SDEV** | Stablecoin Development Corporation | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
 
 ---
 
