@@ -1,6 +1,6 @@
 # Pre-Market Small-Cap Momentum Gappers Briefing
 
-**Generated:** 2026-10-28 (Pre-Market Scanner)  
+**Generated:** 2026-10-29 (Pre-Market Scanner)  
 **Universe Criteria:** Small-Cap Momentum ($1.00–$20.00 | Market Cap ≤ $500M | Float ≤ 40M | PM Vol > 250k | PM Gap > 4%)
 
 ---
@@ -9,43 +9,19 @@
 
 | Ticker | Company | Catalyst Category | Gap % | Price | Float (Shares) | Pre-Market Volume | Relative Volume (10d) | Float Rotation |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [**ULBI**](https://www.tradingview.com/symbols/ULBI/) | Ultralife Corporation | `Contract / Momentum` | **+145.44%** | $15.65 | 9,760,445 | 292,347 | 17.9x | **0.0x** |
-| [**CHSN**](https://www.tradingview.com/symbols/CHSN/) | Chanson International Holding | `Compliance / Uplisting` | **+40.65%** | $1.30 | 2,096,288 | 3,800,208 | 474.5x | **1.8x** |
-| [**ELPW**](https://www.tradingview.com/symbols/ELPW/) | Elong Power Holding Limited | `Compliance / Uplisting` | **+38.93%** | $2.82 | 854,287 | 21,816,598 | 1745.2x | **25.5x** |
-| [**BOOM**](https://www.tradingview.com/symbols/BOOM/) | DMC Global Inc. | `Contract / Momentum` | **+24.49%** | $7.49 | 18,156,040 | 408,455 | 26.5x | **0.0x** |
-| [**BKYI**](https://www.tradingview.com/symbols/BKYI/) | BIO-key International, Inc. | `Biotech / Pharma` | **+18.10%** | $3.14 | 1,910,753 | 7,430,337 | 1.9x | **3.9x** |
-| [**YMAT**](https://www.tradingview.com/symbols/YMAT/) | J-Star Holding Co., Ltd. | `Compliance / Uplisting` | **+10.85%** | $2.19 | 1,578,153 | 603,390 | 0.1x | **0.4x** |
-| [**CLRO**](https://www.tradingview.com/symbols/CLRO/) | ClearOne, Inc. | `Contract / Momentum` | **+4.21%** | $5.32 | 713,829 | 264,987 | 0.2x | **0.4x** |
+| [**NCPL**](https://www.tradingview.com/symbols/NCPL/) | Netcapital Inc. | `Compliance / Uplisting` | **+42.73%** | $1.66 | 2,089,080 | 12,371,106 | 2.9x | **5.9x** |
+| [**PCLA**](https://www.tradingview.com/symbols/PCLA/) | PicoCELA Inc. | `Contract / Momentum` | **+39.82%** | $10.20 | 9,480,510 | 4,639,122 | 1897.5x | **0.5x** |
 
 ---
 
 ## 2. Catalyst Deep Dive
 
-### 1. **ULBI (Ultralife Corporation)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
+### 1. **NCPL (Netcapital Inc.)**
+* **Catalyst:** Regained Nasdaq Minimum Bid Compliance & Appointed New Independent Auditor Adeptus Partners
+* **Deal/News Summary:** Netcapital announced that Nasdaq confirmed the company officially regained compliance with the $1.00 minimum bid price requirement (Rule 5550(a)(2)) following 10 consecutive trading days above $1.00. Concurrently, Netcapital engaged Adeptus Partners, LLC as its new independent auditor to audit fiscal years 2022-2026 and complete delinquent Form 10-K and 10-Q filings ahead of the October 23 Nasdaq deadline.
+* **Chart & Technical Context:** NCPL gapped up +29.8% to $1.98 on 1.75M pre-market shares, continuing upward follow-through after climbing +24.5% in yesterday's session on 46.9M shares.
 
-### 2. **CHSN (Chanson International Holding)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
-
-### 3. **ELPW (Elong Power Holding Limited)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
-
-### 4. **BOOM (DMC Global Inc.)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
-
-### 5. **BKYI (BIO-key International, Inc.)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
-
-### 6. **YMAT (J-Star Holding Co., Ltd.)**
-* **Catalyst:** Pre-Market Momentum & Volume Surge
-* **Deal/News Summary:** High relative volume and pre-market gap detected.
-
-### 7. **CLRO (ClearOne, Inc.)**
+### 2. **PCLA (PicoCELA Inc.)**
 * **Catalyst:** Pre-Market Momentum & Volume Surge
 * **Deal/News Summary:** High relative volume and pre-market gap detected.
 
@@ -55,13 +31,8 @@
 
 | Ticker | Micro-Cap Dilution Risk | Float Rotation Ratio | Structural Overhead / Compliance |
 | :--- | :--- | :---: | :--- |
-| **ULBI** | Elevated volatility on low-float runner. | **0.0x** | Support: N/A / Resistance: N/A |
-| **CHSN** | Elevated volatility on low-float runner. | **1.8x** | Support: N/A / Resistance: N/A |
-| **ELPW** | Elevated volatility on low-float runner. | **25.5x** | Support: N/A / Resistance: N/A |
-| **BOOM** | Elevated volatility on low-float runner. | **0.0x** | Support: N/A / Resistance: N/A |
-| **BKYI** | Elevated volatility on low-float runner. | **3.9x** | Support: N/A / Resistance: N/A |
-| **YMAT** | Elevated volatility on low-float runner. | **0.4x** | Support: N/A / Resistance: N/A |
-| **CLRO** | Elevated volatility on low-float runner. | **0.4x** | Support: N/A / Resistance: N/A |
+| **NCPL** | High Float Turnover (~84%): Trading 1.75M shares against a 2.09M float represents ~0.8x pre-market float turnover (and 46.9M shares regular volume yesterday). Structural risks remain: ongoing SEC litigation, investor securities class actions (Dec 7 lead plaintiff deadline), and the impending October 23 Nasdaq deadline to file delinquent 10-K/10-Q reports. | **5.9x** | Support: $1.40 / $1.25 / Resistance: $1.85 / $2.10 |
+| **PCLA** | Elevated volatility on low-float runner. | **0.5x** | Support: N/A / Resistance: N/A |
 
 ---
 
@@ -72,13 +43,8 @@
 
 | Ticker | Company | Catalyst Category | Structural Volatility & Follow-Through Profile |
 | :--- | :--- | :---: | :--- |
-| **ULBI** | Ultralife Corporation | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **CHSN** | Chanson International Holding | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **ELPW** | Elong Power Holding Limited | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **BOOM** | DMC Global Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **BKYI** | BIO-key International, Inc. | `Biotech / Pharma` | High resilience & explosive max-run upside; sustained institutional & retail speculative flow. |
-| **YMAT** | J-Star Holding Co., Ltd. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
-| **CLRO** | ClearOne, Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
+| **NCPL** | Netcapital Inc. | `Compliance / Uplisting` | Strong support on exchange compliance confirmation, but structural overhead from past filings/delays. |
+| **PCLA** | PicoCELA Inc. | `Contract / Momentum` | High morning turnover; requires tight risk management against opening session dump risk. |
 
 ---
 
